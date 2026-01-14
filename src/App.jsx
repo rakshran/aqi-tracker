@@ -77,15 +77,16 @@ function App() {
           <h2 className="text-2xl font-bold mb-4 text-balance">About This Data</h2>
           <div className="prose prose-sm max-w-none">
             <p className="text-pretty text-gray-600 mb-4">
-              This visualization shows the historical trends in air quality for cities that
-              have experienced severe pollution and implemented successful interventions.
-              The Air Quality Index (AQI) values are approximate annual averages based on
-              PM2.5 or PM10 measurements where available.
+              This visualization shows historical trends for multiple air pollutants (PM2.5, PM10,
+              SO₂, NO₂, O₃, CO) in major cities that have battled severe pollution. Values represent
+              approximate annual average concentrations in µg/m³ or mg/m³. Toggle different pollutants
+              on/off to see how specific interventions affected different types of air pollution.
             </p>
             <p className="text-pretty text-gray-600 mb-4">
-              Each red marker on the timeline represents a major policy intervention or
-              milestone. Click on these markers or the intervention cards below to learn
-              more about specific actions that contributed to air quality improvements.
+              Red markers on the timeline indicate major policy interventions. Click on these
+              markers or the intervention cards to learn which pollutants each policy targeted.
+              Different interventions had varying impacts: coal bans reduced SO₂, catalytic
+              converters cut NO₂ and CO, while diesel regulations lowered PM10.
             </p>
             <h3 className="text-lg font-semibold mb-3 mt-6">Key Lessons</h3>
             <ul className="space-y-2 text-gray-600">

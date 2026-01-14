@@ -1,53 +1,78 @@
-import { useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Dot } from 'recharts';
+import { useState, useMemo } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceDot } from 'recharts';
 import { cn } from '../utils/cn';
-import { getAQICategory } from '../data/citiesData';
+import { pollutantInfo } from '../data/citiesData';
 
-// Custom dot component for intervention markers
-const InterventionDot = ({ cx, cy, payload, interventions, onInterventionClick }) => {
-  const intervention = interventions.find(i => i.year === payload.year);
-  if (!intervention) return null;
-
-  return (
-    <g>
-      <circle
-        cx={cx}
-        cy={cy}
-        r={6}
-        fill="#D73847"
-        stroke="#fff"
-        strokeWidth={2}
-        style={{ cursor: 'pointer' }}
-        onClick={() => onInterventionClick(intervention)}
-      />
-    </g>
-  );
-};
-
-// Custom tooltip
+// Custom tooltip showing all pollutants
 const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload || !payload.length) return null;
 
   const data = payload[0].payload;
-  const category = getAQICategory(data.aqi);
 
   return (
-    <div className="bg-white border border-gray-200 rounded shadow-lg p-3">
-      <p className="font-semibold text-sm mb-1">{data.year}</p>
-      <p className="text-sm">
-        <span className="font-medium">AQI:</span> {data.aqi}
-      </p>
-      <p className={cn("text-xs font-medium mt-1", category.textColor)}>
-        {category.label}
-      </p>
+    <div className="bg-white border border-gray-200 rounded shadow-lg p-3 max-w-xs">
+      <p className="font-semibold text-sm mb-2 border-b pb-1">{data.year}</p>
+      <div className="space-y-1">
+        {Object.keys(pollutantInfo).map((pollutant) => {
+          if (data[pollutant] !== undefined) {
+            const info = pollutantInfo[pollutant];
+            return (
+              <div key={pollutant} className="flex justify-between items-center gap-3 text-xs">
+                <span className="flex items-center gap-1.5">
+                  <div
+                    className="size-2 rounded-full"
+                    style={{ backgroundColor: info.color }}
+                  />
+                  <span className="font-medium">{info.name}:</span>
+                </span>
+                <span className="tabular-nums font-semibold">
+                  {data[pollutant]} {info.unit}
+                </span>
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
     </div>
   );
 };
 
 export default function PollutionChart({ city, onInterventionClick }) {
-  const [hoveredYear, setHoveredYear] = useState(null);
+  const [visiblePollutants, setVisiblePollutants] = useState(() => {
+    // Default to showing all available pollutants for the city
+    const availablePollutants = Object.keys(pollutantInfo).filter(
+      p => city?.data[0]?.[p] !== undefined
+    );
+    return Object.fromEntries(availablePollutants.map(p => [p, true]));
+  });
+
+  // Get available pollutants for this city
+  const availablePollutants = useMemo(() => {
+    if (!city) return [];
+    return Object.keys(pollutantInfo).filter(
+      pollutant => city.data.some(d => d[pollutant] !== undefined)
+    );
+  }, [city]);
+
+  const togglePollutant = (pollutant) => {
+    setVisiblePollutants(prev => ({ ...prev, [pollutant]: !prev[pollutant] }));
+  };
 
   if (!city) return null;
+
+  // Calculate the domain for Y-axis based on visible pollutants
+  const maxValue = useMemo(() => {
+    let max = 0;
+    city.data.forEach(dataPoint => {
+      Object.keys(visiblePollutants).forEach(pollutant => {
+        if (visiblePollutants[pollutant] && dataPoint[pollutant]) {
+          max = Math.max(max, dataPoint[pollutant]);
+        }
+      });
+    });
+    return Math.ceil(max * 1.1); // Add 10% padding
+  }, [city.data, visiblePollutants]);
 
   return (
     <div className="w-full">
@@ -60,12 +85,48 @@ export default function PollutionChart({ city, onInterventionClick }) {
         </p>
       </div>
 
+      {/* Pollutant Toggles */}
+      <div className="mb-4 p-4 bg-gray-50 rounded">
+        <h3 className="text-sm font-semibold mb-3">Select Pollutants to Display:</h3>
+        <div className="flex flex-wrap gap-2">
+          {availablePollutants.map((pollutant) => {
+            const info = pollutantInfo[pollutant];
+            const isVisible = visiblePollutants[pollutant];
+
+            return (
+              <button
+                key={pollutant}
+                onClick={() => togglePollutant(pollutant)}
+                className={cn(
+                  "px-3 py-1.5 rounded text-sm font-medium transition-all border-2",
+                  isVisible
+                    ? "bg-white border-gray-900 shadow-sm"
+                    : "bg-white border-gray-200 opacity-50 hover:opacity-75"
+                )}
+                aria-label={`${isVisible ? 'Hide' : 'Show'} ${info.name}`}
+              >
+                <span className="flex items-center gap-1.5">
+                  <div
+                    className="size-3 rounded-full"
+                    style={{ backgroundColor: info.color }}
+                  />
+                  <span>{info.name}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        <p className="text-xs text-gray-500 mt-2">
+          Click to toggle pollutants. Intervention markers show when policies were implemented.
+        </p>
+      </div>
+
       <div className="bg-gray-50 rounded p-4 mb-4">
         <div className="h-96">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={city.data}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              margin={{ top: 5, right: 30, left: 60, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis
@@ -78,75 +139,112 @@ export default function PollutionChart({ city, onInterventionClick }) {
                 stroke="#6b7280"
                 style={{ fontSize: '14px' }}
                 tickLine={false}
-                label={{ value: 'AQI (PM2.5)', angle: -90, position: 'insideLeft', style: { fontSize: '14px' } }}
+                domain={[0, maxValue]}
+                label={{
+                  value: 'Concentration',
+                  angle: -90,
+                  position: 'insideLeft',
+                  style: { fontSize: '14px' }
+                }}
               />
               <Tooltip content={<CustomTooltip />} />
 
-              {/* Reference lines for AQI categories */}
-              <ReferenceLine y={50} stroke="#6BAB3E" strokeDasharray="3 3" strokeOpacity={0.3} />
-              <ReferenceLine y={100} stroke="#F6B900" strokeDasharray="3 3" strokeOpacity={0.3} />
-              <ReferenceLine y={150} stroke="#E56E5A" strokeDasharray="3 3" strokeOpacity={0.3} />
-              <ReferenceLine y={200} stroke="#D73847" strokeDasharray="3 3" strokeOpacity={0.3} />
+              {/* Draw lines for each visible pollutant */}
+              {availablePollutants.map((pollutant) => {
+                if (!visiblePollutants[pollutant]) return null;
 
-              <Line
-                type="monotone"
-                dataKey="aqi"
-                stroke="#3B5998"
-                strokeWidth={3}
-                dot={(props) => (
-                  <InterventionDot
-                    {...props}
-                    interventions={city.interventions}
-                    onInterventionClick={onInterventionClick}
+                const info = pollutantInfo[pollutant];
+
+                return (
+                  <Line
+                    key={pollutant}
+                    type="monotone"
+                    dataKey={pollutant}
+                    name={info.name}
+                    stroke={info.color}
+                    strokeWidth={2.5}
+                    dot={false}
+                    activeDot={{ r: 5 }}
                   />
-                )}
-                activeDot={{ r: 6 }}
-              />
+                );
+              })}
+
+              {/* Intervention markers */}
+              {city.interventions.map((intervention, idx) => {
+                const dataPoint = city.data.find(d => d.year === intervention.year);
+                if (!dataPoint) return null;
+
+                // Use the first affected pollutant that's visible, or first available
+                const targetPollutant = intervention.affectedPollutants?.find(
+                  p => visiblePollutants[p] && dataPoint[p] !== undefined
+                ) || availablePollutants.find(p => dataPoint[p] !== undefined);
+
+                if (!targetPollutant || !dataPoint[targetPollutant]) return null;
+
+                return (
+                  <ReferenceDot
+                    key={idx}
+                    x={intervention.year}
+                    y={dataPoint[targetPollutant]}
+                    r={6}
+                    fill="#D73847"
+                    stroke="#fff"
+                    strokeWidth={2}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => onInterventionClick(intervention)}
+                  />
+                );
+              })}
             </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="flex items-center gap-6 text-sm text-gray-600 flex-wrap">
-        <div className="flex items-center gap-2">
-          <div className="size-3 rounded-full bg-[#3B5998]" />
-          <span>AQI Trend</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="size-3 rounded-full bg-[#D73847] border-2 border-white" />
-          <span>Key Intervention</span>
-        </div>
-      </div>
+      {/* Legend - Pollutant Info */}
+      <div className="mt-4 p-4 bg-white border border-gray-200 rounded">
+        <h3 className="text-sm font-semibold mb-3">Pollutant Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+          {availablePollutants.map((pollutant) => {
+            const info = pollutantInfo[pollutant];
+            const latestValue = city.data[city.data.length - 1][pollutant];
+            const earliestValue = city.data.find(d => d[pollutant] !== undefined)?.[pollutant];
+            const improvement = earliestValue && latestValue
+              ? ((earliestValue - latestValue) / earliestValue * 100).toFixed(0)
+              : null;
 
-      {/* AQI Category Reference */}
-      <div className="mt-6 p-4 bg-white border border-gray-200 rounded">
-        <h3 className="text-sm font-semibold mb-3">AQI Categories</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded" style={{ backgroundColor: '#6BAB3E' }} />
-            <span>Good (0-50)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded" style={{ backgroundColor: '#F6B900' }} />
-            <span>Moderate (51-100)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded" style={{ backgroundColor: '#E56E5A' }} />
-            <span>Unhealthy for Sensitive (101-150)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded" style={{ backgroundColor: '#D73847' }} />
-            <span>Unhealthy (151-200)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded" style={{ backgroundColor: '#8B3A7A' }} />
-            <span>Very Unhealthy (201-300)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded" style={{ backgroundColor: '#7E0023' }} />
-            <span>Hazardous (301+)</span>
-          </div>
+            return (
+              <div
+                key={pollutant}
+                className={cn(
+                  "p-2 rounded border",
+                  visiblePollutants[pollutant]
+                    ? "border-gray-300 bg-white"
+                    : "border-gray-200 bg-gray-50 opacity-60"
+                )}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div
+                    className="size-3 rounded-full"
+                    style={{ backgroundColor: info.color }}
+                  />
+                  <span className="font-semibold">{info.name}</span>
+                </div>
+                <p className="text-gray-600 mb-1">{info.description}</p>
+                {latestValue !== undefined && (
+                  <div className="space-y-0.5">
+                    <p className="tabular-nums">
+                      Latest: <span className="font-semibold">{latestValue} {info.unit}</span>
+                    </p>
+                    {improvement && improvement > 0 && (
+                      <p className="text-green-700 font-medium">
+                        ↓ {improvement}% improvement
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
