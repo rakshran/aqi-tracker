@@ -19,14 +19,14 @@ export default function InterventionsPanel({ interventions, selectedIntervention
                 "w-full text-left p-2.5 rounded border transition-all",
                 "hover:border-gray-400 hover:shadow-sm",
                 isSelected
-                  ? "border-gray-900 bg-white shadow-sm"
+                  ? "border-amber-200 bg-amber-50 shadow-sm"
                   : "border-gray-200 bg-white"
               )}
               aria-label={`View details for ${intervention.title}`}
             >
               <div className="flex items-start gap-2">
                 <div className="flex-shrink-0">
-                  <div className="size-8 rounded-full bg-[#D73847] text-white flex items-center justify-center font-bold text-xs tabular-nums">
+                  <div className="w-10 h-10 rounded-full bg-[#F59E0B] text-white flex items-center justify-center font-bold text-xs tabular-nums">
                     {intervention.year}
                   </div>
                 </div>
