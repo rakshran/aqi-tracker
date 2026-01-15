@@ -75,20 +75,20 @@ export default function PollutionChart({ city, onInterventionClick }) {
   }, [city.data, visiblePollutants]);
 
   return (
-    <div className="w-full">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-balance">
+    <div className="w-full h-full flex flex-col">
+      <div className="mb-3">
+        <h2 className="text-lg font-bold mb-1">
           {city.name}, {city.country}
         </h2>
-        <p className="text-gray-600 text-pretty max-w-3xl">
+        <p className="text-xs text-gray-600 line-clamp-2">
           {city.description}
         </p>
       </div>
 
       {/* Pollutant Toggles */}
-      <div className="mb-4 p-4 bg-gray-50 rounded">
-        <h3 className="text-sm font-semibold mb-3">Select Pollutants to Display:</h3>
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-3 p-3 bg-gray-50 rounded">
+        <h3 className="text-xs font-semibold mb-2 text-gray-700">SELECT POLLUTANTS:</h3>
+        <div className="flex flex-wrap gap-1.5">
           {availablePollutants.map((pollutant) => {
             const info = pollutantInfo[pollutant];
             const isVisible = visiblePollutants[pollutant];
@@ -98,16 +98,16 @@ export default function PollutionChart({ city, onInterventionClick }) {
                 key={pollutant}
                 onClick={() => togglePollutant(pollutant)}
                 className={cn(
-                  "px-3 py-1.5 rounded text-sm font-medium transition-all border-2",
+                  "px-2 py-1 rounded text-xs font-medium transition-all border",
                   isVisible
                     ? "bg-white border-gray-900 shadow-sm"
                     : "bg-white border-gray-200 opacity-50 hover:opacity-75"
                 )}
                 aria-label={`${isVisible ? 'Hide' : 'Show'} ${info.name}`}
               >
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center gap-1">
                   <div
-                    className="size-3 rounded-full"
+                    className="size-2 rounded-full"
                     style={{ backgroundColor: info.color }}
                   />
                   <span>{info.name}</span>
@@ -116,35 +116,32 @@ export default function PollutionChart({ city, onInterventionClick }) {
             );
           })}
         </div>
-        <p className="text-xs text-gray-500 mt-2">
-          Click to toggle pollutants. Intervention markers show when policies were implemented.
-        </p>
       </div>
 
-      <div className="bg-gray-50 rounded p-4 mb-4">
-        <div className="h-96">
+      <div className="bg-gray-50 rounded p-3 flex-1 min-h-0">
+        <div className="h-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={city.data}
-              margin={{ top: 5, right: 30, left: 60, bottom: 5 }}
+              margin={{ top: 5, right: 20, left: 50, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis
                 dataKey="year"
                 stroke="#6b7280"
-                style={{ fontSize: '14px' }}
+                style={{ fontSize: '12px' }}
                 tickLine={false}
               />
               <YAxis
                 stroke="#6b7280"
-                style={{ fontSize: '14px' }}
+                style={{ fontSize: '12px' }}
                 tickLine={false}
                 domain={[0, maxValue]}
                 label={{
                   value: 'Concentration',
                   angle: -90,
                   position: 'insideLeft',
-                  style: { fontSize: '14px' }
+                  style: { fontSize: '12px' }
                 }}
               />
               <Tooltip content={<CustomTooltip />} />
@@ -197,54 +194,6 @@ export default function PollutionChart({ city, onInterventionClick }) {
               })}
             </LineChart>
           </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* Legend - Pollutant Info */}
-      <div className="mt-4 p-4 bg-white border border-gray-200 rounded">
-        <h3 className="text-sm font-semibold mb-3">Pollutant Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-          {availablePollutants.map((pollutant) => {
-            const info = pollutantInfo[pollutant];
-            const latestValue = city.data[city.data.length - 1][pollutant];
-            const earliestValue = city.data.find(d => d[pollutant] !== undefined)?.[pollutant];
-            const improvement = earliestValue && latestValue
-              ? ((earliestValue - latestValue) / earliestValue * 100).toFixed(0)
-              : null;
-
-            return (
-              <div
-                key={pollutant}
-                className={cn(
-                  "p-2 rounded border",
-                  visiblePollutants[pollutant]
-                    ? "border-gray-300 bg-white"
-                    : "border-gray-200 bg-gray-50 opacity-60"
-                )}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <div
-                    className="size-3 rounded-full"
-                    style={{ backgroundColor: info.color }}
-                  />
-                  <span className="font-semibold">{info.name}</span>
-                </div>
-                <p className="text-gray-600 mb-1">{info.description}</p>
-                {latestValue !== undefined && (
-                  <div className="space-y-0.5">
-                    <p className="tabular-nums">
-                      Latest: <span className="font-semibold">{latestValue} {info.unit}</span>
-                    </p>
-                    {improvement && improvement > 0 && (
-                      <p className="text-green-700 font-medium">
-                        ↓ {improvement}% improvement
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
         </div>
       </div>
     </div>
