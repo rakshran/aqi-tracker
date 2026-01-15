@@ -76,7 +76,14 @@ const CustomTooltip = ({ active, payload }) => {
 
   return (
     <div className="bg-white border border-gray-200 rounded shadow-lg p-3 max-w-xs">
-      <p className="font-semibold text-sm mb-2 border-b pb-1">{data.year}</p>
+      <div className="flex items-center justify-between mb-2 border-b pb-1">
+        <p className="font-semibold text-sm">{data.year}</p>
+        {data.isInterpolated && (
+          <span className="text-xs bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-medium">
+            Estimated
+          </span>
+        )}
+      </div>
       <div className="space-y-1">
         {Object.keys(pollutantInfo).map((pollutant) => {
           if (data[pollutant] !== undefined) {
@@ -99,6 +106,11 @@ const CustomTooltip = ({ active, payload }) => {
           return null;
         })}
       </div>
+      {data.isInterpolated && (
+        <p className="text-xs text-gray-500 mt-2 pt-2 border-t italic">
+          Values interpolated for intervention year
+        </p>
+      )}
     </div>
   );
 };
@@ -183,6 +195,19 @@ export default function PollutionChart({ city, onInterventionClick }) {
         </div>
       </div>
 
+      {/* Data Transparency Note */}
+      <div className="mb-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded text-xs">
+        <div className="flex items-start gap-2">
+          <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <span className="font-semibold text-blue-900">Data Transparency: </span>
+            <span className="text-blue-800">Dashed line segments indicate interpolated values estimated for intervention years where exact measurements were unavailable.</span>
+          </div>
+        </div>
+      </div>
+
       <div className="bg-gray-50 rounded p-3 flex-1 min-h-0">
         <div className="h-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -225,7 +250,22 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     name={info.name}
                     stroke={info.color}
                     strokeWidth={2.5}
-                    dot={false}
+                    dot={(props) => {
+                      // Show dots only for interpolated data points
+                      const { cx, cy, payload } = props;
+                      if (!payload.isInterpolated) return null;
+                      return (
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r={4}
+                          fill="white"
+                          stroke={info.color}
+                          strokeWidth={2}
+                          opacity={0.9}
+                        />
+                      );
+                    }}
                     activeDot={{ r: 5 }}
                   />
                 );

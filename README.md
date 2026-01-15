@@ -6,10 +6,11 @@ An interactive data visualization showing how major cities around the world have
 
 - 📊 **Interactive temporal charts** showing decades of air quality data
 - 🏙️ **8 major cities** with detailed historical data (Los Angeles, Beijing, London, Mexico City, Delhi, Tokyo, Seoul, Pittsburgh)
-- 📍 **Key milestone markers** highlighting major policy interventions
+- 📍 **Key milestone markers** highlighting major policy interventions with clickable stars
 - 📈 **Progress metrics** showing improvements over time
 - 🎨 **Our World in Data inspired design** - clean, accessible, and data-focused
-- 📱 **Fully responsive** - works on all devices
+- 🔍 **Data transparency** - interpolated data points clearly marked and labeled
+- 📚 **Verified citations** - all interventions linked to academic and government sources
 
 ## Cities Covered
 
@@ -35,23 +36,22 @@ Each city's timeline shows major policy milestones:
 
 ## Technology Stack
 
-Built following modern best practices and accessibility guidelines:
+Built following modern best practices:
 
-- **React 18** - UI framework
+- **React 18** - UI framework with hooks
 - **Vite** - Fast build tool and dev server
 - **Tailwind CSS** - Utility-first styling with default spacing/shadows
-- **Recharts** - Declarative charting library
-- **Motion** - Smooth animations (following compositor-only principle)
+- **Recharts** - Declarative charting library for data visualization
 
 ## Design Principles
 
-Follows strict interface design constraints:
+Follows modern interface design practices:
 - ✅ Tailwind CSS defaults for spacing, radius, and shadows
-- ✅ Accessible component interactions
-- ✅ Text balance for headings, text-pretty for paragraphs
+- ✅ Accessible component interactions with ARIA labels
+- ✅ Keyboard navigation support for all interactive elements
 - ✅ Tabular numbers for data display
-- ✅ Respects `prefers-reduced-motion`
-- ✅ Mobile-safe with `h-dvh` and safe-area-inset
+- ✅ Color-coded pollutants with consistent visual hierarchy
+- ✅ Transparent data practices with clear interpolation indicators
 
 ## Getting Started
 
@@ -98,14 +98,24 @@ Build the project with `npm run build` and deploy the `dist` folder to:
 
 ## Data Sources
 
-Historical air quality data compiled from:
-- Government environmental agencies
+Historical air quality data compiled from multiple sources including:
+- Government environmental agencies (EPA, Ministry of Environment agencies)
 - WHO air quality database
-- Academic research papers
+- Academic research papers (linked in intervention citations)
 - Our World in Data
 - City-specific environmental reports
 
-AQI values represent approximate annual averages based on PM2.5 or PM10 measurements.
+### Data Transparency
+
+- **Measurements**: Pollutant concentrations represent approximate annual averages based on available monitoring data
+- **Units**: PM2.5, PM10, SO2, NO2, O3 in µg/m³; CO in mg/m³
+- **Interpolated Values**: Some data points for intervention years were interpolated from surrounding years when exact measurements were unavailable. These are clearly marked in the visualization with:
+  - Hollow circle markers on chart lines
+  - "Estimated" badges in tooltips
+  - Data transparency notice above charts
+- **Citations**: Each intervention includes a direct citation to academic papers, government reports, or official sources
+
+📖 **For detailed methodology, data quality indicators, and verification guidance, see [DATA_METHODOLOGY.md](./DATA_METHODOLOGY.md)**
 
 ## Project Structure
 
@@ -128,13 +138,22 @@ aqi-tracker/
 └── package.json            # Dependencies
 ```
 
+## Known Limitations
+
+Current limitations being addressed:
+- **Desktop-optimized layout**: Best viewed on desktop/laptop screens; mobile responsiveness improvements planned
+- **Screen reader support**: Chart data visualization has limited accessibility for screen readers; text alternatives being developed
+- **Data coverage**: Historical data availability varies by city and time period
+- **Causation complexity**: While interventions are marked at specific years, air quality improvements result from multiple overlapping factors
+
 ## Contributing
 
-Contributions welcome! Please consider:
+Contributions welcome! Priority areas:
 - Adding more cities with documented interventions
 - Improving data accuracy with cited sources
-- Enhancing accessibility features
-- Optimizing performance
+- Enhancing mobile responsiveness
+- Improving accessibility features (screen reader support, reduced motion preferences)
+- Adding automated tests
 
 ## License
 

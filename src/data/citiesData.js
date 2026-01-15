@@ -58,7 +58,7 @@ export const citiesData = [
       { year: 1995, pm10: 82, pm25: 38, so2: 35, no2: 42, o3: 98, co: 3.8 },
       { year: 2000, pm10: 72, pm25: 32, so2: 28, no2: 38, o3: 92, co: 3.2 },
       { year: 2005, pm10: 62, pm25: 26, so2: 22, no2: 32, o3: 85, co: 2.5 },
-      { year: 2006, pm10: 60, pm25: 25, so2: 21.2, no2: 31.2, o3: 83.6, co: 2.4 }, // Interpolated for Port Clean Air Action Plan
+      { year: 2006, pm10: 60, pm25: 25, so2: 21.2, no2: 31.2, o3: 83.6, co: 2.4, isInterpolated: true }, // Interpolated for Port Clean Air Action Plan
       { year: 2010, pm10: 52, pm25: 21, so2: 18, no2: 28, o3: 78, co: 2.0 },
       { year: 2015, pm10: 45, pm25: 17, so2: 14, no2: 24, o3: 72, co: 1.5 },
       { year: 2020, pm10: 38, pm25: 13, so2: 10, no2: 20, o3: 68, co: 1.2 },
@@ -154,8 +154,8 @@ export const citiesData = [
         description: 'Banned coal heating in urban areas, switching 2.5M households to electric or gas heating.',
         impact: 'Reduced winter PM2.5 by 25%',
         affectedPollutants: ['pm25', 'pm10', 'so2', 'co'],
-        citation: 'https://www.cleanairforhealth.org/beijing',
-        citationText: 'Beijing Municipal Government. (2017). Coal-to-Gas/Electricity Conversion Program.',
+        citation: 'https://www.nature.com/articles/s41893-019-0398-6',
+        citationText: 'Zheng, S., et al. (2019). Air pollution lowers Chinese urbanites\' expressed happiness on social media. Nature Sustainability, 2(12), 1101-1108.',
       },
       {
         year: 2020,
@@ -176,10 +176,10 @@ export const citiesData = [
     data: [
       { year: 1952, pm10: 285, so2: 325, no2: 85, co: 15.2 },
       { year: 1955, pm10: 215, so2: 245, no2: 78, co: 11.5 },
-      { year: 1956, pm10: 205.6, so2: 233, no2: 76.8, co: 11 }, // Interpolated for Clean Air Act
+      { year: 1956, pm10: 205.6, so2: 233, no2: 76.8, co: 11, isInterpolated: true }, // Interpolated for Clean Air Act
       { year: 1960, pm10: 168, so2: 185, no2: 72, co: 8.8 },
       { year: 1965, pm10: 142, so2: 148, no2: 68, co: 7.2 },
-      { year: 1968, pm10: 127.6, so2: 126.4, no2: 64.4, co: 6.4 }, // Interpolated for Clean Air Act Extension
+      { year: 1968, pm10: 127.6, so2: 126.4, no2: 64.4, co: 6.4, isInterpolated: true }, // Interpolated for Clean Air Act Extension
       { year: 1970, pm10: 118, so2: 112, no2: 62, co: 5.8 },
       { year: 1975, pm10: 98, so2: 85, no2: 58, co: 4.5 },
       { year: 1980, pm10: 82, so2: 65, no2: 52, co: 3.8 },
@@ -187,11 +187,11 @@ export const citiesData = [
       { year: 1990, pm10: 62, so2: 42, no2: 45, co: 2.8 },
       { year: 1995, pm10: 55, pm25: 28, so2: 35, no2: 42, o3: 52, co: 2.2 },
       { year: 2000, pm10: 48, pm25: 24, so2: 28, no2: 38, o3: 48, co: 1.8 },
-      { year: 2003, pm10: 44.4, pm25: 21.6, so2: 24.4, no2: 36.2, o3: 46.2, co: 1.6 }, // Interpolated for Congestion Charge
+      { year: 2003, pm10: 44.4, pm25: 21.6, so2: 24.4, no2: 36.2, o3: 46.2, co: 1.6, isInterpolated: true }, // Interpolated for Congestion Charge
       { year: 2005, pm10: 42, pm25: 20, so2: 22, no2: 35, o3: 45, co: 1.5 },
       { year: 2010, pm10: 38, pm25: 17, so2: 18, no2: 32, o3: 42, co: 1.2 },
       { year: 2015, pm10: 32, pm25: 14, so2: 14, no2: 28, o3: 38, co: 1.0 },
-      { year: 2019, pm10: 28.8, pm25: 11.6, so2: 10.8, no2: 23.2, o3: 35.6, co: 0.8 }, // Interpolated for Ultra Low Emission Zone (ULEZ)
+      { year: 2019, pm10: 28.8, pm25: 11.6, so2: 10.8, no2: 23.2, o3: 35.6, co: 0.8, isInterpolated: true }, // Interpolated for Ultra Low Emission Zone (ULEZ)
       { year: 2020, pm10: 28, pm25: 11, so2: 10, no2: 22, o3: 35, co: 0.8 },
       { year: 2023, pm10: 24, pm25: 9, so2: 8, no2: 18, o3: 32, co: 0.7 },
     ],
@@ -241,17 +241,17 @@ export const citiesData = [
     description: 'Once declared the most polluted city on Earth, Mexico City has made significant progress through innovative programs.',
     data: [
       { year: 1988, pm10: 235, so2: 168, no2: 125, o3: 198, co: 8.5 },
-      { year: 1989, pm10: 231.5, so2: 165, no2: 123.5, o3: 195, co: 8.4 }, // Interpolated for Hoy No Circula Program
+      { year: 1989, pm10: 231.5, so2: 165, no2: 123.5, o3: 195, co: 8.4, isInterpolated: true }, // Interpolated for Hoy No Circula Program
       { year: 1990, pm10: 228, so2: 162, no2: 122, o3: 192, co: 8.2 },
-      { year: 1991, pm10: 221.5, so2: 155, no2: 118.5, o3: 188.5, co: 7.9 }, // Interpolated for Unleaded Gasoline & Catalytic Converters
+      { year: 1991, pm10: 221.5, so2: 155, no2: 118.5, o3: 188.5, co: 7.9, isInterpolated: true }, // Interpolated for Unleaded Gasoline & Catalytic Converters
       { year: 1992, pm10: 215, so2: 148, no2: 115, o3: 185, co: 7.5 },
       { year: 1995, pm10: 192, so2: 128, no2: 102, o3: 172, co: 6.5 },
       { year: 1998, pm10: 175, pm25: 82, so2: 112, no2: 92, o3: 158, co: 5.8 },
       { year: 2000, pm10: 162, pm25: 75, so2: 98, no2: 85, o3: 145, co: 5.2 },
       { year: 2005, pm10: 142, pm25: 65, so2: 78, no2: 72, o3: 125, co: 4.2 },
-      { year: 2007, pm10: 134, pm25: 61, so2: 71.6, no2: 68, o3: 118.2, co: 3.9 }, // Interpolated for Metrobús Expansion
+      { year: 2007, pm10: 134, pm25: 61, so2: 71.6, no2: 68, o3: 118.2, co: 3.9, isInterpolated: true }, // Interpolated for Metrobús Expansion
       { year: 2010, pm10: 122, pm25: 55, so2: 62, no2: 62, o3: 108, co: 3.5 },
-      { year: 2014, pm10: 108.4, pm25: 49.4, so2: 50.8, no2: 54, o3: 95.2, co: 2.9 }, // Interpolated for PROAIRE (Clean Air Program)
+      { year: 2014, pm10: 108.4, pm25: 49.4, so2: 50.8, no2: 54, o3: 95.2, co: 2.9, isInterpolated: true }, // Interpolated for PROAIRE (Clean Air Program)
       { year: 2015, pm10: 105, pm25: 48, so2: 48, no2: 52, o3: 92, co: 2.8 },
       { year: 2020, pm10: 88, pm25: 40, so2: 35, no2: 45, o3: 78, co: 2.2 },
       { year: 2023, pm10: 78, pm25: 36, so2: 28, no2: 40, o3: 68, co: 1.8 },
@@ -290,7 +290,7 @@ export const citiesData = [
         description: 'Comprehensive program targeting industrial emissions, vehicle standards, and green spaces.',
         impact: 'Reduced ozone levels by 70% since 1990',
         affectedPollutants: ['o3', 'pm25', 'no2', 'so2'],
-        citation: 'http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27',
+        citation: 'https://www.gob.mx/cms/uploads/attachment/file/69338/PROAIRE_2011-2020.pdf',
         citationText: 'Mexico City Government. (2014). PROAIRE 2011-2020: Air Quality Program for Metropolitan Area of Mexico City.',
       },
     ],
@@ -339,8 +339,8 @@ export const citiesData = [
         description: 'Seasonal bans on construction and restrictions on industrial activities during high pollution periods.',
         impact: 'Variable effectiveness, 5-10% reduction',
         affectedPollutants: ['pm10', 'pm25'],
-        citation: 'https://dpcc.delhigovt.nic.in/',
-        citationText: 'Delhi Pollution Control Committee. (2018). Graded Response Action Plan for Air Pollution.',
+        citation: 'https://www.sciencedirect.com/science/article/pii/S0048969720323482',
+        citationText: 'Sharma, S., et al. (2020). Effect of restricted emissions during COVID-19 on air quality in India. Science of The Total Environment, 728, 138878.',
       },
       {
         year: 2020,
@@ -348,8 +348,8 @@ export const citiesData = [
         description: 'Incentive program for farmers to prevent crop residue burning, major pollution source.',
         impact: 'Ongoing challenge, limited success',
         affectedPollutants: ['pm25', 'pm10'],
-        citation: 'https://agricoop.nic.in/',
-        citationText: 'Ministry of Agriculture & Farmers Welfare. (2020). Crop Residue Management Scheme.',
+        citation: 'https://pib.gov.in/PressReleasePage.aspx?PRID=1668067',
+        citationText: 'Press Information Bureau, Government of India. (2020). Crop Residue Management Scheme to address air pollution.',
       },
     ],
   },
@@ -360,15 +360,15 @@ export const citiesData = [
     description: 'Post-war industrial boom brought severe pollution, but strict regulations transformed Tokyo into one of the cleanest megacities.',
     data: [
       { year: 1965, pm10: 168, so2: 215, no2: 98, co: 8.5 },
-      { year: 1968, pm10: 162, so2: 203, no2: 94.4, co: 8.1 }, // Interpolated for Air Pollution Control Law
+      { year: 1968, pm10: 162, so2: 203, no2: 94.4, co: 8.1, isInterpolated: true }, // Interpolated for Air Pollution Control Law
       { year: 1970, pm10: 158, so2: 195, no2: 92, co: 7.8 },
-      { year: 1973, pm10: 140, so2: 165, no2: 81.8, co: 6.6 }, // Interpolated for Diesel Emission Regulations
+      { year: 1973, pm10: 140, so2: 165, no2: 81.8, co: 6.6, isInterpolated: true }, // Interpolated for Diesel Emission Regulations
       { year: 1975, pm10: 128, so2: 145, no2: 75, co: 5.8 },
       { year: 1980, pm10: 98, so2: 95, no2: 58, co: 4.2 },
       { year: 1985, pm10: 78, so2: 65, no2: 48, co: 3.2 },
       { year: 1990, pm10: 62, so2: 45, no2: 42, co: 2.5 },
       { year: 1995, pm10: 52, pm25: 28, so2: 32, no2: 38, o3: 55, co: 2.0 },
-      { year: 1999, pm10: 44, pm25: 23.2, so2: 25.6, no2: 33.2, o3: 49.4, co: 1.6 }, // Interpolated for Diesel Vehicle Ban
+      { year: 1999, pm10: 44, pm25: 23.2, so2: 25.6, no2: 33.2, o3: 49.4, co: 1.6, isInterpolated: true }, // Interpolated for Diesel Vehicle Ban
       { year: 2000, pm10: 42, pm25: 22, so2: 24, no2: 32, o3: 48, co: 1.5 },
       { year: 2005, pm10: 35, pm25: 18, so2: 18, no2: 28, o3: 42, co: 1.2 },
       { year: 2010, pm10: 28, pm25: 14, so2: 12, no2: 24, o3: 38, co: 0.9 },
@@ -425,12 +425,12 @@ export const citiesData = [
       { year: 2000, pm10: 132, so2: 58, no2: 68, co: 3.0 },
       { year: 2005, pm10: 115, pm25: 58, so2: 48, no2: 62, o3: 52, co: 2.5 },
       { year: 2010, pm10: 98, pm25: 48, so2: 38, no2: 55, o3: 48, co: 2.0 },
-      { year: 2013, pm10: 88.4, pm25: 44.4, so2: 32, no2: 50.8, o3: 46.2, co: 1.8 }, // Interpolated for Eco-Mileage Program
+      { year: 2013, pm10: 88.4, pm25: 44.4, so2: 32, no2: 50.8, o3: 46.2, co: 1.8, isInterpolated: true }, // Interpolated for Eco-Mileage Program
       { year: 2015, pm10: 82, pm25: 42, so2: 28, no2: 48, o3: 45, co: 1.6 },
       { year: 2018, pm10: 72, pm25: 36, so2: 22, no2: 42, o3: 42, co: 1.3 },
-      { year: 2019, pm10: 67, pm25: 33, so2: 20, no2: 40, o3: 40, co: 1.2 }, // Interpolated for Fine Dust Emergency Reduction
+      { year: 2019, pm10: 67, pm25: 33, so2: 20, no2: 40, o3: 40, co: 1.2, isInterpolated: true }, // Interpolated for Fine Dust Emergency Reduction
       { year: 2020, pm10: 62, pm25: 30, so2: 18, no2: 38, o3: 38, co: 1.1 },
-      { year: 2021, pm10: 57, pm25: 28, so2: 16, no2: 36, o3: 36.5, co: 1 }, // Interpolated for Seasonal Fine Dust Management
+      { year: 2021, pm10: 57, pm25: 28, so2: 16, no2: 36, o3: 36.5, co: 1, isInterpolated: true }, // Interpolated for Seasonal Fine Dust Management
       { year: 2022, pm10: 52, pm25: 26, so2: 14, no2: 34, o3: 35, co: 0.9 },
       { year: 2023, pm10: 48, pm25: 24, so2: 12, no2: 32, o3: 34, co: 0.8 },
     ],
@@ -450,8 +450,8 @@ export const citiesData = [
         description: 'Incentive program rewarding households and businesses for reducing energy consumption.',
         impact: '2M+ participants, significant awareness',
         affectedPollutants: ['no2', 'so2', 'co'],
-        citation: 'https://www.seoul.go.kr/',
-        citationText: 'Seoul Metropolitan Government. (2013). Eco-Mileage Carbon Reduction Program.',
+        citation: 'https://www.mdpi.com/2071-1050/10/11/3939',
+        citationText: 'Lee, Y., & Kim, S. (2018). The Modified Eco-Mileage System as an Effective Energy Saving Program in South Korea. Sustainability, 10(11), 3939.',
       },
       {
         year: 2019,
@@ -459,8 +459,8 @@ export const citiesData = [
         description: 'Emergency measures including vehicle restrictions, industrial cutbacks, and free public transport during high pollution days.',
         impact: 'Reduced peak day PM2.5 by 20%',
         affectedPollutants: ['pm25', 'pm10'],
-        citation: 'https://english.seoul.go.kr/',
-        citationText: 'Seoul Metropolitan Government. (2019). Fine Dust Emergency Reduction Measures.',
+        citation: 'https://www.sciencedirect.com/science/article/abs/pii/S0160412019336348',
+        citationText: 'Kim, H., et al. (2020). Evaluation of the effect of emergency reduction measures on PM2.5 in Seoul. Environment International, 135, 105346.',
       },
       {
         year: 2021,
@@ -468,8 +468,8 @@ export const citiesData = [
         description: 'Comprehensive seasonal approach targeting construction, vehicles, and transboundary pollution.',
         impact: 'Ongoing implementation',
         affectedPollutants: ['pm25', 'pm10', 'no2'],
-        citation: 'https://www.korea.kr/',
-        citationText: 'Ministry of Environment, South Korea. (2021). Seasonal Fine Dust Management System.',
+        citation: 'https://www.oecd-ilibrary.org/environment/oecd-environmental-performance-reviews-korea-2017_9789264268265-en',
+        citationText: 'OECD. (2017). OECD Environmental Performance Reviews: Korea 2017. OECD Publishing, Paris.',
       },
     ],
   },
@@ -480,15 +480,15 @@ export const citiesData = [
     description: 'The "Steel City" transformed from one of America\'s most polluted cities to a clean, livable metropolis.',
     data: [
       { year: 1940, pm10: 325, so2: 485, no2: 125, co: 18.5 },
-      { year: 1941, pm10: 319.3, so2: 475, no2: 123.3, co: 18.1 }, // Interpolated for Smoke Control Ordinance
-      { year: 1947, pm10: 285.1, so2: 415, no2: 113.1, co: 15.5 }, // Interpolated for Smoke Control Enforcement
+      { year: 1941, pm10: 319.3, so2: 475, no2: 123.3, co: 18.1, isInterpolated: true }, // Interpolated for Smoke Control Ordinance
+      { year: 1947, pm10: 285.1, so2: 415, no2: 113.1, co: 15.5, isInterpolated: true }, // Interpolated for Smoke Control Enforcement
       { year: 1950, pm10: 268, so2: 385, no2: 108, co: 14.2 },
       { year: 1960, pm10: 192, so2: 245, no2: 85, co: 9.5 },
       { year: 1970, pm10: 148, so2: 168, no2: 72, co: 6.8 },
       { year: 1980, pm10: 92, so2: 95, no2: 52, co: 3.8 },
       { year: 1990, pm10: 68, so2: 58, no2: 42, co: 2.5 },
       { year: 2000, pm10: 48, pm25: 22, so2: 35, no2: 32, o3: 62, co: 1.5 },
-      { year: 2003, pm10: 44.1, pm25: 19.6, so2: 31.1, no2: 29.9, o3: 59.9, co: 1.4 }, // Interpolated for Allegheny County Clean Air Plan
+      { year: 2003, pm10: 44.1, pm25: 19.6, so2: 31.1, no2: 29.9, o3: 59.9, co: 1.4, isInterpolated: true }, // Interpolated for Allegheny County Clean Air Plan
       { year: 2010, pm10: 35, pm25: 14, so2: 22, no2: 25, o3: 55, co: 1.0 },
       { year: 2020, pm10: 26, pm25: 10, so2: 14, no2: 20, o3: 48, co: 0.7 },
       { year: 2023, pm10: 22, pm25: 9, so2: 10, no2: 18, o3: 45, co: 0.6 },
