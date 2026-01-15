@@ -24,14 +24,28 @@ const StarShape = (props) => {
   }
 
   return (
-    <polygon
-      points={points.join(' ')}
-      fill="#D73847"
-      stroke="#fff"
-      strokeWidth={2}
-      style={{ cursor: 'pointer' }}
-      onClick={props.onClick}
-    />
+    <>
+      <style>{`
+        @keyframes shimmy {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(-10deg); }
+          75% { transform: rotate(10deg); }
+        }
+        .star-shimmy {
+          animation: shimmy 1s ease-in-out infinite;
+          transform-origin: ${cx}px ${cy}px;
+        }
+      `}</style>
+      <polygon
+        className="star-shimmy"
+        points={points.join(' ')}
+        fill="#F59E0B"
+        stroke="#fff"
+        strokeWidth={2}
+        style={{ cursor: 'pointer' }}
+        onClick={props.onClick}
+      />
+    </>
   );
 };
 
