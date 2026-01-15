@@ -3,6 +3,38 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { cn } from '../utils/cn';
 import { pollutantInfo } from '../data/citiesData';
 
+// Custom star shape for intervention markers
+const StarShape = (props) => {
+  const { cx, cy, size = 8 } = props;
+
+  // Create a 5-pointed star path
+  const points = [];
+  for (let i = 0; i < 5; i++) {
+    // Outer points
+    const outerAngle = (Math.PI * 2 * i) / 5 - Math.PI / 2;
+    const outerX = cx + size * Math.cos(outerAngle);
+    const outerY = cy + size * Math.sin(outerAngle);
+    points.push(`${outerX},${outerY}`);
+
+    // Inner points
+    const innerAngle = outerAngle + Math.PI / 5;
+    const innerX = cx + (size * 0.4) * Math.cos(innerAngle);
+    const innerY = cy + (size * 0.4) * Math.sin(innerAngle);
+    points.push(`${innerX},${innerY}`);
+  }
+
+  return (
+    <polygon
+      points={points.join(' ')}
+      fill="#D73847"
+      stroke="#fff"
+      strokeWidth={2}
+      style={{ cursor: 'pointer' }}
+      onClick={props.onClick}
+    />
+  );
+};
+
 // Custom tooltip showing all pollutants
 const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload || !payload.length) return null;
@@ -183,12 +215,13 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     key={idx}
                     x={intervention.year}
                     y={dataPoint[targetPollutant]}
-                    r={6}
-                    fill="#D73847"
-                    stroke="#fff"
-                    strokeWidth={2}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => onInterventionClick(intervention)}
+                    shape={(props) => (
+                      <StarShape
+                        {...props}
+                        size={8}
+                        onClick={() => onInterventionClick(intervention)}
+                      />
+                    )}
                   />
                 );
               })}
