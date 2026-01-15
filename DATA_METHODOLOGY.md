@@ -19,7 +19,7 @@ Historical air quality data was compiled from multiple authoritative sources:
    - OECD Environmental Data
 
 3. **Academic Research**
-   - Peer-reviewed scientific papers (cited in intervention details)
+   - Peer-reviewed scientific papers
    - University research institutions
    - Published environmental studies
 
@@ -88,14 +88,6 @@ Interventions included meet these criteria:
 3. **Verifiable sources** (academic papers, government reports, news archives)
 4. **Temporal relevance** to observable air quality changes
 
-### Citation Standards
-
-Each intervention includes:
-- **Direct URL** to source document (academic paper, government report, or archived record)
-- **Formatted citation** with author, year, title, and publication
-- **Affected pollutants** based on intervention type and documented impacts
-- **Impact statement** from official reports or research findings
-
 ### Limitations
 
 **Causation vs. Correlation**: Air quality improvements result from multiple factors:
@@ -128,10 +120,9 @@ Each intervention includes:
 
 ### How to Verify This Data
 
-1. **Check intervention citations**: Each intervention has a direct link to source
-2. **Cross-reference with Our World in Data**: Compare trends with their database
-3. **Consult government databases**: EPA, WHO, and national environmental agencies publish historical data
-4. **Review academic papers**: Many cited papers include supplementary datasets
+1. **Cross-reference with Our World in Data**: Compare trends with their database
+2. **Consult government databases**: EPA, WHO, and national environmental agencies publish historical data
+3. **Review academic papers**: Many research papers include supplementary datasets
 
 ### Known Data Gaps
 
@@ -144,15 +135,14 @@ Each intervention includes:
 
 ### Version History
 - **v0.1.0** (Initial): Historical data compiled from multiple sources
-- **Current**: Added interpolation transparency and improved citations
+- **Current**: Added interpolation transparency
 
 ### Reporting Issues
 
 If you notice data inaccuracies:
-1. Check the citation provided for that intervention
-2. Consult the source document
-3. Open an issue on GitHub with specific citation and correction
-4. Include alternative source with documentation
+1. Consult authoritative sources for verification
+2. Open an issue on GitHub with specific details and correction
+3. Include alternative source with documentation
 
 ## Methodology Changes
 
@@ -166,7 +156,7 @@ Future improvements planned:
 ## Academic Use
 
 When citing this project:
-- Reference the original sources (intervention citations)
+- Reference the original sources where possible
 - Note that data represents compiled averages, not raw measurements
 - Acknowledge interpolated data points if used in analysis
 - Cross-validate with primary sources for academic research
@@ -175,7 +165,6 @@ When citing this project:
 
 For questions about methodology:
 - Open an issue on GitHub
-- Review the intervention citations for specific data points
 - Consult the README.md for project overview
 
 ---
