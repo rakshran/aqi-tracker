@@ -5,7 +5,7 @@ export default function InterventionsPanel({ interventions, selectedIntervention
   if (!interventions || interventions.length === 0) return null;
 
   return (
-    <div>
+    <div id="interventions-panel">
       <h3 className="text-sm font-semibold mb-3 text-gray-700 sticky top-0 bg-gray-50 pb-2">KEY INTERVENTIONS</h3>
       <div className="space-y-2">
         {interventions.map((intervention, index) => {
