@@ -1,11 +1,12 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceDot } from 'recharts';
 import { cn } from '../utils/cn';
 import { pollutantInfo } from '../data/citiesData';
 
 // Custom star shape for intervention markers
 const StarShape = (props) => {
-  const { cx, cy, size = 8 } = props;
+  const { cx, cy, size = 10, isHidden = false, interventionTitle = '' } = props;
+  const [isHovered, setIsHovered] = React.useState(false);
 
   // Create a 5-pointed star path
   const points = [];
@@ -23,15 +24,47 @@ const StarShape = (props) => {
     points.push(`${innerX},${innerY}`);
   }
 
+  const actualSize = isHovered ? size * 1.3 : size;
+  const scaledPoints = [];
+  for (let i = 0; i < 5; i++) {
+    const outerAngle = (Math.PI * 2 * i) / 5 - Math.PI / 2;
+    const outerX = cx + actualSize * Math.cos(outerAngle);
+    const outerY = cy + actualSize * Math.sin(outerAngle);
+    scaledPoints.push(`${outerX},${outerY}`);
+
+    const innerAngle = outerAngle + Math.PI / 5;
+    const innerX = cx + (actualSize * 0.4) * Math.cos(innerAngle);
+    const innerY = cy + (actualSize * 0.4) * Math.sin(innerAngle);
+    scaledPoints.push(`${innerX},${innerY}`);
+  }
+
   return (
-    <polygon
-      points={points.join(' ')}
-      fill="#F59E0B"
-      stroke="#fff"
-      strokeWidth={2}
-      style={{ cursor: 'pointer' }}
-      onClick={props.onClick}
-    />
+    <g
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ cursor: isHidden ? 'help' : 'pointer' }}
+    >
+      <polygon
+        points={scaledPoints.join(' ')}
+        fill={isHidden ? '#D1D5DB' : '#F59E0B'}
+        stroke={isHidden ? '#9CA3AF' : '#fff'}
+        strokeWidth={2}
+        opacity={isHidden ? 0.5 : 1}
+        onClick={props.onClick}
+        role="button"
+        aria-label={`Intervention: ${interventionTitle}`}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            props.onClick?.();
+          }
+        }}
+      />
+      {isHidden && isHovered && (
+        <title>Hidden: Toggle affected pollutants to view</title>
+      )}
+    </g>
   );
 };
 
@@ -201,24 +234,66 @@ export default function PollutionChart({ city, onInterventionClick }) {
               {/* Intervention markers */}
               {city.interventions.map((intervention, idx) => {
                 const dataPoint = city.data.find(d => d.year === intervention.year);
-                if (!dataPoint) return null;
 
-                // Use the first affected pollutant that's visible, or first available
-                const targetPollutant = intervention.affectedPollutants?.find(
-                  p => visiblePollutants[p] && dataPoint[p] !== undefined
-                ) || availablePollutants.find(p => dataPoint[p] !== undefined);
+                // If no data point for this exact year, try to find closest year within ±2 years
+                let effectiveDataPoint = dataPoint;
+                let effectiveYear = intervention.year;
 
-                if (!targetPollutant || !dataPoint[targetPollutant]) return null;
+                if (!dataPoint) {
+                  // Look for closest data point within ±2 years
+                  const nearby = city.data.filter(d =>
+                    Math.abs(d.year - intervention.year) <= 2
+                  );
+                  if (nearby.length > 0) {
+                    // Get closest year
+                    effectiveDataPoint = nearby.reduce((prev, curr) =>
+                      Math.abs(curr.year - intervention.year) < Math.abs(prev.year - intervention.year)
+                        ? curr
+                        : prev
+                    );
+                    effectiveYear = effectiveDataPoint.year;
+                  }
+                }
+
+                if (!effectiveDataPoint) return null;
+
+                // Determine target pollutant with better logic:
+                // 1. First priority: affected pollutants that are currently visible
+                // 2. Second priority: affected pollutants that exist in data (even if hidden)
+                // 3. Fallback: any available pollutant with data
+                const visibleAffectedPollutant = intervention.affectedPollutants?.find(
+                  p => visiblePollutants[p] && effectiveDataPoint[p] !== undefined
+                );
+
+                const anyAffectedPollutant = intervention.affectedPollutants?.find(
+                  p => effectiveDataPoint[p] !== undefined
+                );
+
+                const fallbackPollutant = availablePollutants.find(
+                  p => effectiveDataPoint[p] !== undefined
+                );
+
+                const targetPollutant = visibleAffectedPollutant || anyAffectedPollutant || fallbackPollutant;
+
+                if (!targetPollutant || !effectiveDataPoint[targetPollutant]) return null;
+
+                // Determine if star should be shown as "hidden" (grayed out)
+                // This happens when none of the affected pollutants are visible
+                const isHidden = intervention.affectedPollutants &&
+                  intervention.affectedPollutants.length > 0 &&
+                  !intervention.affectedPollutants.some(p => visiblePollutants[p]);
 
                 return (
                   <ReferenceDot
                     key={idx}
-                    x={intervention.year}
-                    y={dataPoint[targetPollutant]}
+                    x={effectiveYear}
+                    y={effectiveDataPoint[targetPollutant]}
                     shape={(props) => (
                       <StarShape
                         {...props}
-                        size={8}
+                        size={10}
+                        isHidden={isHidden}
+                        interventionTitle={intervention.title}
                         onClick={() => onInterventionClick(intervention)}
                       />
                     )}
