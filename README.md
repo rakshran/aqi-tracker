@@ -10,7 +10,6 @@ An interactive data visualization showing how major cities around the world have
 - 📈 **Progress metrics** showing improvements over time
 - 🎨 **Our World in Data inspired design** - clean, accessible, and data-focused
 - 🔍 **Data transparency** - interpolated data points clearly marked and labeled
-- 📚 **Verified citations** - all interventions linked to academic and government sources
 
 ## Cities Covered
 
@@ -101,7 +100,7 @@ Build the project with `npm run build` and deploy the `dist` folder to:
 Historical air quality data compiled from multiple sources including:
 - Government environmental agencies (EPA, Ministry of Environment agencies)
 - WHO air quality database
-- Academic research papers (linked in intervention citations)
+- Academic research papers
 - Our World in Data
 - City-specific environmental reports
 
@@ -113,7 +112,6 @@ Historical air quality data compiled from multiple sources including:
   - Hollow circle markers on chart lines
   - "Estimated" badges in tooltips
   - Data transparency notice above charts
-- **Citations**: Each intervention includes a direct citation to academic papers, government reports, or official sources
 
 📖 **For detailed methodology, data quality indicators, and verification guidance, see [DATA_METHODOLOGY.md](./DATA_METHODOLOGY.md)**
 
