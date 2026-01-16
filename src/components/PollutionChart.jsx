@@ -116,6 +116,7 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 export default function PollutionChart({ city, onInterventionClick }) {
+  const [activeTab, setActiveTab] = useState('graph');
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     // Default to showing all available pollutants for the city
     const availablePollutants = Object.keys(pollutantInfo).filter(
@@ -162,59 +163,90 @@ export default function PollutionChart({ city, onInterventionClick }) {
         </p>
       </div>
 
-      {/* Pollutant Toggles */}
-      <div className="mb-3 p-3 bg-gray-50 rounded">
-        <h3 className="text-xs font-semibold mb-2 text-gray-700">SELECT POLLUTANTS:</h3>
-        <div className="flex flex-wrap gap-1.5">
-          {availablePollutants.map((pollutant) => {
-            const info = pollutantInfo[pollutant];
-            const isVisible = visiblePollutants[pollutant];
-
-            return (
-              <button
-                key={pollutant}
-                onClick={() => togglePollutant(pollutant)}
-                className={cn(
-                  "px-2 py-1 rounded text-xs font-medium transition-all border",
-                  isVisible
-                    ? "bg-white border-gray-900 shadow-sm"
-                    : "bg-white border-gray-200 opacity-50 hover:opacity-75"
-                )}
-                aria-label={`${isVisible ? 'Hide' : 'Show'} ${info.name}`}
-              >
-                <span className="flex items-center gap-1">
-                  <div
-                    className="size-2 rounded-full"
-                    style={{ backgroundColor: info.color }}
-                  />
-                  <span>{info.name}</span>
-                </span>
-              </button>
-            );
-          })}
+      {/* Tab Navigation */}
+      <div className="mb-3 border-b border-gray-200">
+        <div className="flex gap-1">
+          <button
+            onClick={() => setActiveTab('graph')}
+            className={cn(
+              "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+              activeTab === 'graph'
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
+            )}
+          >
+            Graph
+          </button>
+          <button
+            onClick={() => setActiveTab('details')}
+            className={cn(
+              "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+              activeTab === 'details'
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
+            )}
+          >
+            Computation Details
+          </button>
         </div>
       </div>
 
-      {/* Data Transparency Note */}
-      <div className="mb-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded text-xs">
-        <div className="flex items-start gap-2">
-          <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <span className="font-semibold text-blue-900">Data Transparency: </span>
-            <span className="text-blue-800">Dashed line segments indicate interpolated values estimated for intervention years where exact measurements were unavailable.</span>
+      {/* Graph Tab */}
+      {activeTab === 'graph' && (
+        <>
+          {/* Pollutant Toggles */}
+          <div className="mb-3 p-3 bg-gray-50 rounded">
+            <h3 className="text-xs font-semibold mb-2 text-gray-700">SELECT POLLUTANTS:</h3>
+            <div className="flex flex-wrap gap-1.5">
+              {availablePollutants.map((pollutant) => {
+                const info = pollutantInfo[pollutant];
+                const isVisible = visiblePollutants[pollutant];
+
+                return (
+                  <button
+                    key={pollutant}
+                    onClick={() => togglePollutant(pollutant)}
+                    className={cn(
+                      "px-2 py-1 rounded text-xs font-medium transition-all border",
+                      isVisible
+                        ? "bg-white border-gray-900 shadow-sm"
+                        : "bg-white border-gray-200 opacity-50 hover:opacity-75"
+                    )}
+                    aria-label={`${isVisible ? 'Hide' : 'Show'} ${info.name}`}
+                  >
+                    <span className="flex items-center gap-1">
+                      <div
+                        className="size-2 rounded-full"
+                        style={{ backgroundColor: info.color }}
+                      />
+                      <span>{info.name}</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="bg-gray-50 rounded p-3 flex-1 min-h-0">
-        <div className="h-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={city.data}
-              margin={{ top: 5, right: 20, left: 50, bottom: 5 }}
-            >
+          {/* Data Transparency Note */}
+          <div className="mb-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded text-xs">
+            <div className="flex items-start gap-2">
+              <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <span className="font-semibold text-blue-900">Data Transparency: </span>
+                <span className="text-blue-800">Dashed line segments indicate interpolated values estimated for intervention years where exact measurements were unavailable.</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded p-3 flex-1 min-h-0">
+            <div className="h-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={city.data}
+                  margin={{ top: 5, right: 20, left: 50, bottom: 5 }}
+                >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis
                 dataKey="year"
@@ -344,6 +376,186 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </ResponsiveContainer>
         </div>
       </div>
+        </>
+      )}
+
+      {/* Computation Details Tab */}
+      {activeTab === 'details' && (
+        <div className="flex-1 overflow-auto">
+          <div className="space-y-6">
+            {/* Data Sources Section */}
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <h3 className="text-sm font-bold mb-3 text-gray-900">Data Sources</h3>
+              <div className="space-y-2 text-xs">
+                <p className="text-gray-700">
+                  The air quality data presented in this visualization is compiled from historical measurements
+                  collected by government environmental agencies and research institutions:
+                </p>
+                <ul className="list-disc list-inside space-y-1 text-gray-600 ml-2">
+                  <li>U.S. EPA Air Quality System (AQS) for U.S. cities (Los Angeles, Pittsburgh)</li>
+                  <li>China National Environmental Monitoring Centre (CNEMC) for Beijing</li>
+                  <li>UK Department for Environment, Food & Rural Affairs (DEFRA) for London</li>
+                  <li>Mexico City Atmospheric Monitoring System (SIMAT)</li>
+                  <li>Central Pollution Control Board (CPCB) for Delhi</li>
+                  <li>Japan Ministry of the Environment for Tokyo</li>
+                  <li>Korea Environment Corporation (KECO) for Seoul</li>
+                </ul>
+                <p className="text-gray-700 pt-2">
+                  All measurements are annual averages expressed in µg/m³ (micrograms per cubic meter) for
+                  particulate matter and gaseous pollutants, or mg/m³ (milligrams per cubic meter) for carbon monoxide.
+                </p>
+              </div>
+            </div>
+
+            {/* Interpolation Methodology */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <h3 className="text-sm font-bold mb-3 text-gray-900 flex items-center gap-2">
+                <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Interpolation Methodology
+              </h3>
+              <div className="space-y-2 text-xs">
+                <p className="text-gray-700">
+                  Some data points are interpolated to provide estimated values for intervention years where
+                  exact measurements were unavailable. These interpolated values are marked with the{' '}
+                  <span className="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-medium text-xs">
+                    Estimated
+                  </span>{' '}
+                  badge and displayed with dashed line segments on the graph.
+                </p>
+                <p className="text-gray-700 font-semibold pt-2">Interpolation Method:</p>
+                <ul className="list-disc list-inside space-y-1 text-gray-600 ml-2">
+                  <li>Linear interpolation between nearest available data points</li>
+                  <li>Used only for intervention years to align policy implementations with data visualization</li>
+                  <li>Clearly marked with <code className="bg-gray-100 px-1 rounded">isInterpolated: true</code> flag in the data</li>
+                  <li>Total interpolated points: {city.data.filter(d => d.isInterpolated).length} out of {city.data.length} data points</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Data Table */}
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <h3 className="text-sm font-bold mb-3 text-gray-900">Complete Data Values</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="px-3 py-2 text-left font-semibold text-gray-700">Year</th>
+                      {availablePollutants.map((pollutant) => {
+                        const info = pollutantInfo[pollutant];
+                        return (
+                          <th key={pollutant} className="px-3 py-2 text-right font-semibold text-gray-700">
+                            <div className="flex items-center justify-end gap-1.5">
+                              <div
+                                className="size-2 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: info.color }}
+                              />
+                              <span>{info.name}</span>
+                              <span className="text-gray-500 font-normal">({info.unit})</span>
+                            </div>
+                          </th>
+                        );
+                      })}
+                      <th className="px-3 py-2 text-center font-semibold text-gray-700">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {city.data.map((dataPoint, idx) => {
+                      const hasIntervention = city.interventions.some(i => i.year === dataPoint.year);
+                      return (
+                        <tr
+                          key={idx}
+                          className={cn(
+                            "border-b border-gray-100",
+                            dataPoint.isInterpolated ? "bg-amber-50" : "bg-white hover:bg-gray-50",
+                            hasIntervention && "font-semibold"
+                          )}
+                        >
+                          <td className="px-3 py-2 text-left">
+                            <div className="flex items-center gap-2">
+                              {dataPoint.year}
+                              {hasIntervention && (
+                                <svg className="w-3 h-3 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                              )}
+                            </div>
+                          </td>
+                          {availablePollutants.map((pollutant) => (
+                            <td key={pollutant} className="px-3 py-2 text-right tabular-nums">
+                              {dataPoint[pollutant] !== undefined ? dataPoint[pollutant] : '—'}
+                            </td>
+                          ))}
+                          <td className="px-3 py-2 text-center">
+                            {dataPoint.isInterpolated ? (
+                              <span className="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-medium text-xs">
+                                Estimated
+                              </span>
+                            ) : (
+                              <span className="text-gray-400 text-xs">Measured</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-600 space-y-1">
+                <p className="flex items-center gap-2">
+                  <svg className="w-3 h-3 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <span>Star icon indicates intervention year</span>
+                </p>
+                <p>
+                  Highlighted rows indicate interpolated values
+                </p>
+              </div>
+            </div>
+
+            {/* Interventions Reference */}
+            {city.interventions.length > 0 && (
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <h3 className="text-sm font-bold mb-3 text-gray-900">Policy Interventions Reference</h3>
+                <div className="space-y-3">
+                  {city.interventions.map((intervention, idx) => (
+                    <div key={idx} className="border-l-4 border-amber-400 pl-3 py-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <p className="font-semibold text-xs text-gray-900">
+                            {intervention.year}: {intervention.title}
+                          </p>
+                          <p className="text-xs text-gray-600 mt-1">{intervention.description}</p>
+                          <p className="text-xs text-gray-500 mt-1 italic">Impact: {intervention.impact}</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {intervention.affectedPollutants?.map((pollutant) => {
+                          const info = pollutantInfo[pollutant];
+                          return (
+                            <span
+                              key={pollutant}
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs bg-gray-100"
+                            >
+                              <div
+                                className="size-2 rounded-full"
+                                style={{ backgroundColor: info.color }}
+                              />
+                              {info.name}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
