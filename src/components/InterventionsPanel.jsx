@@ -31,7 +31,21 @@ export default function InterventionsPanel({ interventions, selectedIntervention
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-xs mb-1 leading-tight">{intervention.title}</h4>
+                  <h4 className="font-semibold text-xs mb-1 leading-tight">
+                    {intervention.titleUrl ? (
+                      <a
+                        href={intervention.titleUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {intervention.title}
+                      </a>
+                    ) : (
+                      intervention.title
+                    )}
+                  </h4>
                   <p className="text-xs text-gray-600 mb-1.5 leading-snug line-clamp-3">
                     {intervention.description}
                   </p>

@@ -525,7 +525,19 @@ export default function PollutionChart({ city, onInterventionClick }) {
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
                           <p className="font-semibold text-xs text-gray-900">
-                            {intervention.year}: {intervention.title}
+                            {intervention.year}:{' '}
+                            {intervention.titleUrl ? (
+                              <a
+                                href={intervention.titleUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 hover:underline"
+                              >
+                                {intervention.title}
+                              </a>
+                            ) : (
+                              intervention.title
+                            )}
                           </p>
                           <p className="text-xs text-gray-600 mt-1">{intervention.description}</p>
                           <p className="text-xs text-gray-500 mt-1 italic">Impact: {intervention.impact}</p>
