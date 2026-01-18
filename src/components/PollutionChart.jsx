@@ -155,7 +155,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
   return (
     <div className="w-full h-full flex flex-col">
       <div className="mb-3">
-        <h2 className="text-lg font-bold mb-1">
+        <h2 className="text-base md:text-lg font-bold mb-1">
           {city.name}, {city.country}
         </h2>
         <p className="text-xs text-gray-600 line-clamp-2">
@@ -169,7 +169,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
           <button
             onClick={() => setActiveTab('graph')}
             className={cn(
-              "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+              "px-3 md:px-4 py-2.5 md:py-2 text-sm font-medium border-b-2 transition-colors min-h-[44px] md:min-h-0",
               activeTab === 'graph'
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
@@ -180,13 +180,13 @@ export default function PollutionChart({ city, onInterventionClick }) {
           <button
             onClick={() => setActiveTab('details')}
             className={cn(
-              "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+              "px-3 md:px-4 py-2.5 md:py-2 text-sm font-medium border-b-2 transition-colors min-h-[44px] md:min-h-0",
               activeTab === 'details'
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
             )}
           >
-            Computation Details
+            Details
           </button>
         </div>
       </div>
@@ -195,9 +195,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
       {activeTab === 'graph' && (
         <>
           {/* Pollutant Toggles */}
-          <div className="mb-3 p-3 bg-gray-50 rounded">
+          <div className="mb-3 p-2.5 md:p-3 bg-gray-50 rounded">
             <h3 className="text-xs font-semibold mb-2 text-gray-700">SELECT POLLUTANTS:</h3>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {availablePollutants.map((pollutant) => {
                 const info = pollutantInfo[pollutant];
                 const isVisible = visiblePollutants[pollutant];
@@ -207,16 +207,16 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     key={pollutant}
                     onClick={() => togglePollutant(pollutant)}
                     className={cn(
-                      "px-2 py-1 rounded text-xs font-medium transition-all border",
+                      "px-3 py-2 rounded text-xs md:text-sm font-medium transition-all border min-h-[44px] md:min-h-0",
                       isVisible
                         ? "bg-white border-gray-900 shadow-sm"
                         : "bg-white border-gray-200 opacity-50 hover:opacity-75"
                     )}
                     aria-label={`${isVisible ? 'Hide' : 'Show'} ${info.name}`}
                   >
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1.5">
                       <div
-                        className="size-2 rounded-full"
+                        className="size-2.5 md:size-2 rounded-full flex-shrink-0"
                         style={{ backgroundColor: info.color }}
                       />
                       <span>{info.name}</span>
@@ -240,30 +240,31 @@ export default function PollutionChart({ city, onInterventionClick }) {
             </div>
           </div>
 
-          <div className="bg-gray-50 rounded p-3 flex-1 min-h-0">
+          <div className="bg-gray-50 rounded p-2 md:p-3 flex-1 min-h-0">
             <div className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
-                  margin={{ top: 5, right: 20, left: 50, bottom: 5 }}
+                  margin={{ top: 5, right: 10, left: 20, bottom: 5 }}
                 >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis
                 dataKey="year"
                 stroke="#6b7280"
-                style={{ fontSize: '12px' }}
+                style={{ fontSize: '10px' }}
                 tickLine={false}
+                interval="preserveStartEnd"
               />
               <YAxis
                 stroke="#6b7280"
-                style={{ fontSize: '12px' }}
+                style={{ fontSize: '10px' }}
                 tickLine={false}
                 domain={[0, maxValue]}
                 label={{
                   value: 'Concentration',
                   angle: -90,
                   position: 'insideLeft',
-                  style: { fontSize: '12px' }
+                  style: { fontSize: '10px' }
                 }}
               />
               <Tooltip content={<CustomTooltip />} />
@@ -382,9 +383,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
       {/* Computation Details Tab */}
       {activeTab === 'details' && (
         <div className="flex-1 overflow-auto">
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             {/* Data Sources Section */}
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <div className="bg-white border border-gray-200 rounded-lg p-3 md:p-4">
               <h3 className="text-sm font-bold mb-3 text-gray-900">Data Sources</h3>
               <div className="space-y-2 text-xs">
                 <p className="text-gray-700">
@@ -408,7 +409,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
             </div>
 
             {/* Interpolation Methodology */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 md:p-4">
               <h3 className="text-sm font-bold mb-3 text-gray-900 flex items-center gap-2">
                 <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -435,10 +436,10 @@ export default function PollutionChart({ city, onInterventionClick }) {
             </div>
 
             {/* Data Table */}
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <div className="bg-white border border-gray-200 rounded-lg p-3 md:p-4">
               <h3 className="text-sm font-bold mb-3 text-gray-900">Complete Data Values</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs border-collapse">
+              <div className="overflow-x-auto -mx-3 md:mx-0 px-3 md:px-0">
+                <table className="w-full text-xs border-collapse min-w-[600px]">
                   <thead>
                     <tr className="bg-gray-50 border-b border-gray-200">
                       <th className="px-3 py-2 text-left font-semibold text-gray-700">Year</th>
@@ -517,7 +518,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
 
             {/* Interventions Reference */}
             {city.interventions.length > 0 && (
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <div className="bg-white border border-gray-200 rounded-lg p-3 md:p-4">
                 <h3 className="text-sm font-bold mb-3 text-gray-900">Policy Interventions Reference</h3>
                 <div className="space-y-3">
                   {city.interventions.map((intervention, idx) => (
