@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceDot } from 'recharts';
 import { cn } from '../utils/cn';
-import { pollutantInfo } from '../data/citiesData';
+import { pollutantInfo, dataSources } from '../data/citiesData';
 
 // Custom star shape for intervention markers
 const StarShape = (props) => {
@@ -68,11 +68,12 @@ const StarShape = (props) => {
   );
 };
 
-// Custom tooltip showing all pollutants
-const CustomTooltip = ({ active, payload }) => {
+// Custom tooltip showing all pollutants with source citation
+const CustomTooltip = ({ active, payload, city }) => {
   if (!active || !payload || !payload.length) return null;
 
   const data = payload[0].payload;
+  const source = city && city.primarySource ? dataSources[city.primarySource] : null;
 
   return (
     <div className="bg-white border border-gray-200 rounded shadow-lg p-3 max-w-xs">
@@ -110,6 +111,13 @@ const CustomTooltip = ({ active, payload }) => {
         <p className="text-xs text-gray-500 mt-2 pt-2 border-t italic">
           Values interpolated for intervention year
         </p>
+      )}
+      {source && (
+        <div className="mt-2 pt-2 border-t border-gray-200">
+          <p className="text-xs text-gray-500">
+            Source: {source.shortName}
+          </p>
+        </div>
       )}
     </div>
   );
@@ -267,7 +275,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                   style: { fontSize: '10px' }
                 }}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip city={city} />} />
 
               {/* Draw lines for each visible pollutant */}
               {availablePollutants.map((pollutant) => {
@@ -386,21 +394,102 @@ export default function PollutionChart({ city, onInterventionClick }) {
           <div className="space-y-4 md:space-y-6">
             {/* Data Sources Section */}
             <div className="bg-white border border-gray-200 rounded-lg p-3 md:p-4">
-              <h3 className="text-sm font-bold mb-3 text-gray-900">Data Sources</h3>
-              <div className="space-y-2 text-xs">
-                <p className="text-gray-700">
-                  The air quality data presented in this visualization is compiled from historical measurements
-                  collected by government environmental agencies and research institutions:
-                </p>
-                <ul className="list-disc list-inside space-y-1 text-gray-600 ml-2">
-                  <li>U.S. EPA Air Quality System (AQS) for U.S. cities (Los Angeles, Pittsburgh)</li>
-                  <li>China National Environmental Monitoring Centre (CNEMC) for Beijing</li>
-                  <li>UK Department for Environment, Food & Rural Affairs (DEFRA) for London</li>
-                  <li>Mexico City Atmospheric Monitoring System (SIMAT)</li>
-                  <li>Central Pollution Control Board (CPCB) for Delhi</li>
-                  <li>Japan Ministry of the Environment for Tokyo</li>
-                  <li>Korea Environment Corporation (KECO) for Seoul</li>
-                </ul>
+              <h3 className="text-sm font-bold mb-3 text-gray-900 flex items-center gap-2">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Data Sources & Attribution
+              </h3>
+
+              {/* Primary Source */}
+              {city.primarySource && dataSources[city.primarySource] && (
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                  <div className="flex items-start gap-2 mb-2">
+                    <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <div className="flex-1">
+                      <p className="text-xs font-semibold text-blue-900">Primary Data Source</p>
+                      <p className="text-xs text-blue-800 mt-1">
+                        {dataSources[city.primarySource].name}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <a
+                      href={dataSources[city.primarySource].url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-blue-300 rounded text-xs text-blue-700 hover:bg-blue-100 transition-colors"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Visit Website
+                    </a>
+                    {dataSources[city.primarySource].datasetUrl && (
+                      <a
+                        href={dataSources[city.primarySource].datasetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-blue-300 rounded text-xs text-blue-700 hover:bg-blue-100 transition-colors"
+                      >
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                        </svg>
+                        Access Data
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* City-Specific Details */}
+              <div className="space-y-3 text-xs">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <span className="font-semibold text-gray-700">Data Period:</span>
+                    <p className="text-gray-900">{city.dataPeriod}</p>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-700">Data Quality:</span>
+                    <p className="text-gray-900 capitalize">
+                      <span className={`inline-block px-2 py-0.5 rounded text-xs ${
+                        city.dataQuality === 'high' ? 'bg-green-100 text-green-800' :
+                        city.dataQuality === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {city.dataQuality}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                {city.monitoringStations && city.monitoringStations.length > 0 && (
+                  <div>
+                    <span className="font-semibold text-gray-700">Monitoring Stations:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {city.monitoringStations.map((station, idx) => (
+                        <span key={idx} className="inline-block px-2 py-0.5 bg-gray-100 border border-gray-200 rounded text-xs text-gray-700">
+                          {station}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {city.notes && (
+                  <div className="pt-2 border-t border-gray-200">
+                    <span className="font-semibold text-gray-700">Notes:</span>
+                    <p className="text-gray-600 mt-1 italic">{city.notes}</p>
+                  </div>
+                )}
+
+                <div className="pt-2 border-t border-gray-200">
+                  <span className="font-semibold text-gray-700">Last Verified:</span>
+                  <p className="text-gray-900">{city.lastVerified}</p>
+                </div>
+
                 <p className="text-gray-700 pt-2">
                   All measurements are annual averages expressed in µg/m³ (micrograms per cubic meter) for
                   particulate matter and gaseous pollutants, or mg/m³ (milligrams per cubic meter) for carbon monoxide.

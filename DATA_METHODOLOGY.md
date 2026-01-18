@@ -6,25 +6,66 @@ This document explains how the air quality data in this project was compiled, th
 
 ### Sources
 
-Historical air quality data was compiled from multiple authoritative sources:
+Historical air quality data was compiled from multiple authoritative sources with full attribution:
 
-1. **Government Environmental Agencies**
-   - U.S. Environmental Protection Agency (EPA)
-   - Ministry of Ecology and Environment of China
-   - UK Department for Environment, Food & Rural Affairs
-   - National environmental agencies from respective countries
+1. **U.S. Environmental Protection Agency (EPA)**
+   - **Used for**: Los Angeles, Pittsburgh
+   - **Source**: Air Quality System (AQS) Database
+   - **URL**: https://www.epa.gov/outdoor-air-quality-data
+   - **API**: https://aqs.epa.gov/aqsweb/documents/data_api.html
+   - **Reliability**: High | **Update Frequency**: Annual
+   - **Coverage**: 1955-2023 (Los Angeles), 1940-2023 (Pittsburgh)
 
-2. **International Organizations**
-   - World Health Organization (WHO) Air Quality Database
-   - OECD Environmental Data
+2. **China National Environmental Monitoring Centre (CNEMC)**
+   - **Used for**: Beijing
+   - **Source**: National Air Quality Monitoring Network
+   - **URL**: http://www.cnemc.cn/en/
+   - **Reliability**: High | **Update Frequency**: Annual
+   - **Coverage**: 1998-2023
+   - **Note**: PM2.5 monitoring began in 2010; earlier data based on PM10
 
-3. **Academic Research**
-   - Peer-reviewed scientific papers
-   - University research institutions
-   - Published environmental studies
+3. **UK Department for Environment, Food & Rural Affairs (DEFRA)**
+   - **Used for**: London
+   - **Source**: UK Automatic Urban and Rural Network (AURN)
+   - **URL**: https://uk-air.defra.gov.uk/data/
+   - **Reliability**: High | **Update Frequency**: Annual
+   - **Coverage**: 1952-2023
+   - **Historical Data**: Great Smog research archives and government records
 
-4. **Our World in Data**
-   - Used as a reference for data validation and trends
+4. **Mexico City Atmospheric Monitoring System (SIMAT)**
+   - **Used for**: Mexico City
+   - **Source**: Sistema de Monitoreo Atmosférico
+   - **URL**: http://www.aire.cdmx.gob.mx/
+   - **Reliability**: High | **Update Frequency**: Annual
+   - **Coverage**: 1988-2023
+
+5. **Central Pollution Control Board of India (CPCB)**
+   - **Used for**: Delhi
+   - **Source**: National Air Quality Monitoring Programme
+   - **URL**: https://airquality.cpcb.gov.in/
+   - **Reliability**: Medium | **Update Frequency**: Annual
+   - **Coverage**: 2010-2023
+   - **Note**: Monitoring network significantly expanded after 2015
+
+6. **Japan Ministry of the Environment (MOE)**
+   - **Used for**: Tokyo
+   - **Source**: Atmospheric Environmental Monitoring Network
+   - **URL**: https://www.env.go.jp/en/air/
+   - **Reliability**: High | **Update Frequency**: Annual
+   - **Coverage**: 1965-2023
+
+7. **Korea Environment Corporation (KECO)**
+   - **Used for**: Seoul
+   - **Source**: AirKorea National Monitoring Network
+   - **URL**: https://www.airkorea.or.kr/eng
+   - **Reliability**: High | **Update Frequency**: Annual
+   - **Coverage**: 1995-2023
+
+8. **Historical Environmental Research Publications**
+   - **Used for**: Historical data (pre-1980) where government monitoring was limited
+   - **Sources**: Peer-reviewed papers, university archives, historical reports
+   - **Reliability**: Medium | **Update Frequency**: Varies
+   - **Note**: Used primarily for pre-monitoring-network periods
 
 ### Data Types
 
@@ -161,14 +202,97 @@ When citing this project:
 - Acknowledge interpolated data points if used in analysis
 - Cross-validate with primary sources for academic research
 
+## Bibliography
+
+### Primary Data Sources (by City)
+
+#### Los Angeles, USA
+- U.S. Environmental Protection Agency. (2024). *Air Quality System (AQS) Database*. Retrieved from https://www.epa.gov/outdoor-air-quality-data
+- South Coast Air Quality Management District. *Historical Air Quality Data and Reports*. Retrieved from http://www.aqmd.gov/
+
+#### Beijing, China
+- China National Environmental Monitoring Centre. (2024). *National Air Quality Monitoring Data*. Retrieved from http://www.cnemc.cn/en/
+- Ministry of Ecology and Environment of China. *Air Quality Historical Data*. Retrieved from http://english.mee.gov.cn/
+
+#### London, United Kingdom
+- UK Department for Environment, Food & Rural Affairs. (2024). *UK Automatic Urban and Rural Network (AURN) Data*. Retrieved from https://uk-air.defra.gov.uk/data/
+- Greater London Authority. *London Air Quality Network*. Retrieved from https://www.londonair.org.uk/
+
+#### Mexico City, Mexico
+- Sistema de Monitoreo Atmosférico de la Ciudad de México (SIMAT). (2024). *Historical Air Quality Data*. Retrieved from http://www.aire.cdmx.gob.mx/
+- Secretaría del Medio Ambiente de la Ciudad de México. *Environmental Reports*. Retrieved from https://www.sedema.cdmx.gob.mx/
+
+#### Delhi, India
+- Central Pollution Control Board. (2024). *National Air Quality Monitoring Programme Data*. Retrieved from https://airquality.cpcb.gov.in/
+- Delhi Pollution Control Committee. *Air Quality Bulletins*. Retrieved from http://www.dpcc.delhigovt.nic.in/
+
+#### Tokyo, Japan
+- Japan Ministry of the Environment. (2024). *Atmospheric Environmental Monitoring Network Data*. Retrieved from https://www.env.go.jp/en/air/
+- Tokyo Metropolitan Government. *Environmental White Papers and Air Quality Data*. Retrieved from https://www.kankyo.metro.tokyo.lg.jp/en/
+
+#### Seoul, South Korea
+- Korea Environment Corporation. (2024). *AirKorea National Air Quality Monitoring Data*. Retrieved from https://www.airkorea.or.kr/eng
+- Seoul Metropolitan Government. *Environmental Statistics*. Retrieved from https://english.seoul.go.kr/
+
+#### Pittsburgh, USA
+- U.S. Environmental Protection Agency. (2024). *Air Quality System (AQS) Database*. Retrieved from https://www.epa.gov/outdoor-air-quality-data
+- Allegheny County Health Department. *Historical Air Quality Records and Reports*. Retrieved from https://www.alleghenycounty.us/Health-Department/Programs/Air-Quality/
+
+### Supporting References
+
+#### International Standards and Guidelines
+- World Health Organization. (2021). *WHO Global Air Quality Guidelines: Particulate Matter, Ozone, Nitrogen Dioxide, Sulfur Dioxide and Carbon Monoxide*. Geneva: World Health Organization. Retrieved from https://www.who.int/publications/i/item/9789240034228
+
+#### Methodology and Validation
+- Our World in Data. (2024). *Air Pollution*. Retrieved from https://ourworldindata.org/air-pollution
+- OECD. (2024). *Air Quality and Health Statistics*. Retrieved from https://stats.oecd.org/
+
+### How to Cite This Project
+
+#### APA Format
+```
+Historical Air Pollution Trends. (2024). Air Quality Data Visualization [Data visualization project].
+GitHub. https://github.com/rakshran/aqi-tracker
+```
+
+#### MLA Format
+```
+"Historical Air Pollution Trends." Air Quality Data Visualization, 2024,
+GitHub, github.com/rakshran/aqi-tracker.
+```
+
+#### Chicago Format
+```
+Historical Air Pollution Trends. "Air Quality Data Visualization." GitHub, 2024.
+https://github.com/rakshran/aqi-tracker.
+```
+
+### Citing Individual Data Points
+
+When citing specific data from this project, **always reference the original source** in addition to this project:
+
+```
+Data for [City] sourced from [Original Agency/Database],
+compiled and visualized in Historical Air Pollution Trends (2024).
+```
+
+**Example**:
+```
+Beijing PM2.5 annual average data (2010-2023) sourced from China National
+Environmental Monitoring Centre (CNEMC), compiled and visualized in Historical
+Air Pollution Trends (2024). Available at: https://github.com/rakshran/aqi-tracker
+```
+
 ## Contact
 
 For questions about methodology:
-- Open an issue on GitHub
+- Open an issue on GitHub: https://github.com/rakshran/aqi-tracker/issues
 - Consult the README.md for project overview
+- Review DATA_SOURCES_AND_VERIFICATION.md for planned updates
 
 ---
 
-**Last Updated**: 2026-01-15
+**Last Updated**: 2026-01-18
 **Data Coverage**: 1940-2023 (varies by city)
 **Cities**: 8 (Los Angeles, Beijing, London, Mexico City, Delhi, Tokyo, Seoul, Pittsburgh)
+**Data Sources**: 8 primary government agencies + historical research archives
