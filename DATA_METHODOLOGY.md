@@ -2,6 +2,83 @@
 
 This document explains how the air quality data in this project was compiled, the limitations of the data, and how to verify the information presented.
 
+## Important: Selection Bias and Dataset Limitations
+
+### City Selection Criteria
+
+This project includes **8 cities** selected based on specific criteria that create inherent selection bias:
+
+**Selection Requirements:**
+1. **Long-term data availability**: 20+ years of reliable monitoring data from government sources
+2. **Documented interventions**: Verifiable policy measures with official records
+3. **Observable trends**: Measurable changes in air quality over time (improvements or significant fluctuations)
+4. **English-language documentation**: Accessibility of policy documents and research papers
+
+### Acknowledged Selection Bias
+
+This dataset is **not representative** of global air quality trends. Key limitations include:
+
+#### 1. **Success-Oriented Bias**
+- **What's included**: Cities that experienced measurable air quality improvements or implemented major interventions followed by observable changes
+- **What's missing**:
+  - Cities where air quality worsened despite policy interventions
+  - Cities with deteriorating pollution and no significant policy response
+  - Cities that improved initially but later experienced regression
+  - Failed policy experiments and ineffective interventions
+
+#### 2. **Geographic Bias**
+- **Regions represented**: North America (3 cities), Europe (1 city), Asia (4 cities)
+- **Regions missing**:
+  - Africa (0 cities) - Limited long-term monitoring data availability
+  - South America (0 cities) - Data access and language barriers
+  - Central Asia (0 cities) - Data reliability and availability challenges
+  - Oceania (0 cities) - Smaller population centers with different pollution profiles
+  - Middle East (0 cities) - Data accessibility limitations
+
+#### 3. **Data Availability Bias**
+- Cities with well-established environmental agencies and monitoring networks are over-represented
+- Cities in countries with strong open data policies are favored
+- Historical data availability skews toward industrialized nations with earlier monitoring infrastructure
+- English-language sources preferred, excluding valuable research in other languages
+
+#### 4. **Temporal Bias**
+- Emphasis on cities with dramatic historical transformations (London 1952, Los Angeles 1960s-1990s)
+- Recent pollution crises (Beijing 2013, Delhi 2010s) may not have long-term outcome data
+- Short-term improvements may not reflect sustained success
+
+### Implications for Interpretation
+
+**This dataset may create misleading impressions:**
+
+- **Overstating policy effectiveness**: By showing primarily positive outcomes, the data may suggest environmental policies are more uniformly successful than they are in practice
+- **Underrepresenting challenges**: The difficulty of addressing air pollution in rapidly industrializing regions is not fully represented
+- **Creating false optimism**: Viewers may conclude that pollution problems are easily solved with political will, ignoring structural barriers
+- **Ignoring context**: Each city's unique economic, political, geographic, and social context is simplified
+
+### What This Means for Users
+
+**Appropriate use:**
+- Educational exploration of historical air quality trends
+- Understanding policy timelines and intervention types
+- Identifying case studies for deeper research
+- Appreciating the complexity of air quality management
+
+**Inappropriate use:**
+- Claiming universal policy effectiveness across contexts
+- Generalizing findings to cities not represented
+- Drawing causal conclusions about specific interventions
+- Using as sole source for academic research or policy advocacy
+
+### For a More Complete Picture
+
+To understand global air quality comprehensively, supplement this project with:
+
+- **WHO Air Quality Database**: Global coverage with standardized measurements
+- **Our World in Data**: Comprehensive statistical analysis with transparent methodology
+- **IQAir World Air Quality Report**: Annual rankings including cities with worsening trends
+- **Academic literature**: Peer-reviewed studies on failed interventions and persistent challenges
+- **Regional environmental agencies**: Context-specific data for underrepresented regions
+
 ## Data Collection Approach
 
 ### Sources
@@ -167,10 +244,13 @@ Interventions included meet these criteria:
 
 ### Known Data Gaps
 
-- PM2.5 monitoring began in 1990s; earlier periods show only PM10
-- Some cities lack continuous annual data (gaps filled by selective inclusion)
-- Rural and suburban data often excluded; focus on urban monitoring stations
-- Different measurement methodologies used across time periods and countries
+- **PM2.5 monitoring began in 1990s**; earlier periods show only PM10 or lack fine particulate data
+- **Some cities lack continuous annual data** (gaps filled by selective inclusion or interpolation)
+- **Rural and suburban data often excluded**; focus on urban monitoring stations may not represent regional air quality
+- **Different measurement methodologies** used across time periods and countries affect comparability
+- **Selection bias**: Cities with worsening air quality or failed interventions are not represented (see "Selection Bias and Dataset Limitations" section above)
+- **Survivorship bias**: Only cities that maintained monitoring infrastructure through political/economic changes are included
+- **Language accessibility**: Cities with English-language documentation are over-represented
 
 ## Updates and Corrections
 
