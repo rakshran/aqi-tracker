@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceDot } from 'recharts';
 import { cn } from '../utils/cn';
 import { pollutantInfo, dataSources } from '../data/citiesData';
+import AboutDataModal from './AboutDataModal';
 
 // Custom star shape for intervention markers
 const StarShape = (props) => {
@@ -125,6 +126,7 @@ const CustomTooltip = ({ active, payload, city }) => {
 
 export default function PollutionChart({ city, onInterventionClick }) {
   const [activeTab, setActiveTab] = useState('graph');
+  const [showAboutModal, setShowAboutModal] = useState(false);
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     // Default to showing all available pollutants for the city
     const availablePollutants = Object.keys(pollutantInfo).filter(
@@ -232,6 +234,25 @@ export default function PollutionChart({ city, onInterventionClick }) {
                   </button>
                 );
               })}
+            </div>
+          </div>
+
+          {/* Scientific Disclaimer - Causation vs Correlation */}
+          <div className="mb-2 px-3 py-2 bg-amber-50 border border-amber-300 rounded text-xs">
+            <div className="flex items-start gap-2">
+              <svg className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <div className="flex-1">
+                <span className="font-semibold text-amber-900">Important: </span>
+                <span className="text-amber-800">Air quality improvements result from multiple factors including economic conditions, weather patterns, technological advances, and various policies working together. Interventions marked on this chart are <strong>associated with</strong> changes in pollution levels, but causation is complex and multi-factorial. Stars indicate timing of policies, not definitive cause-and-effect. </span>
+                <button
+                  onClick={() => setShowAboutModal(true)}
+                  className="text-amber-900 underline font-semibold hover:text-amber-700 transition-colors"
+                >
+                  Learn more about data limitations
+                </button>
+              </div>
             </div>
           </div>
 
@@ -646,6 +667,12 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
         </div>
       )}
+
+      {/* About Data Modal */}
+      <AboutDataModal
+        isOpen={showAboutModal}
+        onClose={() => setShowAboutModal(false)}
+      />
     </div>
   );
 }
