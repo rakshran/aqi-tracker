@@ -1,6 +1,30 @@
 // Historical air quality data and interventions for major cities
 // Multiple pollutant measurements (PM2.5, PM10, SO2, NO2, O3, CO) in µg/m³ or ppm
 
+// =====================================================================
+// IMPORTANT: SELECTION BIAS ACKNOWLEDGMENT
+// =====================================================================
+// This dataset focuses on cities with documented air quality improvements
+// or significant policy interventions. This creates inherent selection bias:
+//
+// - Cities shown primarily experienced measurable improvements or implemented
+//   major interventions that were followed by observable changes
+// - Cities where pollution worsened or remained stagnant are not represented
+// - Geographic coverage is limited (no cities from Africa, South America,
+//   Central Asia, or Oceania) due to data availability constraints
+// - The narrative may appear overly optimistic about policy effectiveness
+//
+// What's NOT in this dataset:
+// - Cities where air quality deteriorated despite interventions
+// - Cities with worsening pollution and no policy response
+// - Regions lacking long-term historical monitoring infrastructure
+// - Cities that improved initially but later regressed
+//
+// For comprehensive global air quality data, consult:
+// - Our World in Data: https://ourworldindata.org/air-pollution
+// - WHO Air Quality Database: https://www.who.int/data/gho/data/themes/air-pollution
+// =====================================================================
+
 // Data sources registry with full attribution
 export const dataSources = {
   epa: {
@@ -379,7 +403,7 @@ export const citiesData = [
     id: 'delhi',
     name: 'Delhi',
     country: 'India',
-    description: 'Currently battling severe air pollution, Delhi is implementing various interventions with mixed results.',
+    description: 'Delhi represents an ongoing air quality challenge with pollution levels that remain critically high despite multiple interventions. Unlike other cities in this dataset, Delhi has not yet achieved sustained improvement, illustrating the complexity of addressing air pollution in rapidly growing megacities with diverse emission sources.',
     primarySource: 'cpcb',
     dataPeriod: '2010-2023',
     monitoringStations: ['Anand Vihar', 'RK Puram', 'Punjabi Bagh'],

@@ -13,17 +13,35 @@ An interactive data visualization showing how major cities around the world have
 
 ## Cities Covered
 
-### Success Stories
+This project examines air quality trends in **8 major cities** across North America, Europe, and Asia:
+
 - **Los Angeles, USA** - From severe smog capital to cleaner air through decades of regulation
 - **London, UK** - Pioneering clean air legislation after the Great Smog of 1952
 - **Beijing, China** - Dramatic improvement through aggressive interventions (2013-present)
 - **Mexico City, Mexico** - Innovative programs like Hoy No Circula
-- **Tokyo, Japan** - Post-war transformation to one of the cleanest megacities
-- **Seoul, South Korea** - Public transport and emission control success
+- **Tokyo, Japan** - Post-war transformation with industrial emission controls
+- **Seoul, South Korea** - Public transport expansion and emission standards
 - **Pittsburgh, USA** - Steel city transformation through smoke control
+- **Delhi, India** - Ongoing efforts to combat severe pollution challenges
 
-### Current Battle
-- **Delhi, India** - Ongoing efforts to combat severe pollution
+### Why These Cities?
+
+**Important Context on City Selection:**
+
+This project focuses on cities with **documented improvements or significant policy interventions**. This selection approach has inherent limitations:
+
+- **Selection Bias**: Cities shown experienced measurable air quality improvements or implemented major interventions. Cities where pollution worsened or remained stagnant are not represented.
+- **Geographic Gaps**: No cities from Africa, South America, Central Asia, or Oceania are included due to limited availability of long-term historical data.
+- **Success-Oriented Narrative**: The dataset emphasizes cases where policy actions were followed by measurable changes, which may create an overly optimistic view of policy effectiveness.
+- **Data Availability**: City selection was constrained by the availability of reliable, long-term monitoring data (20+ years) from government sources.
+
+**What's Missing:**
+- Cities where air quality worsened despite interventions
+- Cities with deteriorating air quality and no major policy response
+- Regions with limited historical air quality monitoring infrastructure
+- Cities that improved but later regressed
+
+For a more balanced understanding of global air quality trends, consult comprehensive databases like [Our World in Data](https://ourworldindata.org/air-pollution) and [WHO Air Quality Database](https://www.who.int/data/gho/data/themes/air-pollution).
 
 ## Key Interventions Highlighted
 
