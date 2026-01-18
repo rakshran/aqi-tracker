@@ -6,8 +6,8 @@ export default function InterventionsPanel({ interventions, selectedIntervention
 
   return (
     <div id="interventions-panel">
-      <h3 className="text-sm font-semibold mb-3 text-gray-700 sticky top-0 bg-gray-50 pb-2">KEY INTERVENTIONS</h3>
-      <div className="space-y-2">
+      <h3 className="text-sm font-semibold mb-3 text-gray-700 sticky top-0 bg-gray-50 pb-2 z-10">KEY INTERVENTIONS</h3>
+      <div className="space-y-3 md:space-y-2">
         {interventions.map((intervention, index) => {
           const isSelected = selectedIntervention?.year === intervention.year;
 
@@ -16,8 +16,8 @@ export default function InterventionsPanel({ interventions, selectedIntervention
               key={index}
               onClick={() => onSelectIntervention(intervention)}
               className={cn(
-                "w-full text-left p-2.5 rounded border transition-all",
-                "hover:border-gray-400 hover:shadow-sm",
+                "w-full text-left p-3 md:p-2.5 rounded border transition-all min-h-[60px]",
+                "hover:border-gray-400 hover:shadow-sm active:scale-98",
                 isSelected
                   ? "border-amber-200 bg-amber-50 shadow-sm"
                   : "border-gray-200 bg-white"
