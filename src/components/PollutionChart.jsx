@@ -138,7 +138,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
     let max = 0;
     city.data.forEach(dataPoint => {
       Object.keys(visiblePollutants).forEach(pollutant => {
-        if (visiblePollutants[pollutant] && dataPoint[pollutant]) {
+        if (visiblePollutants[pollutant] && Number.isFinite(dataPoint[pollutant])) {
           max = Math.max(max, dataPoint[pollutant]);
         }
       });
@@ -298,9 +298,19 @@ export default function PollutionChart({ city, onInterventionClick }) {
                         name={info.name}
                         stroke={color}
                         strokeWidth={1.5}
+                        connectNulls={false}
                         dot={(props) => {
-                          const { cx, cy, payload } = props;
-                          if (!payload?.isInterpolated || !Number.isFinite(payload?.[pollutant])) return null;
+                          const { cx, cy, payload, value } = props;
+                          const hasPollutantValue = Object.prototype.hasOwnProperty.call(payload ?? {}, pollutant);
+                          if (
+                            !payload?.isInterpolated ||
+                            !hasPollutantValue ||
+                            !Number.isFinite(value) ||
+                            !Number.isFinite(cx) ||
+                            !Number.isFinite(cy)
+                          ) {
+                            return null;
+                          }
                           return (
                             <circle
                               cx={cx}
