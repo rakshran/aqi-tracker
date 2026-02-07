@@ -29,7 +29,7 @@ function App() {
     clearInterventionTimeout();
     interventionTimeoutRef.current = setTimeout(() => {
       clearInterventionSelection();
-    }, 5000);
+    }, 3000);
   };
 
   useEffect(() => {
