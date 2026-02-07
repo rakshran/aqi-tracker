@@ -113,21 +113,20 @@ export default function AboutDataModal({ isOpen, onClose }) {
                 </div>
               </section>
 
-              {/* How to Interpret Impact Statements */}
+              {/* How to Interpret Intervention Notes */}
               <section>
-                <h3 className="font-serif text-lg font-bold text-ink mb-3">How to Interpret Impact Statements</h3>
+                <h3 className="font-serif text-lg font-bold text-ink mb-3">How to Interpret Intervention Notes</h3>
                 <div className="space-y-3 text-sm font-sans">
                   <p className="text-ink/60">
-                    Impact statements (e.g., "emissions declined ~75% after implementation") represent:
+                    Intervention notes provide brief policy context on the timeline and should be read as:
                   </p>
                   <ul className="space-y-2 ml-4 text-ink/60">
-                    <li><strong className="text-ink/80">Reported correlations</strong> from government reports or academic studies</li>
-                    <li><strong className="text-ink/80">Observed trends</strong> following policy implementation</li>
-                    <li><strong className="text-ink/80">Estimated effects</strong> based on modeling or sector-specific measurements</li>
+                    <li><strong className="text-ink/80">Policy summaries</strong> describing what changed</li>
+                    <li><strong className="text-ink/80">Timeline context</strong> for nearby data shifts</li>
+                    <li><strong className="text-ink/80">Non-causal notes</strong> rather than proof of direct effects</li>
                   </ul>
                   <blockquote className="border-l-2 border-ink pl-4 py-2 text-ink/50 italic font-serif">
-                    These statements should be read as "X% reduction was observed in the years following
-                    this intervention" rather than "this intervention directly caused X% reduction."
+                    Use these notes to understand policy sequence, not to infer single-policy causation.
                   </blockquote>
                 </div>
               </section>

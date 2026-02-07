@@ -29,7 +29,7 @@ export default function InterventionsPanel({
       <div className="mb-4 py-2 border-b border-grid">
         <p className="text-xs font-sans text-ink/40 leading-relaxed">
           <span className="font-semibold text-ink/60">Note on Causation:</span>{' '}
-          These interventions are temporally associated with air quality changes. Impact statements represent reported correlations, not proven causation.
+          These interventions are timeline context for observed changes, not proof of direct causation.
         </p>
       </div>
 
@@ -61,9 +61,6 @@ export default function InterventionsPanel({
                   </h4>
                   <p className="text-xs font-sans text-ink/50 mt-1 leading-snug line-clamp-2">
                     {intervention.description}
-                  </p>
-                  <p className="text-xs font-serif italic text-ink/40 mt-1">
-                    {intervention.impact}
                   </p>
 
                   {/* Affected pollutants */}

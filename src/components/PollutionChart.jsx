@@ -597,7 +597,6 @@ export default function PollutionChart({ city, onInterventionClick }) {
                             {intervention.title}
                           </p>
                           <p className="text-xs font-sans text-ink/50 mt-1">{intervention.description}</p>
-                          <p className="text-xs font-serif italic text-ink/40 mt-1">Impact: {intervention.impact}</p>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-1 mt-2 ml-[52px]">
