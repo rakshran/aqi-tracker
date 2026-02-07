@@ -11,7 +11,12 @@ const editorialColors = {
   co: '#B87333',
 };
 
-export default function InterventionsPanel({ interventions, selectedIntervention, onSelectIntervention }) {
+export default function InterventionsPanel({
+  interventions,
+  selectedIntervention,
+  shouldHighlightSelection = false,
+  onSelectIntervention
+}) {
   if (!interventions || interventions.length === 0) return null;
 
   return (
@@ -38,16 +43,14 @@ export default function InterventionsPanel({ interventions, selectedIntervention
               key={index}
               onClick={() => onSelectIntervention(intervention)}
               className={cn(
-                "w-full text-left py-3 px-2 transition-all min-h-[60px] group",
-                isSelected
-                  ? "bg-accent"
-                  : "hover:bg-accent"
+                "w-full text-left py-3 px-2 transition-all min-h-[60px]",
+                isSelected && shouldHighlightSelection && "bg-accent"
               )}
               aria-label={`View details for ${intervention.title}`}
             >
               <div className="flex items-start gap-3">
                 {/* Year — monospace, left column */}
-                <span className="font-sans tabular-nums text-xs text-ink/40 pt-0.5 w-10 flex-shrink-0 group-hover:text-ink">
+                <span className="font-sans tabular-nums text-xs text-ink/40 pt-0.5 w-10 flex-shrink-0">
                   {intervention.year}
                 </span>
 
@@ -56,10 +59,10 @@ export default function InterventionsPanel({ interventions, selectedIntervention
                   <h4 className="font-serif font-bold text-sm leading-tight text-ink">
                     {intervention.title}
                   </h4>
-                  <p className="text-xs font-sans text-ink/50 mt-1 leading-snug line-clamp-2 group-hover:text-ink/70">
+                  <p className="text-xs font-sans text-ink/50 mt-1 leading-snug line-clamp-2">
                     {intervention.description}
                   </p>
-                  <p className="text-xs font-serif italic text-ink/40 mt-1 group-hover:text-ink/60">
+                  <p className="text-xs font-serif italic text-ink/40 mt-1">
                     {intervention.impact}
                   </p>
 
@@ -90,7 +93,7 @@ export default function InterventionsPanel({ interventions, selectedIntervention
                 </div>
 
                 {/* Right indicator */}
-                <span className="text-ink/20 group-hover:text-ink pt-0.5 flex-shrink-0">
+                <span className="text-ink/20 pt-0.5 flex-shrink-0">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
                   </svg>

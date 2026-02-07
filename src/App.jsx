@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { citiesData } from './data/citiesData';
 import CitySelector from './components/CitySelector';
 import PollutionChart from './components/PollutionChart';
@@ -8,16 +8,46 @@ import AboutSelectionModal from './components/AboutSelectionModal';
 function App() {
   const [selectedCity, setSelectedCity] = useState(citiesData[0]);
   const [selectedIntervention, setSelectedIntervention] = useState(null);
+  const [selectedInterventionSource, setSelectedInterventionSource] = useState(null);
   const [showInterventions, setShowInterventions] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const interventionTimeoutRef = useRef(null);
+
+  const clearInterventionTimeout = () => {
+    if (interventionTimeoutRef.current) {
+      clearTimeout(interventionTimeoutRef.current);
+      interventionTimeoutRef.current = null;
+    }
+  };
+
+  const clearInterventionSelection = () => {
+    setSelectedIntervention(null);
+    setSelectedInterventionSource(null);
+  };
+
+  const startInterventionTimeout = () => {
+    clearInterventionTimeout();
+    interventionTimeoutRef.current = setTimeout(() => {
+      clearInterventionSelection();
+    }, 5000);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearInterventionTimeout();
+    };
+  }, []);
 
   const handleCitySelect = (city) => {
     setSelectedCity(city);
-    setSelectedIntervention(null);
+    clearInterventionTimeout();
+    clearInterventionSelection();
   };
 
   const handleInterventionClick = (intervention) => {
     setSelectedIntervention(intervention);
+    setSelectedInterventionSource('graph');
+    startInterventionTimeout();
     setShowInterventions(true);
     setTimeout(() => {
       const panel = document.getElementById('interventions-panel');
@@ -25,6 +55,12 @@ function App() {
         panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }, 100);
+  };
+
+  const handleInterventionPanelSelect = (intervention) => {
+    clearInterventionTimeout();
+    setSelectedIntervention(intervention);
+    setSelectedInterventionSource('panel');
   };
 
   return (
@@ -133,7 +169,8 @@ function App() {
                 <InterventionsPanel
                   interventions={selectedCity.interventions}
                   selectedIntervention={selectedIntervention}
-                  onSelectIntervention={setSelectedIntervention}
+                  shouldHighlightSelection={selectedInterventionSource === 'graph'}
+                  onSelectIntervention={handleInterventionPanelSelect}
                 />
               </div>
             </div>
