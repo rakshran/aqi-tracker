@@ -39,64 +39,83 @@ export default function InterventionsPanel({
           const isSelected = selectedIntervention?.year === intervention.year;
 
           return (
-            <button
+            <div
               key={index}
-              onClick={() => onSelectIntervention(intervention)}
               className={cn(
-                "w-full text-left py-3 px-2 transition-all min-h-[60px]",
+                "px-2 py-3 transition-colors",
                 isSelected && shouldHighlightSelection && "bg-accent"
               )}
-              aria-label={`View details for ${intervention.title}`}
             >
-              <div className="flex items-start gap-3">
-                {/* Year — monospace, left column */}
-                <span className="font-sans tabular-nums text-xs text-ink/40 pt-0.5 w-10 flex-shrink-0">
-                  {intervention.year}
-                </span>
+              <button
+                onClick={() => onSelectIntervention(intervention)}
+                className="w-full text-left min-h-[60px]"
+                aria-label={`View details for ${intervention.title}`}
+              >
+                <div className="flex items-start gap-3">
+                  {/* Year — monospace, left column */}
+                  <span className="font-sans tabular-nums text-xs text-ink/40 pt-0.5 w-10 flex-shrink-0">
+                    {intervention.year}
+                  </span>
 
-                {/* Content — center */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-serif font-bold text-sm leading-tight text-ink">
-                    {intervention.title}
-                  </h4>
-                  <p className="text-xs font-sans text-ink/50 mt-1 leading-snug line-clamp-2">
-                    {intervention.description}
-                  </p>
+                  {/* Content — center */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-serif font-bold text-sm leading-tight text-ink">
+                      {intervention.title}
+                    </h4>
+                    <p className="text-xs font-sans text-ink/50 mt-1 leading-snug line-clamp-2">
+                      {intervention.description}
+                    </p>
 
-                  {/* Affected pollutants */}
-                  {intervention.affectedPollutants && intervention.affectedPollutants.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-1.5">
-                      {intervention.affectedPollutants.map((pollutant) => {
-                        const info = pollutantInfo[pollutant];
-                        if (!info) return null;
-                        const color = editorialColors[pollutant] || info.color;
+                    {/* Affected pollutants */}
+                    {intervention.affectedPollutants && intervention.affectedPollutants.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        {intervention.affectedPollutants.map((pollutant) => {
+                          const info = pollutantInfo[pollutant];
+                          if (!info) return null;
+                          const color = editorialColors[pollutant] || info.color;
 
-                        return (
-                          <span
-                            key={pollutant}
-                            className="inline-flex items-center gap-1 text-xs font-sans text-ink/40"
-                            title={info.description}
-                          >
-                            <div
-                              className="w-2 h-0.5"
-                              style={{ backgroundColor: color }}
-                            />
-                            {info.name}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  )}
+                          return (
+                            <span
+                              key={pollutant}
+                              className="inline-flex items-center gap-1 text-xs font-sans text-ink/40"
+                              title={info.description}
+                            >
+                              <div
+                                className="w-2 h-0.5"
+                                style={{ backgroundColor: color }}
+                              />
+                              {info.name}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right indicator */}
+                  <span className="text-ink/20 pt-0.5 flex-shrink-0">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
                 </div>
+              </button>
 
-                {/* Right indicator */}
-                <span className="text-ink/20 pt-0.5 flex-shrink-0">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </div>
-            </button>
+              {intervention.sourceUrl && (
+                <div className="pl-[52px] mt-1">
+                  <a
+                    href={intervention.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={intervention.sourceTitle || intervention.sourcePublication || 'Source article'}
+                    className="text-xs font-sans text-ink/55 underline decoration-ink/30 hover:text-ink transition-colors"
+                    aria-label={`Open source for ${intervention.title}`}
+                  >
+                    Source: {intervention.sourcePublication || 'Article'}
+                  </a>
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
