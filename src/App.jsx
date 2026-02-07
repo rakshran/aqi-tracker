@@ -121,14 +121,18 @@ function App() {
         <div className="flex-1 lg:w-3/4 flex flex-col overflow-hidden lg:border-r border-ink/10">
           {/* City Selector Row */}
           <div className="px-4 md:px-8 py-4 border-b border-grid overflow-y-auto flex-shrink-0">
-            <label className="font-sans text-xs uppercase tracking-widest text-ink/50 mb-2 block">
-              Select City
-            </label>
-            <CitySelector
-              cities={citiesData}
-              selectedCity={selectedCity}
-              onSelectCity={handleCitySelect}
-            />
+            <div className="flex flex-wrap items-center gap-2 md:gap-3">
+              <h2 className="font-serif text-xl md:text-2xl font-bold tracking-editorial text-ink">
+                Air Quality Trends in
+              </h2>
+              <CitySelector
+                cities={citiesData}
+                selectedCity={selectedCity}
+                onSelectCity={handleCitySelect}
+                ariaLabel="Select city for air quality trend chart"
+                className="w-auto min-w-[220px] md:min-w-[280px] max-w-full px-0 text-xl md:text-2xl font-bold tracking-editorial"
+              />
+            </div>
             {/* Selection Bias Notice */}
             <div className="mt-3 py-2 border-t border-grid text-xs font-sans">
               <p className="text-ink/50 leading-relaxed">
