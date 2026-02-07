@@ -300,7 +300,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                         strokeWidth={1.5}
                         dot={(props) => {
                           const { cx, cy, payload } = props;
-                          if (!payload.isInterpolated) return null;
+                          if (!payload?.isInterpolated || !Number.isFinite(payload?.[pollutant])) return null;
                           return (
                             <circle
                               cx={cx}
