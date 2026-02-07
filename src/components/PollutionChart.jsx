@@ -116,7 +116,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     const availablePollutants = Object.keys(pollutantInfo).filter(
-      p => city?.data[0]?.[p] !== undefined
+      p => city?.data?.some(dataPoint => dataPoint[p] !== undefined)
     );
     return Object.fromEntries(availablePollutants.map(p => [p, true]));
   });
