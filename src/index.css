@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-canvas text-ink font-sans antialiased touch-manipulation;
+    @apply bg-canvas text-ink font-sans antialiased;
   }
 
   /* Editorial typography defaults */
