@@ -149,8 +149,8 @@ export default function PollutionChart({ city, onInterventionClick }) {
   return (
     <div className="w-full h-full flex flex-col">
       {/* City context */}
-      <div className="mb-4">
-        <p className="text-xs font-sans text-ink/50 mt-1 leading-relaxed line-clamp-2">
+      <div className="mb-3">
+        <p className="text-xs font-sans text-ink/50 leading-relaxed line-clamp-2">
           {city.description}
         </p>
       </div>

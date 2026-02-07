@@ -120,7 +120,7 @@ function App() {
         {/* Left Column: City Selector + Chart */}
         <div className="flex-1 lg:w-3/4 flex flex-col overflow-hidden lg:border-r border-ink/10">
           {/* City Selector Row */}
-          <div className="px-4 md:px-8 py-4 border-b border-grid overflow-y-auto flex-shrink-0">
+          <div className="px-4 md:px-8 py-4 overflow-y-auto flex-shrink-0">
             <div className="flex flex-wrap items-center gap-2 md:gap-3">
               <h2 className="font-serif text-xl md:text-2xl font-bold tracking-editorial text-ink">
                 Air Quality Trends in
@@ -133,24 +133,11 @@ function App() {
                 className="w-auto min-w-[220px] md:min-w-[280px] max-w-full px-0 text-xl md:text-2xl font-bold tracking-editorial"
               />
             </div>
-            {/* Selection Bias Notice */}
-            <div className="mt-3 py-2 border-t border-grid text-xs font-sans">
-              <p className="text-ink/50 leading-relaxed">
-                <span className="font-semibold text-ink/70">Dataset Limitation:</span>{' '}
-                These cities were selected for data availability and documented improvements. This creates selection bias.{' '}
-                <button
-                  onClick={() => setShowAboutModal(true)}
-                  className="text-ink underline hover:text-ink/70 transition-colors"
-                >
-                  Learn more
-                </button>
-              </p>
-            </div>
           </div>
 
           {/* Chart */}
           {selectedCity && (
-            <div className="flex-1 overflow-y-auto px-4 md:px-8 py-4">
+            <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-2 pb-8 md:pb-10">
               <PollutionChart
                 city={selectedCity}
                 onInterventionClick={handleInterventionClick}
