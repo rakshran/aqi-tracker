@@ -15,6 +15,7 @@ export default function InterventionsPanel({
   interventions,
   selectedIntervention,
   shouldHighlightSelection = false,
+  isSelectionFading = false,
   onSelectIntervention
 }) {
   if (!interventions || interventions.length === 0) return null;
@@ -38,8 +39,9 @@ export default function InterventionsPanel({
         {interventions.map((intervention, index) => {
           const isSelected = selectedIntervention?.year === intervention.year;
           const cardClassName = cn(
-            "w-full text-left px-2 py-3 transition-colors min-h-[60px] block",
-            isSelected && shouldHighlightSelection && "bg-accent"
+            "w-full text-left px-2 py-3 transition-colors duration-700 ease-out min-h-[60px] block",
+            isSelected && shouldHighlightSelection && !isSelectionFading && "bg-accent",
+            isSelected && shouldHighlightSelection && isSelectionFading && "bg-accent/0"
           );
 
           const cardContent = (

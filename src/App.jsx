@@ -9,44 +9,56 @@ function App() {
   const [selectedCity, setSelectedCity] = useState(citiesData[0]);
   const [selectedIntervention, setSelectedIntervention] = useState(null);
   const [selectedInterventionSource, setSelectedInterventionSource] = useState(null);
+  const [isSelectionFading, setIsSelectionFading] = useState(false);
   const [showInterventions, setShowInterventions] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const interventionTimeoutRef = useRef(null);
+  const interventionFadeTimeoutRef = useRef(null);
 
-  const clearInterventionTimeout = () => {
+  const clearInterventionTimeouts = () => {
     if (interventionTimeoutRef.current) {
       clearTimeout(interventionTimeoutRef.current);
       interventionTimeoutRef.current = null;
+    }
+    if (interventionFadeTimeoutRef.current) {
+      clearTimeout(interventionFadeTimeoutRef.current);
+      interventionFadeTimeoutRef.current = null;
     }
   };
 
   const clearInterventionSelection = () => {
     setSelectedIntervention(null);
     setSelectedInterventionSource(null);
+    setIsSelectionFading(false);
   };
 
   const startInterventionTimeout = () => {
-    clearInterventionTimeout();
+    clearInterventionTimeouts();
+    setIsSelectionFading(false);
     interventionTimeoutRef.current = setTimeout(() => {
-      clearInterventionSelection();
+      setIsSelectionFading(true);
+      interventionFadeTimeoutRef.current = setTimeout(() => {
+        clearInterventionSelection();
+      }, 700);
     }, 3000);
   };
 
   useEffect(() => {
     return () => {
-      clearInterventionTimeout();
+      clearInterventionTimeouts();
     };
   }, []);
 
   const handleCitySelect = (city) => {
     setSelectedCity(city);
-    clearInterventionTimeout();
+    clearInterventionTimeouts();
     clearInterventionSelection();
   };
 
   const handleInterventionClick = (intervention) => {
     setSelectedIntervention(intervention);
     setSelectedInterventionSource('graph');
+    setIsSelectionFading(false);
     startInterventionTimeout();
     setShowInterventions(true);
     setTimeout(() => {
@@ -58,7 +70,8 @@ function App() {
   };
 
   const handleInterventionPanelSelect = (intervention) => {
-    clearInterventionTimeout();
+    clearInterventionTimeouts();
+    setIsSelectionFading(false);
     setSelectedIntervention(intervention);
     setSelectedInterventionSource('panel');
   };
@@ -170,6 +183,7 @@ function App() {
                   interventions={selectedCity.interventions}
                   selectedIntervention={selectedIntervention}
                   shouldHighlightSelection={selectedInterventionSource === 'graph'}
+                  isSelectionFading={isSelectionFading}
                   onSelectIntervention={handleInterventionPanelSelect}
                 />
               </div>
