@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceDot } from 'recharts';
 import { cn } from '../utils/cn';
-import { pollutantInfo, dataSources } from '../data/citiesData';
+import { pollutantInfo, dataSources, getPollutantLevel } from '../data/citiesData';
 import AboutDataModal from './AboutDataModal';
 
 // Muted editorial color palette for pollutants
@@ -12,6 +12,15 @@ const editorialColors = {
   no2: '#3B5998',
   o3: '#7A9A6D',
   co: '#B87333',
+};
+
+const healthAdvisory = {
+  Good: 'Air quality is acceptable for most people.',
+  Moderate: 'Sensitive groups should reduce prolonged outdoor exertion.',
+  'Unhealthy for Sensitive': 'Sensitive groups should limit time outdoors.',
+  Unhealthy: 'Everyone should reduce strenuous outdoor activity.',
+  'Very Unhealthy': 'Avoid outdoor exertion and stay indoors when possible.',
+  Unknown: 'Insufficient data for a health advisory.',
 };
 
 // Diamond marker for intervention points (replacing star)
@@ -114,6 +123,10 @@ const CustomTooltip = ({ active, payload, city }) => {
 export default function PollutionChart({ city, onInterventionClick }) {
   const [activeTab, setActiveTab] = useState('graph');
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 767px)').matches;
+  });
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     const availablePollutants = Object.keys(pollutantInfo).filter(
       p => city?.data[0]?.[p] !== undefined
@@ -132,6 +145,28 @@ export default function PollutionChart({ city, onInterventionClick }) {
     setVisiblePollutants(prev => ({ ...prev, [pollutant]: !prev[pollutant] }));
   };
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const handleViewportChange = (event) => setIsMobile(event.matches);
+
+    setIsMobile(mediaQuery.matches);
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', handleViewportChange);
+      return () => mediaQuery.removeEventListener('change', handleViewportChange);
+    }
+
+    mediaQuery.addListener(handleViewportChange);
+    return () => mediaQuery.removeListener(handleViewportChange);
+  }, []);
+
+  useEffect(() => {
+    const defaultVisibility = Object.fromEntries(
+      availablePollutants.map(pollutant => [pollutant, true])
+    );
+    setVisiblePollutants(defaultVisibility);
+  }, [city, availablePollutants]);
+
   if (!city) return null;
 
   const maxValue = useMemo(() => {
@@ -146,28 +181,61 @@ export default function PollutionChart({ city, onInterventionClick }) {
     return Math.ceil(max * 1.1);
   }, [city.data, visiblePollutants]);
 
+  const latestDataPoint = city.data[city.data.length - 1];
+  const heroPollutant = availablePollutants.includes('pm25')
+    ? 'pm25'
+    : availablePollutants[0];
+  const heroInfo = heroPollutant ? pollutantInfo[heroPollutant] : null;
+  const heroValue = heroPollutant ? latestDataPoint?.[heroPollutant] : null;
+  const heroStatus = heroPollutant && heroValue !== null && heroValue !== undefined
+    ? getPollutantLevel(heroPollutant, heroValue).level
+    : 'Unknown';
+  const heroAdvice = healthAdvisory[heroStatus] || healthAdvisory.Unknown;
+  const heroDisplayValue = typeof heroValue === 'number'
+    ? Number.isInteger(heroValue) ? heroValue : heroValue.toFixed(1)
+    : '—';
+
   return (
     <div className="w-full h-full flex flex-col">
-      {/* City headline */}
-      <div className="mb-4">
-        <h2 className="font-serif text-xl md:text-2xl font-bold tracking-editorial text-ink">
-          {city.name}, {city.country}
-        </h2>
-        <p className="text-xs font-sans text-ink/50 mt-1 leading-relaxed line-clamp-2">
-          {city.description}
-        </p>
+      {/* Hero */}
+      <div className="mb-4 border-b-4 border-ink">
+        <div className="py-2 border-b border-black/10 flex flex-col md:flex-row md:items-center md:justify-between gap-1">
+          <p className="font-sans text-xs uppercase tracking-widest text-ink/60">
+            {city.name}, {city.country}
+          </p>
+          <p className="font-sans text-xs uppercase tracking-widest text-ink/40">
+            Latest Reading {latestDataPoint?.year ? `• ${latestDataPoint.year}` : ''}
+          </p>
+        </div>
+
+        <div className="py-8 text-center">
+          <p className="font-serif text-6xl md:text-8xl leading-none tabular-nums text-ink">
+            {heroDisplayValue}
+          </p>
+          <p className="mt-2 text-xs font-sans uppercase tracking-widest text-ink/50">
+            {heroInfo ? `${heroInfo.name} (${heroInfo.unit})` : 'No Primary Pollutant Data'}
+          </p>
+        </div>
+
+        <div className="py-3 border-t border-black/10">
+          <p className="font-serif italic text-base md:text-lg text-ink">{heroStatus}</p>
+          <p className="font-serif italic text-sm text-ink/60 mt-1">{heroAdvice}</p>
+          <p className="text-xs font-sans text-ink/50 mt-2 leading-relaxed line-clamp-2">
+            {city.description}
+          </p>
+        </div>
       </div>
 
       {/* Tab Navigation — editorial underline style */}
-      <div className="mb-4 border-b border-grid">
+      <div className="mb-4 border-b border-black/10">
         <div className="flex gap-0">
           <button
             onClick={() => setActiveTab('graph')}
             className={cn(
-              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
+              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px]",
               activeTab === 'graph'
                 ? "border-ink text-ink"
-                : "border-transparent text-ink/40 hover:text-ink/70"
+                : "border-transparent text-ink/40 md:hover:text-ink/70"
             )}
           >
             Graph
@@ -175,10 +243,10 @@ export default function PollutionChart({ city, onInterventionClick }) {
           <button
             onClick={() => setActiveTab('details')}
             className={cn(
-              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
+              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px]",
               activeTab === 'details'
                 ? "border-ink text-ink"
-                : "border-transparent text-ink/40 hover:text-ink/70"
+                : "border-transparent text-ink/40 md:hover:text-ink/70"
             )}
           >
             Details
@@ -190,7 +258,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
       {activeTab === 'graph' && (
         <>
           {/* Pollutant Toggles */}
-          <div className="mb-3 py-3 border-b border-grid">
+          <div className="mb-3 py-3 border-b border-black/10">
             <h3 className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-2">Pollutants</h3>
             <div className="flex flex-wrap gap-2">
               {availablePollutants.map((pollutant) => {
@@ -203,10 +271,10 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     key={pollutant}
                     onClick={() => togglePollutant(pollutant)}
                     className={cn(
-                      "px-3 py-1.5 text-xs font-sans transition-all border min-h-[44px] md:min-h-0",
+                      "px-3 py-1.5 text-xs font-sans transition-all border min-h-[44px]",
                       isVisible
                         ? "border-ink bg-ink text-canvas"
-                        : "border-grid bg-transparent text-ink/30 hover:text-ink/50 hover:border-ink/30"
+                        : "border-grid bg-transparent text-ink/30 md:hover:text-ink/50 md:hover:border-ink/30 active:bg-accent/20"
                     )}
                     aria-label={`${isVisible ? 'Hide' : 'Show'} ${info.name}`}
                   >
@@ -224,13 +292,13 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
 
           {/* Disclaimers — editorial style */}
-          <div className="mb-3 py-2 border-b border-grid">
+          <div className="mb-3 py-2 border-b border-black/10">
             <p className="text-xs font-sans text-ink/40 leading-relaxed">
               <span className="font-semibold text-ink/60">Note:</span>{' '}
               Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
               <button
                 onClick={() => setShowAboutModal(true)}
-                className="text-ink/60 underline hover:text-ink transition-colors"
+                className="text-ink/60 underline md:hover:text-ink active:text-ink transition-colors min-h-[44px] inline-flex items-center"
               >
                 Data limitations
               </button>
@@ -240,13 +308,14 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
 
           {/* Chart Container — no background, directly on grid */}
-          <div className="flex-1 min-h-0">
-            <div className="h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  data={city.data}
-                  margin={{ top: 10, right: 10, left: 20, bottom: 5 }}
-                >
+          <div className="flex-1 min-h-[300px] md:min-h-[420px]">
+            <div className="h-full overflow-x-auto pb-1">
+              <div className="h-full min-w-[680px] md:min-w-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={city.data}
+                    margin={isMobile ? { top: 10, right: 12, left: 8, bottom: 5 } : { top: 10, right: 10, left: 20, bottom: 5 }}
+                  >
                   <CartesianGrid
                     horizontal={true}
                     vertical={false}
@@ -256,23 +325,24 @@ export default function PollutionChart({ city, onInterventionClick }) {
                   <XAxis
                     dataKey="year"
                     stroke="#1A1A1A"
-                    style={{ fontSize: '10px', fontFamily: 'Inter, sans-serif' }}
+                    style={{ fontSize: '12px', fontFamily: 'Inter, sans-serif' }}
                     tickLine={false}
                     axisLine={{ stroke: '#1A1A1A', strokeWidth: 1 }}
                     interval="preserveStartEnd"
                   />
                   <YAxis
+                    hide={isMobile}
                     stroke="#1A1A1A"
-                    style={{ fontSize: '10px', fontFamily: 'Inter, sans-serif' }}
+                    style={{ fontSize: '12px', fontFamily: 'Inter, sans-serif' }}
                     tickLine={false}
                     axisLine={false}
                     domain={[0, maxValue]}
-                    label={{
+                    label={isMobile ? undefined : {
                       value: 'Concentration',
                       angle: -90,
                       position: 'insideLeft',
                       style: {
-                        fontSize: '9px',
+                        fontSize: '11px',
                         fontFamily: 'Inter, sans-serif',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
@@ -381,8 +451,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
                       />
                     );
                   })}
-                </LineChart>
-              </ResponsiveContainer>
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         </>
@@ -393,14 +464,14 @@ export default function PollutionChart({ city, onInterventionClick }) {
         <div className="flex-1 overflow-auto">
           <div className="space-y-6">
             {/* Data Sources Section */}
-            <div className="border-b border-grid pb-6">
-              <h3 className="font-serif text-lg font-bold mb-3 text-ink">
+            <div className="border-b border-black/10 pb-6">
+              <h3 className="font-serif text-2xl md:text-3xl font-bold mb-3 text-ink">
                 Data Sources & Attribution
               </h3>
 
               {/* Primary Source */}
               {city.primarySource && dataSources[city.primarySource] && (
-                <div className="mb-4 py-3 border-t border-b border-grid">
+                <div className="mb-4 py-3 border-t border-b border-black/10">
                   <p className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-1">Primary Data Source</p>
                   <p className="text-sm font-serif text-ink">
                     {dataSources[city.primarySource].name}
@@ -410,7 +481,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                       href={dataSources[city.primarySource].url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2 py-1 border border-ink text-xs font-sans text-ink hover:bg-ink hover:text-canvas transition-colors"
+                      className="inline-flex items-center gap-1 px-2 py-1 min-h-[44px] border border-ink text-xs font-sans text-ink md:hover:bg-ink md:hover:text-canvas active:bg-ink active:text-canvas transition-colors"
                     >
                       Visit Website
                     </a>
@@ -419,7 +490,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                         href={dataSources[city.primarySource].datasetUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-ink text-xs font-sans text-ink hover:bg-ink hover:text-canvas transition-colors"
+                        className="inline-flex items-center gap-1 px-2 py-1 min-h-[44px] border border-ink text-xs font-sans text-ink md:hover:bg-ink md:hover:text-canvas active:bg-ink active:text-canvas transition-colors"
                       >
                         Access Data
                       </a>
@@ -455,7 +526,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     <span className="uppercase tracking-widest text-ink/40 text-xs">Monitoring Stations</span>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {city.monitoringStations.map((station, idx) => (
-                        <span key={idx} className="inline-block px-2 py-0.5 border border-grid text-xs text-ink/70">
+                        <span key={idx} className="inline-block px-2 py-0.5 border border-black/10 text-xs text-ink/70">
                           {station}
                         </span>
                       ))}
@@ -464,18 +535,18 @@ export default function PollutionChart({ city, onInterventionClick }) {
                 )}
 
                 {city.notes && (
-                  <div className="pt-3 border-t border-grid">
+                  <div className="pt-3 border-t border-black/10">
                     <span className="uppercase tracking-widest text-ink/40 text-xs">Notes</span>
                     <p className="text-ink/60 mt-1 italic font-serif">{city.notes}</p>
                   </div>
                 )}
 
-                <div className="pt-3 border-t border-grid">
+                <div className="pt-3 border-t border-black/10">
                   <span className="uppercase tracking-widest text-ink/40 text-xs">Last Verified</span>
                   <p className="text-ink mt-0.5">{city.lastVerified}</p>
                 </div>
 
-                <p className="text-ink/50 pt-3 border-t border-grid">
+                <p className="text-ink/50 pt-3 border-t border-black/10">
                   All measurements are annual averages expressed in µg/m³ (micrograms per cubic meter) for
                   particulate matter and gaseous pollutants, or mg/m³ (milligrams per cubic meter) for carbon monoxide.
                 </p>
@@ -483,8 +554,8 @@ export default function PollutionChart({ city, onInterventionClick }) {
             </div>
 
             {/* Interpolation Methodology */}
-            <div className="border-b border-grid pb-6">
-              <h3 className="font-serif text-lg font-bold mb-3 text-ink">
+            <div className="border-b border-black/10 pb-6">
+              <h3 className="font-serif text-2xl md:text-3xl font-bold mb-3 text-ink">
                 Interpolation Methodology
               </h3>
               <div className="space-y-2 text-xs font-sans">
@@ -498,16 +569,55 @@ export default function PollutionChart({ city, onInterventionClick }) {
                 <ul className="list-disc list-inside space-y-1 text-ink/50 ml-2">
                   <li>Linear interpolation between nearest available data points</li>
                   <li>Used only for intervention years to align policy implementations with data visualization</li>
-                  <li>Clearly marked with <code className="px-1 border border-grid text-ink/70">isInterpolated: true</code> flag in the data</li>
+                  <li>Clearly marked with <code className="px-1 border border-black/10 text-ink/70">isInterpolated: true</code> flag in the data</li>
                   <li>Total interpolated points: {city.data.filter(d => d.isInterpolated).length} out of {city.data.length} data points</li>
                 </ul>
               </div>
             </div>
 
             {/* Data Table */}
-            <div className="border-b border-grid pb-6">
-              <h3 className="font-serif text-lg font-bold mb-3 text-ink">Complete Data Values</h3>
-              <div className="overflow-x-auto -mx-4 md:mx-0 px-4 md:px-0">
+            <div className="border-b border-black/10 pb-6">
+              <h3 className="font-serif text-2xl md:text-3xl font-bold mb-3 text-ink">Complete Data Values</h3>
+              <div className="md:hidden divide-y divide-black/10 border-y border-black/10">
+                {city.data.map((dataPoint, idx) => {
+                  const hasIntervention = city.interventions.some(i => i.year === dataPoint.year);
+                  return (
+                    <div key={idx} className={cn("py-3", dataPoint.isInterpolated && "bg-accent/5")}>
+                      <div className="flex items-center gap-2 text-sm font-serif font-bold">
+                        <span className="tabular-nums">{dataPoint.year}</span>
+                        {hasIntervention && (
+                          <span className="w-2 h-2 bg-accent border border-ink/20 rotate-45 inline-block" />
+                        )}
+                        <span className="ml-auto text-xs font-sans uppercase tracking-widest text-ink/40">
+                          {dataPoint.isInterpolated ? 'Est.' : 'Measured'}
+                        </span>
+                      </div>
+                      <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-xs font-sans">
+                        {availablePollutants.map((pollutant) => {
+                          const info = pollutantInfo[pollutant];
+                          const color = editorialColors[pollutant] || info.color;
+                          return (
+                            <div key={pollutant} className="flex items-center justify-between gap-2">
+                              <span className="inline-flex items-center gap-1.5 text-ink/60">
+                                <span
+                                  className="w-2 h-0.5"
+                                  style={{ backgroundColor: color }}
+                                />
+                                {info.name}
+                              </span>
+                              <span className="tabular-nums text-ink">
+                                {dataPoint[pollutant] !== undefined ? dataPoint[pollutant] : '—'}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-xs font-sans border-collapse min-w-[600px]">
                   <thead>
                     <tr className="border-b-2 border-ink">
@@ -537,8 +647,8 @@ export default function PollutionChart({ city, onInterventionClick }) {
                         <tr
                           key={idx}
                           className={cn(
-                            "border-b border-grid transition-colors",
-                            dataPoint.isInterpolated ? "bg-accent/5" : "hover:bg-accent/10",
+                            "border-b border-black/10 transition-colors",
+                            dataPoint.isInterpolated ? "bg-accent/5" : "md:hover:bg-accent/10",
                             hasIntervention && "font-semibold"
                           )}
                         >
@@ -570,7 +680,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                   </tbody>
                 </table>
               </div>
-              <div className="mt-3 pt-3 border-t border-grid text-xs text-ink/40 font-sans space-y-1">
+              <div className="mt-3 pt-3 border-t border-black/10 text-xs text-ink/40 font-sans space-y-1">
                 <p className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-accent border border-ink/20 rotate-45 inline-block" />
                   <span>Diamond indicates intervention year</span>
@@ -584,8 +694,8 @@ export default function PollutionChart({ city, onInterventionClick }) {
             {/* Interventions Reference */}
             {city.interventions.length > 0 && (
               <div>
-                <h3 className="font-serif text-lg font-bold mb-3 text-ink">Policy Interventions Reference</h3>
-                <div className="divide-y divide-grid">
+                <h3 className="font-serif text-2xl md:text-3xl font-bold mb-3 text-ink">Policy Interventions Reference</h3>
+                <div className="divide-y divide-black/10">
                   {city.interventions.map((intervention, idx) => (
                     <div key={idx} className="py-3">
                       <div className="flex items-start gap-3">
@@ -607,7 +717,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                           return (
                             <span
                               key={pollutant}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-sans border border-grid"
+                              className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-sans border border-black/10"
                             >
                               <div
                                 className="w-2 h-0.5"
