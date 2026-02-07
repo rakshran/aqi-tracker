@@ -203,20 +203,20 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     key={pollutant}
                     onClick={() => togglePollutant(pollutant)}
                     className={cn(
-                      "px-3 py-1.5 text-xs font-sans transition-all border min-h-[44px] md:min-h-0",
+                      "px-3 py-1.5 text-xs font-sans transition-all border rounded-full min-h-[44px] md:min-h-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink/40",
                       isVisible
-                        ? "border-ink bg-ink text-canvas"
-                        : "border-grid bg-transparent text-ink/30 hover:text-ink/50 hover:border-ink/30"
+                        ? "text-canvas shadow-sm"
+                        : "bg-transparent opacity-70 hover:opacity-100"
                     )}
+                    style={
+                      isVisible
+                        ? { backgroundColor: color, borderColor: color }
+                        : { borderColor: color, color }
+                    }
                     aria-label={`${isVisible ? 'Hide' : 'Show'} ${info.name}`}
+                    aria-pressed={isVisible}
                   >
-                    <span className="flex items-center gap-1.5">
-                      <div
-                        className="w-3 h-0.5 flex-shrink-0"
-                        style={{ backgroundColor: isVisible ? color : '#D1D5DB' }}
-                      />
-                      <span>{info.name}</span>
-                    </span>
+                    {info.name}
                   </button>
                 );
               })}
