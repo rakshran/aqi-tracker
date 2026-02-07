@@ -84,12 +84,6 @@ export default function InterventionsPanel({
                 )}
               </div>
 
-              {/* Right indicator */}
-              <span className="text-ink/20 pt-0.5 flex-shrink-0">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
             </div>
           );
 
