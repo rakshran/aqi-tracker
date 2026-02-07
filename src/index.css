@@ -4,6 +4,28 @@
 
 @layer base {
   body {
-    @apply bg-white text-gray-900;
+    @apply bg-canvas text-ink font-sans antialiased;
+  }
+
+  /* Editorial typography defaults */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-editorial;
+  }
+
+  /* Tabular numerals for data */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* Editorial button base */
+  .btn-editorial {
+    @apply bg-ink text-canvas font-sans text-xs uppercase tracking-widest px-4 py-2 border border-ink transition-colors hover:bg-transparent hover:text-ink;
+  }
+
+  /* Editorial divider */
+  .divider-editorial {
+    @apply border-b border-grid;
   }
 }

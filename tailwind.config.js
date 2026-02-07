@@ -7,15 +7,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Our World in Data inspired color palette
-        'owid-blue': '#3B5998',
-        'owid-red': '#D73847',
-        'owid-orange': '#E56E5A',
-        'owid-yellow': '#F6B900',
-        'owid-green': '#6BAB3E',
+        // Editorial "Works in Progress" palette
+        canvas: '#FDFBF7',
+        ink: '#1A1A1A',
+        accent: '#F2C94C',
+        grid: '#E5E5E5',
+        // Muted AQI severity palette
+        'severity-good': '#7A9A6D',
+        'severity-moderate': '#C9A84C',
+        'severity-unhealthy': '#B87333',
+        'severity-hazardous': '#A0522D',
       },
       fontFamily: {
-        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        serif: ['Lora', 'Georgia', 'Times New Roman', 'serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+      },
+      letterSpacing: {
+        'editorial': '-0.02em',
       },
     },
   },
