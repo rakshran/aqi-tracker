@@ -1,4 +1,4 @@
-# Historical Air Pollution Trends
+# AQI Improvement Tracker
 
 An interactive data visualization showing how major cities around the world have battled air pollution and the key interventions that led to significant improvements.
 

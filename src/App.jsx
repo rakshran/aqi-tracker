@@ -83,7 +83,7 @@ function App() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-editorial text-ink">
-              Historical Air Pollution Trends
+              AQI Improvement Tracker
             </h1>
             <p className="font-sans text-xs uppercase tracking-widest text-ink/50 mt-1">
               A visual investigation into urban air quality
