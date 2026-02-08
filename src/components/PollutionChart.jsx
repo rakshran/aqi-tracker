@@ -16,7 +16,7 @@ const editorialColors = {
 
 // Diamond marker for intervention points (replacing star)
 const DiamondShape = (props) => {
-  const { cx, cy, size = 8, isHidden = false, interventionTitle = '' } = props;
+  const { cx, cy, size = 8, isHidden = false, interventionTitle = '', isMobile = false } = props;
   const [isHovered, setIsHovered] = React.useState(false);
 
   const actualSize = isHovered ? size * 1.3 : size;
@@ -27,6 +27,16 @@ const DiamondShape = (props) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{ cursor: isHidden ? 'help' : 'pointer' }}
     >
+      {/* Invisible larger tap target on mobile */}
+      {isMobile && (
+        <circle
+          cx={cx}
+          cy={cy}
+          r={20}
+          fill="transparent"
+          onClick={props.onClick}
+        />
+      )}
       <rect
         x={cx - actualSize}
         y={cy - actualSize}
@@ -148,6 +158,28 @@ export default function PollutionChart({ city, onInterventionClick }) {
 
   if (!city) return null;
 
+  // Compute thinned x-axis ticks for mobile (every ~20 years)
+  const mobileTicks = useMemo(() => {
+    if (!isMobile || !city?.data?.length) return undefined;
+    const years = city.data.map(d => d.year);
+    const minYear = Math.min(...years);
+    const maxYear = Math.max(...years);
+    const ticks = [];
+    // Start from the nearest decade to minYear, step by 20
+    const startDecade = Math.ceil(minYear / 10) * 10;
+    for (let y = startDecade; y <= maxYear; y += 20) {
+      // Find closest actual year in data
+      const closest = years.reduce((prev, curr) =>
+        Math.abs(curr - y) < Math.abs(prev - y) ? curr : prev
+      );
+      if (!ticks.includes(closest)) ticks.push(closest);
+    }
+    // Always include the last data year
+    const lastYear = years[years.length - 1];
+    if (!ticks.includes(lastYear)) ticks.push(lastYear);
+    return ticks;
+  }, [isMobile, city?.data]);
+
   const maxValue = useMemo(() => {
     let max = 0;
     city.data.forEach(dataPoint => {
@@ -251,7 +283,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
 
           {/* Chart Container — no background, directly on grid */}
-          <div className="flex-1 min-h-0">
+          <div className="flex-1 min-h-0" style={isMobile ? { minHeight: '340px' } : undefined}>
             <div className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
@@ -270,7 +302,10 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     style={{ fontSize: '10px', fontFamily: 'Inter, sans-serif' }}
                     tickLine={false}
                     axisLine={{ stroke: '#1A1A1A', strokeWidth: 1 }}
-                    interval="preserveStartEnd"
+                    {...(isMobile
+                      ? { ticks: mobileTicks }
+                      : { interval: 'preserveStartEnd' }
+                    )}
                   />
                   <YAxis
                     stroke="#1A1A1A"
@@ -279,11 +314,11 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     axisLine={false}
                     domain={[0, maxValue]}
                     label={{
-                      value: 'Concentration',
+                      value: isMobile ? 'Conc.' : 'Concentration',
                       angle: -90,
                       position: 'insideLeft',
                       style: {
-                        fontSize: '9px',
+                        fontSize: isMobile ? '11px' : '9px',
                         fontFamily: 'Inter, sans-serif',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
@@ -393,8 +428,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
                         shape={(props) => (
                           <DiamondShape
                             {...props}
-                            size={7}
+                            size={isMobile ? 10 : 7}
                             isHidden={isHidden}
+                            isMobile={isMobile}
                             interventionTitle={intervention.title}
                             onClick={() => onInterventionClick(intervention)}
                           />
