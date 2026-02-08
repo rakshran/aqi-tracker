@@ -99,7 +99,7 @@ function App() {
             selectedCity={selectedCity}
             onSelectCity={handleCitySelect}
             ariaLabel="Select city for air quality trend chart"
-            className="w-auto min-w-[180px] md:min-w-[280px] max-w-full px-0 text-2xl md:text-3xl font-bold tracking-editorial"
+            className="w-auto px-0 text-2xl md:text-3xl font-bold tracking-editorial"
           />
         </div>
       </header>
