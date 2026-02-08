@@ -138,7 +138,7 @@ const CustomTooltip = ({ active, payload, city, isMobile }) => {
   return <TooltipCard data={payload[0].payload} city={city} isMobile={isMobile} />;
 };
 
-export default function PollutionChart({ city, onInterventionClick, onTabChange }) {
+export default function PollutionChart({ city, onInterventionClick, onOpenInterventions }) {
   const [activeTab, setActiveTab] = useState('graph');
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showMobileNote, setShowMobileNote] = useState(false);
@@ -162,10 +162,6 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
       setIsMobileTooltipVisible(false);
     }
   }, [isMobile]);
-
-  useEffect(() => {
-    onTabChange?.(activeTab);
-  }, [activeTab, onTabChange]);
 
   const clearTooltipTimers = () => {
     if (tooltipFadeTimeoutRef.current) {
@@ -440,6 +436,21 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
           {/* Chart Container — no background, directly on grid */}
           <div className="flex-1 min-h-0 pb-1 md:pb-0">
             <div className="h-full relative" ref={chartContainerRef}>
+              {isMobile ? (
+                <button
+                  onClick={() => onOpenInterventions?.()}
+                  className="absolute top-1 right-1 z-10 inline-flex items-center gap-1.5 px-2 py-1 bg-canvas/90 border border-ink/20 text-[10px] font-sans uppercase tracking-[0.08em] text-ink/70"
+                  aria-label="View key interventions"
+                >
+                  <span className="w-2.5 h-2.5 bg-accent border border-ink/30 rotate-45 inline-block" />
+                  <span>Key Interventions</span>
+                </button>
+              ) : (
+                <div className="absolute top-1 right-1 z-10 inline-flex items-center gap-1.5 px-2 py-1 bg-canvas/90 border border-ink/20 text-[10px] font-sans uppercase tracking-[0.08em] text-ink/55 pointer-events-none">
+                  <span className="w-2.5 h-2.5 bg-accent border border-ink/30 rotate-45 inline-block" />
+                  <span>Key Interventions</span>
+                </div>
+              )}
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
