@@ -195,19 +195,19 @@ export default function PollutionChart({ city, onInterventionClick }) {
   return (
     <div className="w-full h-full flex flex-col">
       {/* City context */}
-      <div className="mb-3">
+      <div className="mb-2 md:mb-3">
         <p className="text-xs font-sans text-ink/50 leading-relaxed line-clamp-2">
           {city.description}
         </p>
       </div>
 
       {/* Tab Navigation — editorial underline style */}
-      <div className="mb-4 border-b border-grid">
+      <div className="mb-2 md:mb-4 border-b border-grid">
         <div className="flex gap-0">
           <button
             onClick={() => setActiveTab('graph')}
             className={cn(
-              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
+              "px-3 md:px-4 py-1.5 md:py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[36px] md:min-h-0",
               activeTab === 'graph'
                 ? "border-ink text-ink"
                 : "border-transparent text-ink/40 hover:text-ink/70"
@@ -218,7 +218,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
           <button
             onClick={() => setActiveTab('details')}
             className={cn(
-              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
+              "px-3 md:px-4 py-1.5 md:py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[36px] md:min-h-0",
               activeTab === 'details'
                 ? "border-ink text-ink"
                 : "border-transparent text-ink/40 hover:text-ink/70"
@@ -233,9 +233,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
       {activeTab === 'graph' && (
         <>
           {/* Pollutant Toggles */}
-          <div className="mb-3 py-3 border-b border-grid">
-            <h3 className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-2">Pollutants</h3>
-            <div className="flex flex-wrap gap-2">
+          <div className="mb-2 md:mb-3 py-2 md:py-3 border-b border-grid">
+            <h3 className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-1.5 md:mb-2">Pollutants</h3>
+            <div className="flex flex-wrap gap-1.5 md:gap-2">
               {availablePollutants.map((pollutant) => {
                 const info = pollutantInfo[pollutant];
                 const isVisible = visiblePollutants[pollutant];
@@ -246,7 +246,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     key={pollutant}
                     onClick={() => togglePollutant(pollutant)}
                     className={cn(
-                      "px-3 py-1.5 text-xs font-sans transition-all border rounded-full min-h-[44px] md:min-h-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink/40",
+                      "px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-sans transition-all border rounded-full min-h-[34px] md:min-h-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink/40",
                       isVisible
                         ? "text-canvas shadow-sm"
                         : "bg-transparent opacity-70 hover:opacity-100"
@@ -267,8 +267,8 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
 
           {/* Disclaimers — editorial style */}
-          <div className="mb-3 py-2 border-b border-grid">
-            <p className="text-xs font-sans text-ink/40 leading-relaxed">
+          <div className="mb-2 md:mb-3 py-1.5 md:py-2 border-b border-grid">
+            <p className="text-[11px] md:text-xs font-sans text-ink/40 leading-snug md:leading-relaxed">
               <span className="font-semibold text-ink/60">Note:</span>{' '}
               Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
               <button
@@ -283,12 +283,12 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
 
           {/* Chart Container — no background, directly on grid */}
-          <div className="flex-1 min-h-0" style={isMobile ? { minHeight: '340px' } : undefined}>
+          <div className="flex-1 min-h-0" style={isMobile ? { minHeight: 'clamp(170px, 30vh, 210px)' } : undefined}>
             <div className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
-                  margin={{ top: 10, right: 10, left: 20, bottom: 5 }}
+                  margin={isMobile ? { top: 4, right: 4, left: 0, bottom: 0 } : { top: 10, right: 10, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid
                     horizontal={true}
@@ -299,7 +299,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                   <XAxis
                     dataKey="year"
                     stroke="#1A1A1A"
-                    style={{ fontSize: '10px', fontFamily: 'Inter, sans-serif' }}
+                    style={{ fontSize: isMobile ? '9px' : '10px', fontFamily: 'Inter, sans-serif' }}
                     tickLine={false}
                     axisLine={{ stroke: '#1A1A1A', strokeWidth: 1 }}
                     {...(isMobile
@@ -309,16 +309,37 @@ export default function PollutionChart({ city, onInterventionClick }) {
                   />
                   <YAxis
                     stroke="#1A1A1A"
-                    style={{ fontSize: '10px', fontFamily: 'Inter, sans-serif' }}
+                    {...(isMobile
+                      ? {
+                        width: 30,
+                        tick: { fontSize: 9, fontFamily: 'Inter, sans-serif' },
+                        tickMargin: 2,
+                      }
+                      : {
+                        style: { fontSize: '10px', fontFamily: 'Inter, sans-serif' },
+                      }
+                    )}
                     tickLine={false}
                     axisLine={false}
                     domain={[0, maxValue]}
-                    label={{
-                      value: isMobile ? 'Conc.' : 'Concentration',
+                    label={isMobile ? {
+                      value: 'C.',
                       angle: -90,
                       position: 'insideLeft',
                       style: {
-                        fontSize: isMobile ? '11px' : '9px',
+                        fontSize: '9px',
+                        fontFamily: 'Inter, sans-serif',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        fill: '#1A1A1A',
+                        opacity: 0.32,
+                      }
+                    } : {
+                      value: 'Concentration',
+                      angle: -90,
+                      position: 'insideLeft',
+                      style: {
+                        fontSize: '9px',
                         fontFamily: 'Inter, sans-serif',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
