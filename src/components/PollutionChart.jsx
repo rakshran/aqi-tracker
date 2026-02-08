@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceDot } from 'recharts';
 import { cn } from '../utils/cn';
 import { pollutantInfo, dataSources } from '../data/citiesData';
@@ -13,6 +13,10 @@ const editorialColors = {
   o3: '#7A9A6D',
   co: '#B87333',
 };
+
+const MOBILE_CHART_MARGIN = { top: 8, right: 4, left: 4, bottom: 12 };
+const MOBILE_TOOLTIP_PROXIMITY_PX = 14;
+const MOBILE_TOOLTIP_FADE_MS = 300;
 
 // Diamond marker for intervention points (replacing star)
 const DiamondShape = (props) => {
@@ -65,11 +69,8 @@ const DiamondShape = (props) => {
   );
 };
 
-// Editorial tooltip — sharp, minimal, no rounded corners
-const CustomTooltip = ({ active, payload, city, isMobile }) => {
-  if (!active || !payload || !payload.length) return null;
-
-  const data = payload[0].payload;
+const TooltipCard = ({ data, city, isMobile }) => {
+  if (!data) return null;
   const source = city && city.primarySource ? dataSources[city.primarySource] : null;
 
   return (
@@ -127,11 +128,22 @@ const CustomTooltip = ({ active, payload, city, isMobile }) => {
   );
 };
 
+// Editorial tooltip — sharp, minimal, no rounded corners
+const CustomTooltip = ({ active, payload, city, isMobile }) => {
+  if (!active || !payload || !payload.length) return null;
+  return <TooltipCard data={payload[0].payload} city={city} isMobile={isMobile} />;
+};
+
 export default function PollutionChart({ city, onInterventionClick, onTabChange }) {
   const [activeTab, setActiveTab] = useState('graph');
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showMobileNote, setShowMobileNote] = useState(false);
+  const [mobileTooltipData, setMobileTooltipData] = useState(null);
+  const [isMobileTooltipVisible, setIsMobileTooltipVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
+  const chartContainerRef = useRef(null);
+  const tooltipFadeTimeoutRef = useRef(null);
+  const tooltipClearTimeoutRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -142,12 +154,37 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
   useEffect(() => {
     if (!isMobile) {
       setShowMobileNote(false);
+      setMobileTooltipData(null);
+      setIsMobileTooltipVisible(false);
     }
   }, [isMobile]);
 
   useEffect(() => {
     onTabChange?.(activeTab);
   }, [activeTab, onTabChange]);
+
+  const clearTooltipTimers = () => {
+    if (tooltipFadeTimeoutRef.current) {
+      clearTimeout(tooltipFadeTimeoutRef.current);
+      tooltipFadeTimeoutRef.current = null;
+    }
+    if (tooltipClearTimeoutRef.current) {
+      clearTimeout(tooltipClearTimeoutRef.current);
+      tooltipClearTimeoutRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    if (!isMobile || activeTab !== 'graph') {
+      clearTooltipTimers();
+      setIsMobileTooltipVisible(false);
+      setMobileTooltipData(null);
+    }
+  }, [isMobile, activeTab]);
+
+  useEffect(() => () => {
+    clearTooltipTimers();
+  }, []);
 
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     const availablePollutants = Object.keys(pollutantInfo).filter(
@@ -202,6 +239,64 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
     });
     return Math.ceil(max * 1.1);
   }, [city.data, visiblePollutants]);
+
+  const scheduleMobileTooltipFade = () => {
+    clearTooltipTimers();
+    tooltipFadeTimeoutRef.current = setTimeout(() => {
+      setIsMobileTooltipVisible(false);
+    }, 3000);
+    tooltipClearTimeoutRef.current = setTimeout(() => {
+      setMobileTooltipData(null);
+    }, 3000 + MOBILE_TOOLTIP_FADE_MS);
+  };
+
+  const hideMobileTooltipNow = () => {
+    clearTooltipTimers();
+    setIsMobileTooltipVisible(false);
+    setMobileTooltipData(null);
+  };
+
+  const handleMobileChartInteraction = (state) => {
+    if (!isMobile || activeTab !== 'graph') return;
+    const chartHeight = chartContainerRef.current?.clientHeight ?? 0;
+    const plotHeight = chartHeight - MOBILE_CHART_MARGIN.top - MOBILE_CHART_MARGIN.bottom;
+    const pointerY = state?.chartY;
+    const payload = state?.activePayload ?? [];
+    if (
+      !Number.isFinite(pointerY) ||
+      !payload.length ||
+      !Number.isFinite(plotHeight) ||
+      plotHeight <= 0 ||
+      maxValue <= 0
+    ) {
+      hideMobileTooltipNow();
+      return;
+    }
+
+    let minDistance = Infinity;
+    payload.forEach((entry) => {
+      if (!visiblePollutants[entry.dataKey]) return;
+      const value = Number(entry.value);
+      if (!Number.isFinite(value)) return;
+      const y = MOBILE_CHART_MARGIN.top + ((maxValue - value) / maxValue) * plotHeight;
+      minDistance = Math.min(minDistance, Math.abs(pointerY - y));
+    });
+
+    if (!Number.isFinite(minDistance) || minDistance > MOBILE_TOOLTIP_PROXIMITY_PX) {
+      hideMobileTooltipNow();
+      return;
+    }
+
+    const nextData = payload[0]?.payload;
+    if (!nextData) {
+      hideMobileTooltipNow();
+      return;
+    }
+
+    setMobileTooltipData(nextData);
+    setIsMobileTooltipVisible(true);
+    scheduleMobileTooltipFade();
+  };
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -332,11 +427,15 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
 
           {/* Chart Container — no background, directly on grid */}
           <div className="flex-1 min-h-0 pb-1 md:pb-0">
-            <div className="h-full">
+            <div className="h-full relative" ref={chartContainerRef}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
-                  margin={isMobile ? { top: 8, right: 4, left: 4, bottom: 12 } : { top: 10, right: 10, left: 20, bottom: 5 }}
+                  margin={isMobile ? MOBILE_CHART_MARGIN : { top: 10, right: 10, left: 20, bottom: 5 }}
+                  onMouseMove={isMobile ? handleMobileChartInteraction : undefined}
+                  onTouchStart={isMobile ? handleMobileChartInteraction : undefined}
+                  onTouchMove={isMobile ? handleMobileChartInteraction : undefined}
+                  onClick={isMobile ? handleMobileChartInteraction : undefined}
                 >
                   <CartesianGrid
                     horizontal={true}
@@ -402,10 +501,12 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
                       }
                     }}
                   />
-                  <Tooltip
-                    content={<CustomTooltip city={city} isMobile={isMobile} />}
-                    cursor={{ stroke: '#F2C94C', strokeWidth: 1, strokeDasharray: '4 4' }}
-                  />
+                  {!isMobile && (
+                    <Tooltip
+                      content={<CustomTooltip city={city} isMobile={isMobile} />}
+                      cursor={{ stroke: '#F2C94C', strokeWidth: 1, strokeDasharray: '4 4' }}
+                    />
+                  )}
 
                   {/* Data lines */}
                   {availablePollutants.map((pollutant) => {
@@ -503,7 +604,7 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
                         shape={(props) => (
                           <DiamondShape
                             {...props}
-                            size={isMobile ? 10 : 7}
+                            size={isMobile ? 5 : 7}
                             isHidden={isHidden}
                             isMobile={isMobile}
                             interventionTitle={intervention.title}
@@ -515,6 +616,16 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
                   })}
                 </LineChart>
               </ResponsiveContainer>
+              {isMobile && mobileTooltipData && (
+                <div
+                  className={cn(
+                    "pointer-events-none absolute left-3 right-3 bottom-2 z-20 transition-opacity duration-300",
+                    isMobileTooltipVisible ? "opacity-100" : "opacity-0"
+                  )}
+                >
+                  <TooltipCard data={mobileTooltipData} city={city} isMobile />
+                </div>
+              )}
             </div>
           </div>
         </>
