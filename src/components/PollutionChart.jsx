@@ -334,7 +334,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
-                  margin={isMobile ? { top: 12, right: 4, left: 2, bottom: 0 } : { top: 10, right: 10, left: 20, bottom: 5 }}
+                  margin={isMobile ? { top: 12, right: 4, left: 4, bottom: 0 } : { top: 10, right: 10, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid
                     horizontal={true}
@@ -357,9 +357,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     stroke="#1A1A1A"
                     {...(isMobile
                       ? {
-                        width: 34,
+                        width: 36,
                         tick: { fontSize: 9, fontFamily: 'Inter, sans-serif' },
-                        tickMargin: 3,
+                        tickMargin: 2,
                       }
                       : {
                         style: { fontSize: '10px', fontFamily: 'Inter, sans-serif' },
@@ -370,10 +370,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     domain={[0, maxValue]}
                     label={isMobile ? {
                       value: 'Conc.',
-                      position: 'insideTopLeft',
-                      offset: 0,
-                      dx: 12,
-                      dy: 0,
+                      angle: -90,
+                      position: 'insideLeft',
+                      dx: 6,
                       style: {
                         fontSize: '9px',
                         fontFamily: 'Inter, sans-serif',
