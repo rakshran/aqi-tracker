@@ -216,7 +216,7 @@ export default function Sources() {
         <div className="bg-white border border-amber-300 rounded p-3 font-mono text-xs text-gray-800 overflow-x-auto">
           <p className="mb-2">
             <strong>Project Citation:</strong><br />
-            AQI Improvement Tracker. (2024). Air Quality Data Visualization.<br />
+            Historical Air Pollution Trends. (2024). Air Quality Data Visualization.<br />
             Retrieved from https://github.com/rakshran/aqi-tracker
           </p>
           <p>
