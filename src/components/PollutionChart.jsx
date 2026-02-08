@@ -329,12 +329,12 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
 
           {/* Chart Container — no background, directly on grid */}
-          <div className="flex-1 min-h-0" style={isMobile ? { minHeight: 'clamp(170px, 30vh, 210px)' } : undefined}>
+          <div className="flex-1 min-h-0 pb-1 md:pb-0">
             <div className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
-                  margin={isMobile ? { top: 12, right: 4, left: 4, bottom: 0 } : { top: 10, right: 10, left: 20, bottom: 5 }}
+                  margin={isMobile ? { top: 8, right: 4, left: 4, bottom: 12 } : { top: 10, right: 10, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid
                     horizontal={true}
@@ -349,7 +349,11 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     tickLine={false}
                     axisLine={{ stroke: '#1A1A1A', strokeWidth: 1 }}
                     {...(isMobile
-                      ? { ticks: mobileTicks }
+                      ? {
+                        ticks: mobileTicks,
+                        tickMargin: 8,
+                        height: 22,
+                      }
                       : { interval: 'preserveStartEnd' }
                     )}
                   />
@@ -359,7 +363,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                       ? {
                         width: 36,
                         tick: { fontSize: 9, fontFamily: 'Inter, sans-serif' },
-                        tickMargin: 2,
+                        tickMargin: 6,
                       }
                       : {
                         style: { fontSize: '10px', fontFamily: 'Inter, sans-serif' },
@@ -372,7 +376,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                       value: 'Conc.',
                       angle: -90,
                       position: 'insideLeft',
-                      dx: 6,
+                      dx: -6,
                       style: {
                         fontSize: '9px',
                         fontFamily: 'Inter, sans-serif',

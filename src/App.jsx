@@ -87,7 +87,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-canvas overflow-hidden">
+    <div className="h-[100dvh] md:h-screen flex flex-col bg-canvas overflow-hidden">
       {/* Masthead */}
       <header className="border-b border-ink px-4 md:px-8 py-3 md:py-4 flex-shrink-0">
         <div className="flex flex-wrap items-center gap-1.5 md:gap-3">
@@ -110,15 +110,17 @@ function App() {
         <div className="flex-1 md:w-3/4 flex flex-col overflow-hidden md:border-r border-ink/10">
           {/* Chart */}
           {selectedCity && (
-            <div className="flex-1 overflow-y-hidden md:overflow-y-auto px-3 md:px-8 pt-2 md:pt-4 pb-3 md:pb-10">
-              <PollutionChart
-                city={selectedCity}
-                onInterventionClick={handleInterventionClick}
-              />
+            <div className="flex-1 flex flex-col overflow-y-hidden md:overflow-y-auto px-3 md:px-8 pt-2 md:pt-4 pb-2 md:pb-10">
+              <div className="flex-1 min-h-0">
+                <PollutionChart
+                  city={selectedCity}
+                  onInterventionClick={handleInterventionClick}
+                />
+              </div>
               {/* Mobile-only trigger to open interventions drawer */}
               <button
                 onClick={() => setShowInterventions(true)}
-                className="md:hidden mt-2 font-sans text-[11px] uppercase tracking-widest text-ink/60 hover:text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors"
+                className="md:hidden mt-1 font-sans text-[11px] uppercase tracking-widest text-ink/60 hover:text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors self-start"
               >
                 View Key Interventions &rarr;
               </button>
