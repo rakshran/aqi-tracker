@@ -92,7 +92,7 @@ function App() {
       <header className="border-b border-ink px-4 md:px-8 py-4 flex-shrink-0">
         <div className="flex flex-wrap items-center gap-2 md:gap-3">
           <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-editorial text-ink">
-            Air Quality Trends in
+            AQI Trends in
           </h1>
           <CitySelector
             cities={citiesData}
