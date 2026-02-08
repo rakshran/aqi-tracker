@@ -4,12 +4,18 @@ import CitySelector from './components/CitySelector';
 import PollutionChart from './components/PollutionChart';
 import InterventionsPanel from './components/InterventionsPanel';
 
+const getIsMobileLandscape = () =>
+  window.matchMedia('(pointer: coarse)').matches &&
+  window.matchMedia('(orientation: landscape)').matches &&
+  window.innerHeight <= 500;
+
 function App() {
   const [selectedCity, setSelectedCity] = useState(citiesData[0]);
   const [selectedIntervention, setSelectedIntervention] = useState(null);
   const [selectedInterventionSource, setSelectedInterventionSource] = useState(null);
   const [isSelectionFading, setIsSelectionFading] = useState(false);
   const [showInterventions, setShowInterventions] = useState(false);
+  const [isMobileLandscape, setIsMobileLandscape] = useState(() => getIsMobileLandscape());
   const interventionTimeoutRef = useRef(null);
   const interventionFadeTimeoutRef = useRef(null);
 
@@ -44,6 +50,19 @@ function App() {
   useEffect(() => {
     return () => {
       clearInterventionTimeouts();
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateOrientationState = () => {
+      setIsMobileLandscape(getIsMobileLandscape());
+    };
+    updateOrientationState();
+    window.addEventListener('resize', updateOrientationState);
+    window.addEventListener('orientationchange', updateOrientationState);
+    return () => {
+      window.removeEventListener('resize', updateOrientationState);
+      window.removeEventListener('orientationchange', updateOrientationState);
     };
   }, []);
 
@@ -87,7 +106,7 @@ function App() {
   };
 
   return (
-    <div className="h-[100dvh] md:h-screen flex flex-col bg-canvas overflow-hidden">
+    <div className={`md:h-screen flex flex-col bg-canvas ${isMobileLandscape ? 'min-h-[100dvh] h-auto overflow-y-auto' : 'h-[100dvh] overflow-hidden'}`}>
       {/* Masthead */}
       <header className="border-b border-ink px-4 md:px-8 py-3 md:py-4 flex-shrink-0">
         <div className="flex flex-wrap items-center gap-1.5 md:gap-3">
@@ -105,13 +124,13 @@ function App() {
       </header>
 
       {/* Main Content: Editorial Grid */}
-      <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+      <main className={`flex flex-col md:flex-row relative ${isMobileLandscape ? 'flex-none overflow-visible' : 'flex-1 overflow-hidden'}`}>
         {/* Left Column: Chart */}
-        <div className="flex-1 md:w-3/4 flex flex-col overflow-hidden md:border-r border-ink/10">
+        <div className={`flex-1 md:w-3/4 flex flex-col md:border-r border-ink/10 ${isMobileLandscape ? 'overflow-visible' : 'overflow-hidden'}`}>
           {/* Chart */}
           {selectedCity && (
-            <div className="flex-1 flex flex-col overflow-y-hidden md:overflow-y-auto px-3 md:px-8 pt-2 md:pt-4 pb-2 md:pb-10">
-              <div className="flex-1 min-h-0">
+            <div className={`flex flex-col px-3 md:px-8 pt-2 md:pt-4 md:pb-10 ${isMobileLandscape ? 'overflow-visible pb-4' : 'flex-1 overflow-y-hidden md:overflow-y-auto pb-2'}`}>
+              <div className={isMobileLandscape ? 'min-h-[300px]' : 'flex-1 min-h-0'}>
                 <PollutionChart
                   city={selectedCity}
                   onInterventionClick={handleInterventionClick}
