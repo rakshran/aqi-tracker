@@ -10,6 +10,7 @@ function App() {
   const [selectedInterventionSource, setSelectedInterventionSource] = useState(null);
   const [isSelectionFading, setIsSelectionFading] = useState(false);
   const [showInterventions, setShowInterventions] = useState(false);
+  const [chartTab, setChartTab] = useState('graph');
   const interventionTimeoutRef = useRef(null);
   const interventionFadeTimeoutRef = useRef(null);
 
@@ -115,15 +116,18 @@ function App() {
                 <PollutionChart
                   city={selectedCity}
                   onInterventionClick={handleInterventionClick}
+                  onTabChange={setChartTab}
                 />
               </div>
               {/* Mobile-only trigger to open interventions drawer */}
-              <button
-                onClick={() => setShowInterventions(true)}
-                className="md:hidden mt-1 font-sans text-[11px] uppercase tracking-widest text-ink/60 hover:text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors self-start"
-              >
-                View Key Interventions &rarr;
-              </button>
+              {chartTab === 'graph' && (
+                <button
+                  onClick={() => setShowInterventions(true)}
+                  className="md:hidden mt-1 font-sans text-[11px] uppercase tracking-widest text-ink/60 hover:text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors self-start"
+                >
+                  View Key Interventions &rarr;
+                </button>
+              )}
             </div>
           )}
         </div>

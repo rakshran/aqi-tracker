@@ -127,7 +127,7 @@ const CustomTooltip = ({ active, payload, city, isMobile }) => {
   );
 };
 
-export default function PollutionChart({ city, onInterventionClick }) {
+export default function PollutionChart({ city, onInterventionClick, onTabChange }) {
   const [activeTab, setActiveTab] = useState('graph');
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showMobileNote, setShowMobileNote] = useState(false);
@@ -144,6 +144,10 @@ export default function PollutionChart({ city, onInterventionClick }) {
       setShowMobileNote(false);
     }
   }, [isMobile]);
+
+  useEffect(() => {
+    onTabChange?.(activeTab);
+  }, [activeTab, onTabChange]);
 
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     const availablePollutants = Object.keys(pollutantInfo).filter(
@@ -518,7 +522,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
 
       {/* Details Tab */}
       {activeTab === 'details' && (
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
           <div className="space-y-6">
             {/* Data Sources Section */}
             <div className="border-b border-grid pb-6">
@@ -635,19 +639,19 @@ export default function PollutionChart({ city, onInterventionClick }) {
             {/* Data Table */}
             <div className="border-b border-grid pb-6">
               <h3 className="font-serif text-lg font-bold mb-3 text-ink">Complete Data Values</h3>
-              <div className="overflow-x-auto -mx-4 md:mx-0 px-4 md:px-0">
-                <table className="w-full text-xs font-sans border-collapse min-w-[600px]">
+              <div className="overflow-x-hidden">
+                <table className="w-full table-fixed text-[10px] md:text-xs font-sans border-collapse">
                   <thead>
                     <tr className="border-b-2 border-ink">
-                      <th className="px-3 py-2 text-left font-sans uppercase tracking-widest text-ink/50 text-xs">Year</th>
+                      <th className="px-1 md:px-3 py-1.5 md:py-2 text-left font-sans uppercase tracking-[0.08em] md:tracking-widest text-ink/50 text-[9px] md:text-xs">Year</th>
                       {availablePollutants.map((pollutant) => {
                         const info = pollutantInfo[pollutant];
                         const color = editorialColors[pollutant] || info.color;
                         return (
-                          <th key={pollutant} className="px-3 py-2 text-right font-sans uppercase tracking-widest text-ink/50 text-xs">
-                            <div className="flex items-center justify-end gap-1.5">
+                          <th key={pollutant} className="px-1 md:px-3 py-1.5 md:py-2 text-right font-sans uppercase tracking-[0.08em] md:tracking-widest text-ink/50 text-[9px] md:text-xs">
+                            <div className="flex items-center justify-end gap-0 md:gap-1.5">
                               <div
-                                className="w-3 h-0.5 flex-shrink-0"
+                                className="hidden md:block w-3 h-0.5 flex-shrink-0"
                                 style={{ backgroundColor: color }}
                               />
                               <span>{info.name}</span>
@@ -655,7 +659,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                           </th>
                         );
                       })}
-                      <th className="px-3 py-2 text-center font-sans uppercase tracking-widest text-ink/50 text-xs">Status</th>
+                      <th className="hidden md:table-cell px-3 py-2 text-center font-sans uppercase tracking-widest text-ink/50 text-xs">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -670,20 +674,23 @@ export default function PollutionChart({ city, onInterventionClick }) {
                             hasIntervention && "font-semibold"
                           )}
                         >
-                          <td className="px-3 py-2 text-left tabular-nums">
+                          <td className="px-1 md:px-3 py-1.5 md:py-2 text-left tabular-nums">
                             <div className="flex items-center gap-2">
                               {dataPoint.year}
+                              {dataPoint.isInterpolated && (
+                                <span className="md:hidden text-[9px] text-ink/40 uppercase">E</span>
+                              )}
                               {hasIntervention && (
-                                <span className="w-2 h-2 bg-accent border border-ink/20 rotate-45 inline-block" />
+                                <span className="hidden md:inline-block w-2 h-2 bg-accent border border-ink/20 rotate-45" />
                               )}
                             </div>
                           </td>
                           {availablePollutants.map((pollutant) => (
-                            <td key={pollutant} className="px-3 py-2 text-right tabular-nums">
+                            <td key={pollutant} className="px-1 md:px-3 py-1.5 md:py-2 text-right tabular-nums">
                               {dataPoint[pollutant] !== undefined ? dataPoint[pollutant] : '—'}
                             </td>
                           ))}
-                          <td className="px-3 py-2 text-center">
+                          <td className="hidden md:table-cell px-3 py-2 text-center">
                             {dataPoint.isInterpolated ? (
                               <span className="text-xs font-sans uppercase tracking-widest text-ink/40">
                                 Est.
@@ -699,10 +706,11 @@ export default function PollutionChart({ city, onInterventionClick }) {
                 </table>
               </div>
               <div className="mt-3 pt-3 border-t border-grid text-xs text-ink/40 font-sans space-y-1">
-                <p className="flex items-center gap-2">
+                <p className="hidden md:flex items-center gap-2">
                   <span className="w-2 h-2 bg-accent border border-ink/20 rotate-45 inline-block" />
                   <span>Diamond indicates intervention year</span>
                 </p>
+                <p className="md:hidden text-[10px]">E indicates interpolated values in Year column</p>
                 <p>
                   Highlighted rows indicate interpolated values
                 </p>
