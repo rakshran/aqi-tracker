@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceDot } from 'recharts';
 import { cn } from '../utils/cn';
 import { pollutantInfo, dataSources } from '../data/citiesData';
@@ -56,14 +56,20 @@ const DiamondShape = (props) => {
 };
 
 // Editorial tooltip — sharp, minimal, no rounded corners
-const CustomTooltip = ({ active, payload, city }) => {
+const CustomTooltip = ({ active, payload, city, isMobile }) => {
   if (!active || !payload || !payload.length) return null;
 
   const data = payload[0].payload;
   const source = city && city.primarySource ? dataSources[city.primarySource] : null;
 
   return (
-    <div className="bg-canvas border border-ink p-3 max-w-xs font-sans" style={{ boxShadow: 'none' }}>
+    <div
+      className={cn(
+        "bg-canvas border border-ink p-3 font-sans",
+        isMobile ? "w-full" : "max-w-xs"
+      )}
+      style={{ boxShadow: 'none' }}
+    >
       <div className="flex items-center justify-between mb-2 border-b border-grid pb-1.5">
         <p className="font-serif font-bold text-sm text-ink">{data.year}</p>
         {data.isInterpolated && (
@@ -114,6 +120,14 @@ const CustomTooltip = ({ active, payload, city }) => {
 export default function PollutionChart({ city, onInterventionClick }) {
   const [activeTab, setActiveTab] = useState('graph');
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     const availablePollutants = Object.keys(pollutantInfo).filter(
       p => city?.data?.some(dataPoint => dataPoint[p] !== undefined)
@@ -279,7 +293,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     }}
                   />
                   <Tooltip
-                    content={<CustomTooltip city={city} />}
+                    content={<CustomTooltip city={city} isMobile={isMobile} />}
                     cursor={{ stroke: '#F2C94C', strokeWidth: 1, strokeDasharray: '4 4' }}
                   />
 
