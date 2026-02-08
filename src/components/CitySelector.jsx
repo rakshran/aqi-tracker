@@ -24,9 +24,9 @@ export default function CitySelector({
         paddingRight: '2rem'
       }}
     >
-      <option value="" disabled>Select a city...</option>
+      <option value="" disabled style={{ fontSize: '16px', fontWeight: 'normal', fontFamily: 'system-ui, sans-serif' }}>Select a city...</option>
       {cities.map((city) => (
-        <option key={city.id} value={city.id}>
+        <option key={city.id} value={city.id} style={{ fontSize: '16px', fontWeight: 'normal', fontFamily: 'system-ui, sans-serif' }}>
           {city.name}
         </option>
       ))}
