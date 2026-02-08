@@ -12,14 +12,14 @@ export default function AboutDataModal({ isOpen, onClose }) {
       />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 overflow-y-auto">
-        <div className="flex min-h-full items-center justify-center p-4">
+      <div className="fixed inset-0 z-50 overflow-hidden">
+        <div className="flex min-h-[100dvh] items-start md:items-center justify-center p-2 md:p-4 pt-[calc(env(safe-area-inset-top)+8px)] pb-[calc(env(safe-area-inset-bottom)+8px)]">
           <div
-            className="relative bg-canvas border border-ink max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+            className="relative bg-canvas border border-ink max-w-3xl w-full max-h-[calc(100dvh-16px)] md:max-h-[90vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-canvas border-b border-ink px-6 py-4 flex items-center justify-between">
+            <div className="bg-canvas border-b border-ink px-6 py-4 flex items-center justify-between flex-shrink-0">
               <h2 className="font-serif text-xl font-bold tracking-editorial text-ink">About This Data</h2>
               <button
                 onClick={onClose}
@@ -33,7 +33,7 @@ export default function AboutDataModal({ isOpen, onClose }) {
             </div>
 
             {/* Content */}
-            <div className="px-6 py-6 space-y-8">
+            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8">
               {/* What This Data Shows */}
               <section>
                 <h3 className="font-serif text-lg font-bold text-ink mb-3">What This Data Shows</h3>
@@ -214,7 +214,7 @@ export default function AboutDataModal({ isOpen, onClose }) {
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 bg-canvas border-t border-ink px-6 py-4">
+            <div className="bg-canvas border-t border-ink px-6 py-4 flex-shrink-0 pb-[calc(env(safe-area-inset-bottom)+12px)] md:pb-4">
               <button
                 onClick={onClose}
                 className="w-full px-4 py-2 bg-ink text-canvas font-sans text-xs uppercase tracking-widest hover:bg-transparent hover:text-ink border border-ink transition-colors"
