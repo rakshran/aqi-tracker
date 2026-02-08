@@ -34,48 +34,6 @@ export default function AboutDataModal({ isOpen, onClose }) {
 
             {/* Content */}
             <div className="px-6 py-6 space-y-8">
-              {/* Causation vs Correlation Section */}
-              <section>
-                <h3 className="font-serif text-lg font-bold text-ink mb-3">
-                  Important: Causation vs. Correlation
-                </h3>
-                <p className="text-sm font-sans text-ink/60 leading-relaxed mb-4">
-                  The interventions marked on the charts are <strong className="text-ink">temporally associated</strong> with
-                  changes in air quality, but this visualization <strong className="text-ink">does not prove causation</strong>.
-                  Air quality improvements are the result of complex, multi-factorial processes.
-                </p>
-
-                <div className="border-t border-b border-grid py-4 space-y-3">
-                  <h4 className="font-sans text-xs uppercase tracking-widest text-ink/40">Why We Cannot Claim Causation</h4>
-                  <ul className="space-y-2 text-sm font-sans text-ink/60">
-                    <li className="flex items-start gap-2">
-                      <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Multiple Simultaneous Factors:</strong> Numerous policies, economic changes, technological advances, and weather patterns influence air quality simultaneously.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Temporal Lag:</strong> Policy impacts often take years to materialize. A policy enacted in year X may not show measurable effects until year X+5.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Economic Confounders:</strong> Economic recessions, industrial shifts, and deindustrialization can reduce emissions independent of environmental policy.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Weather Variability:</strong> Annual weather patterns (wind, precipitation, temperature inversions) significantly affect measured pollution levels.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Technological Progress:</strong> Ongoing technological improvements in engines, fuels, and industrial processes occur independently of specific regulations.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Regional/Transboundary Effects:</strong> Pollution transport from neighboring regions affects local measurements, especially for Delhi and Beijing.</span>
-                    </li>
-                  </ul>
-                </div>
-              </section>
-
               {/* What This Data Shows */}
               <section>
                 <h3 className="font-serif text-lg font-bold text-ink mb-3">What This Data Shows</h3>
@@ -130,6 +88,50 @@ export default function AboutDataModal({ isOpen, onClose }) {
                   <li>— <strong className="text-ink/80">Observable trends:</strong> Measurable changes in air quality over time</li>
                   <li>— <strong className="text-ink/80">English-language documentation:</strong> Accessibility of policy documents and research</li>
                 </ul>
+              </section>
+
+              {/* Causation vs Correlation Section */}
+              <section>
+                <h3 className="font-serif text-lg font-bold text-ink mb-3">
+                  Important: Causation vs. Correlation
+                </h3>
+                <p className="text-sm font-sans text-ink/60 leading-relaxed mb-4">
+                  The interventions marked on the charts are <strong className="text-ink">temporally associated</strong> with
+                  changes in air quality, but this visualization <strong className="text-ink">does not prove causation</strong>.
+                  Air quality improvements are the result of complex, multi-factorial processes.
+                </p>
+              </section>
+
+              <section>
+                <div className="border-t border-b border-grid py-4 space-y-3">
+                  <h4 className="font-sans text-xs uppercase tracking-widest text-ink/40">Why We Cannot Claim Causation</h4>
+                  <ul className="space-y-2 text-sm font-sans text-ink/60">
+                    <li className="flex items-start gap-2">
+                      <span className="text-ink/30 mt-0.5">—</span>
+                      <span><strong className="text-ink/80">Multiple Simultaneous Factors:</strong> Numerous policies, economic changes, technological advances, and weather patterns influence air quality simultaneously.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-ink/30 mt-0.5">—</span>
+                      <span><strong className="text-ink/80">Temporal Lag:</strong> Policy impacts often take years to materialize. A policy enacted in year X may not show measurable effects until year X+5.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-ink/30 mt-0.5">—</span>
+                      <span><strong className="text-ink/80">Economic Confounders:</strong> Economic recessions, industrial shifts, and deindustrialization can reduce emissions independent of environmental policy.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-ink/30 mt-0.5">—</span>
+                      <span><strong className="text-ink/80">Weather Variability:</strong> Annual weather patterns (wind, precipitation, temperature inversions) significantly affect measured pollution levels.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-ink/30 mt-0.5">—</span>
+                      <span><strong className="text-ink/80">Technological Progress:</strong> Ongoing technological improvements in engines, fuels, and industrial processes occur independently of specific regulations.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-ink/30 mt-0.5">—</span>
+                      <span><strong className="text-ink/80">Regional/Transboundary Effects:</strong> Pollution transport from neighboring regions affects local measurements, especially for Delhi and Beijing.</span>
+                    </li>
+                  </ul>
+                </div>
               </section>
 
               {/* How to Interpret Intervention Notes */}
