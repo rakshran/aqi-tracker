@@ -66,7 +66,7 @@ const DiamondShape = (props) => {
 };
 
 // Editorial tooltip — sharp, minimal, no rounded corners
-const CustomTooltip = ({ active, payload, city, isMobile }) => {
+const CustomTooltip = ({ active, payload, city }) => {
   if (!active || !payload || !payload.length) return null;
 
   const data = payload[0].payload;
@@ -74,10 +74,7 @@ const CustomTooltip = ({ active, payload, city, isMobile }) => {
 
   return (
     <div
-      className={cn(
-        "bg-canvas border border-ink p-3 font-sans",
-        isMobile ? "w-full" : "max-w-xs"
-      )}
+      className="bg-canvas border border-ink p-3 font-sans max-w-xs"
       style={{ boxShadow: 'none' }}
     >
       <div className="flex items-center justify-between mb-2 border-b border-grid pb-1.5">
@@ -127,10 +124,113 @@ const CustomTooltip = ({ active, payload, city, isMobile }) => {
   );
 };
 
+const MobilePollutantRow = ({ pollutant, dataPoint }) => {
+  if (!dataPoint || dataPoint[pollutant] === undefined) return null;
+  const info = pollutantInfo[pollutant];
+  const color = editorialColors[pollutant] || info.color;
+
+  return (
+    <div className="flex justify-between items-center gap-3 text-xs">
+      <span className="flex items-center gap-1.5">
+        <div
+          className="w-3 h-0.5 flex-shrink-0"
+          style={{ backgroundColor: color }}
+        />
+        <span className="text-ink/70">{info.name}</span>
+      </span>
+      <span className="tabular-nums font-medium text-ink">
+        {dataPoint[pollutant]} <span className="text-ink/40">{info.unit}</span>
+      </span>
+    </div>
+  );
+};
+
+const MobileYearSheet = ({
+  dataPoint,
+  source,
+  primaryPollutant,
+  availablePollutants,
+  showAll,
+  onToggleShowAll,
+}) => {
+  const additionalRows = dataPoint
+    ? availablePollutants.filter(
+      pollutant => pollutant !== primaryPollutant && dataPoint[pollutant] !== undefined
+    )
+    : [];
+
+  return (
+    <div className="md:hidden mt-3 border border-ink bg-canvas p-3">
+      <div className="flex items-center justify-between mb-2 border-b border-grid pb-1.5">
+        <p className="font-serif font-bold text-base text-ink">
+          {dataPoint ? dataPoint.year : 'Select A Year'}
+        </p>
+        {dataPoint?.isInterpolated && (
+          <span className="text-xs font-sans uppercase tracking-widest text-ink/50 ml-2">
+            Est.
+          </span>
+        )}
+      </div>
+
+      {!dataPoint && (
+        <p className="text-xs font-sans text-ink/50">
+          Tap the chart to inspect values for a specific year.
+        </p>
+      )}
+
+      {dataPoint && (
+        <div className="space-y-2">
+          {primaryPollutant && (
+            <MobilePollutantRow pollutant={primaryPollutant} dataPoint={dataPoint} />
+          )}
+
+          {showAll && (
+            <div className="pt-1 space-y-1 border-t border-grid">
+              {additionalRows.map(pollutant => (
+                  <MobilePollutantRow
+                    key={pollutant}
+                    pollutant={pollutant}
+                    dataPoint={dataPoint}
+                  />
+                ))}
+            </div>
+          )}
+
+          {additionalRows.length > 0 && (
+            <button
+              onClick={onToggleShowAll}
+              className="text-xs font-sans uppercase tracking-widest text-ink/60 border-b border-ink/30 pb-0.5"
+            >
+              {showAll ? 'Show less' : 'Show all pollutants'}
+            </button>
+          )}
+        </div>
+      )}
+
+      {dataPoint?.isInterpolated && (
+        <p className="text-xs text-ink/40 mt-2 pt-2 border-t border-grid italic font-serif">
+          Values interpolated for intervention year
+        </p>
+      )}
+
+      {source && (
+        <p className="text-xs text-ink/40 mt-2 pt-2 border-t border-grid">
+          Source: {source.shortName}
+        </p>
+      )}
+    </div>
+  );
+};
+
 export default function PollutionChart({ city, onInterventionClick }) {
   const [activeTab, setActiveTab] = useState('graph');
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [showMobileNotes, setShowMobileNotes] = useState(false);
+  const [mobileSelectedPoint, setMobileSelectedPoint] = useState(null);
+  const [showAllMobileRows, setShowAllMobileRows] = useState(false);
+  const [mobilePrimaryPollutant, setMobilePrimaryPollutant] = useState(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -152,7 +252,23 @@ export default function PollutionChart({ city, onInterventionClick }) {
     );
   }, [city]);
 
+  useEffect(() => {
+    if (!availablePollutants.length) return;
+    setMobilePrimaryPollutant(prev =>
+      prev && availablePollutants.includes(prev) ? prev : availablePollutants[0]
+    );
+  }, [availablePollutants]);
+
+  useEffect(() => {
+    if (!isMobile || !city?.data?.length) return;
+    setMobileSelectedPoint(city.data[city.data.length - 1]);
+    setShowAllMobileRows(false);
+    setShowMobileNotes(false);
+    setIsDescriptionExpanded(false);
+  }, [city?.id, city?.data, isMobile]);
+
   const togglePollutant = (pollutant) => {
+    setMobilePrimaryPollutant(pollutant);
     setVisiblePollutants(prev => ({ ...prev, [pollutant]: !prev[pollutant] }));
   };
 
@@ -192,48 +308,77 @@ export default function PollutionChart({ city, onInterventionClick }) {
     return Math.ceil(max * 1.1);
   }, [city.data, visiblePollutants]);
 
+  const primaryMobilePollutant = useMemo(() => {
+    if (!mobileSelectedPoint) return null;
+    const preferredPollutants = [
+      mobilePrimaryPollutant,
+      ...availablePollutants.filter(pollutant => visiblePollutants[pollutant]),
+      ...availablePollutants,
+    ].filter(Boolean);
+    const uniquePollutants = [...new Set(preferredPollutants)];
+    return uniquePollutants.find(pollutant => mobileSelectedPoint[pollutant] !== undefined) || null;
+  }, [mobileSelectedPoint, mobilePrimaryPollutant, availablePollutants, visiblePollutants]);
+
+  const handleMobileChartSelect = (chartState) => {
+    if (!isMobile) return;
+    const nextPoint = chartState?.activePayload?.[0]?.payload;
+    if (!nextPoint) return;
+    setMobileSelectedPoint(nextPoint);
+    setShowAllMobileRows(false);
+  };
+
   return (
     <div className="w-full h-full flex flex-col">
       {/* City context */}
-      <div className="mb-3">
-        <p className="text-xs font-sans text-ink/50 leading-relaxed line-clamp-2">
+      <div className="mb-2 md:mb-3">
+        <p className={cn(
+          "text-xs font-sans text-ink/50 leading-relaxed",
+          !isDescriptionExpanded && "line-clamp-2 md:line-clamp-none"
+        )}>
           {city.description}
         </p>
+        <button
+          onClick={() => setIsDescriptionExpanded(prev => !prev)}
+          className="md:hidden mt-1 text-[10px] font-sans uppercase tracking-widest text-ink/50 border-b border-ink/20 pb-0.5"
+        >
+          {isDescriptionExpanded ? 'Show less' : 'Read more'}
+        </button>
       </div>
 
       {/* Tab Navigation — editorial underline style */}
-      <div className="mb-4 border-b border-grid">
-        <div className="flex gap-0">
-          <button
-            onClick={() => setActiveTab('graph')}
-            className={cn(
-              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
-              activeTab === 'graph'
-                ? "border-ink text-ink"
-                : "border-transparent text-ink/40 hover:text-ink/70"
-            )}
-          >
-            Graph
-          </button>
-          <button
-            onClick={() => setActiveTab('details')}
-            className={cn(
-              "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
-              activeTab === 'details'
-                ? "border-ink text-ink"
-                : "border-transparent text-ink/40 hover:text-ink/70"
-            )}
-          >
-            Details
-          </button>
+      <div className={cn(
+        "bg-canvas",
+        isMobile && "sticky top-0 z-20 pb-2"
+      )}>
+        <div className="mb-3 md:mb-4 border-b border-grid">
+          <div className="flex gap-0">
+            <button
+              onClick={() => setActiveTab('graph')}
+              className={cn(
+                "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
+                activeTab === 'graph'
+                  ? "border-ink text-ink"
+                  : "border-transparent text-ink/40 hover:text-ink/70"
+              )}
+            >
+              Graph
+            </button>
+            <button
+              onClick={() => setActiveTab('details')}
+              className={cn(
+                "px-4 py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[44px] md:min-h-0",
+                activeTab === 'details'
+                  ? "border-ink text-ink"
+                  : "border-transparent text-ink/40 hover:text-ink/70"
+              )}
+            >
+              Details
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Graph Tab */}
-      {activeTab === 'graph' && (
-        <>
-          {/* Pollutant Toggles */}
-          <div className="mb-3 py-3 border-b border-grid">
+        {activeTab === 'graph' && (
+          <div className="mb-2 md:mb-3 py-2 md:py-3 border-b border-grid">
             <h3 className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-2">Pollutants</h3>
             <div className="flex flex-wrap gap-2">
               {availablePollutants.map((pollutant) => {
@@ -265,29 +410,58 @@ export default function PollutionChart({ city, onInterventionClick }) {
               })}
             </div>
           </div>
+        )}
+      </div>
 
-          {/* Disclaimers — editorial style */}
-          <div className="mb-3 py-2 border-b border-grid">
-            <p className="text-xs font-sans text-ink/40 leading-relaxed">
-              <span className="font-semibold text-ink/60">Note:</span>{' '}
-              Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
+      {/* Graph Tab */}
+      {activeTab === 'graph' && (
+        <>
+          {/* Disclaimers — compact on mobile, expanded on desktop */}
+          <div className="mb-2 md:mb-3 border-b border-grid">
+            <div className="md:hidden py-2">
               <button
-                onClick={() => setShowAboutModal(true)}
-                className="text-ink/60 underline hover:text-ink transition-colors"
+                onClick={() => setShowMobileNotes(prev => !prev)}
+                className="text-xs font-sans uppercase tracking-widest text-ink/60 border-b border-ink/30 pb-0.5"
               >
-                Data limitations
+                {showMobileNotes ? 'Hide data notes' : 'Show data notes'}
               </button>
-              {' · '}
-              <span className="italic">Dashed segments = interpolated values.</span>
-            </p>
+              {showMobileNotes && (
+                <p className="text-xs font-sans text-ink/40 leading-relaxed mt-2">
+                  Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
+                  <button
+                    onClick={() => setShowAboutModal(true)}
+                    className="text-ink/60 underline hover:text-ink transition-colors"
+                  >
+                    Data limitations
+                  </button>
+                  {' · '}
+                  <span className="italic">Dashed segments = interpolated values.</span>
+                </p>
+              )}
+            </div>
+            <div className="hidden md:block py-2">
+              <p className="text-xs font-sans text-ink/40 leading-relaxed">
+                <span className="font-semibold text-ink/60">Note:</span>{' '}
+                Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
+                <button
+                  onClick={() => setShowAboutModal(true)}
+                  className="text-ink/60 underline hover:text-ink transition-colors"
+                >
+                  Data limitations
+                </button>
+                {' · '}
+                <span className="italic">Dashed segments = interpolated values.</span>
+              </p>
+            </div>
           </div>
 
           {/* Chart Container — no background, directly on grid */}
-          <div className="flex-1 min-h-0" style={isMobile ? { minHeight: '340px' } : undefined}>
+          <div className="flex-1 min-h-0" style={isMobile ? { minHeight: '380px' } : undefined}>
             <div className="h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
+                  onClick={handleMobileChartSelect}
                   margin={{ top: 10, right: 10, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid
@@ -327,10 +501,12 @@ export default function PollutionChart({ city, onInterventionClick }) {
                       }
                     }}
                   />
-                  <Tooltip
-                    content={<CustomTooltip city={city} isMobile={isMobile} />}
-                    cursor={{ stroke: '#F2C94C', strokeWidth: 1, strokeDasharray: '4 4' }}
-                  />
+                  {!isMobile && (
+                    <Tooltip
+                      content={<CustomTooltip city={city} />}
+                      cursor={{ stroke: '#F2C94C', strokeWidth: 1, strokeDasharray: '4 4' }}
+                    />
+                  )}
 
                   {/* Data lines */}
                   {availablePollutants.map((pollutant) => {
@@ -442,6 +618,17 @@ export default function PollutionChart({ city, onInterventionClick }) {
               </ResponsiveContainer>
             </div>
           </div>
+
+          {isMobile && (
+            <MobileYearSheet
+              dataPoint={mobileSelectedPoint}
+              source={city.primarySource ? dataSources[city.primarySource] : null}
+              primaryPollutant={primaryMobilePollutant}
+              availablePollutants={availablePollutants}
+              showAll={showAllMobileRows}
+              onToggleShowAll={() => setShowAllMobileRows(prev => !prev)}
+            />
+          )}
         </>
       )}
 

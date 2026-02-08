@@ -89,9 +89,9 @@ function App() {
   return (
     <div className="h-screen flex flex-col bg-canvas overflow-hidden">
       {/* Masthead */}
-      <header className="border-b border-ink px-4 md:px-8 py-4 flex-shrink-0">
+      <header className="border-b border-ink px-4 md:px-8 py-3 md:py-4 flex-shrink-0">
         <div className="flex flex-wrap items-center gap-2 md:gap-3">
-          <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-editorial text-ink">
+          <h1 className="font-serif text-[1.9rem] md:text-3xl font-bold tracking-editorial text-ink">
             AQI Trends in
           </h1>
           <CitySelector
@@ -99,7 +99,7 @@ function App() {
             selectedCity={selectedCity}
             onSelectCity={handleCitySelect}
             ariaLabel="Select city for air quality trend chart"
-            className="w-auto px-0 text-2xl md:text-3xl font-bold tracking-editorial"
+            className="w-auto px-0 text-[1.9rem] md:text-3xl font-bold tracking-editorial"
           />
         </div>
       </header>
@@ -110,7 +110,7 @@ function App() {
         <div className="flex-1 md:w-3/4 flex flex-col overflow-hidden md:border-r border-ink/10">
           {/* Chart */}
           {selectedCity && (
-            <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-4 pb-8 md:pb-10">
+            <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-3 md:pt-4 pb-6 md:pb-10">
               <PollutionChart
                 city={selectedCity}
                 onInterventionClick={handleInterventionClick}
@@ -118,7 +118,7 @@ function App() {
               {/* Mobile-only trigger to open interventions drawer */}
               <button
                 onClick={() => setShowInterventions(true)}
-                className="md:hidden mt-6 font-sans text-xs uppercase tracking-widest text-ink/60 hover:text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors"
+                className="md:hidden mt-4 font-sans text-xs uppercase tracking-widest text-ink/60 hover:text-ink border-b border-ink/30 hover:border-ink pb-0.5 transition-colors"
               >
                 View Key Interventions &rarr;
               </button>
