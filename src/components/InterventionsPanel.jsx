@@ -22,8 +22,9 @@ export default function InterventionsPanel({
 
   return (
     <div id="interventions-panel">
-      <h3 className="font-sans text-xs uppercase tracking-widest text-ink/40 mb-4 pb-2 border-b border-ink sticky top-0 bg-canvas z-10">
-        Key Interventions
+      <h3 className="font-sans text-xs uppercase tracking-widest text-ink/40 mb-4 pb-2 border-b border-ink sticky top-0 bg-canvas z-10 flex items-center gap-1.5">
+        <span className="hidden md:inline-block w-2 h-2 bg-accent border border-ink/20 rotate-45" />
+        <span>Key Interventions</span>
       </h3>
 
       {/* Correlation Disclaimer */}

@@ -436,7 +436,7 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
           {/* Chart Container — no background, directly on grid */}
           <div className="flex-1 min-h-0 pb-1 md:pb-0">
             <div className="h-full relative" ref={chartContainerRef}>
-              {isMobile ? (
+              {isMobile && (
                 <button
                   onClick={() => onOpenInterventions?.()}
                   className="absolute top-1 right-1 z-10 inline-flex items-center gap-1.5 px-2 py-1 bg-canvas/90 border border-ink/20 text-[10px] font-sans uppercase tracking-[0.08em] text-ink/70"
@@ -445,11 +445,6 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                   <span className="w-2.5 h-2.5 bg-accent border border-ink/30 rotate-45 inline-block" />
                   <span>Key Interventions</span>
                 </button>
-              ) : (
-                <div className="absolute top-1 right-1 z-10 inline-flex items-center gap-1.5 px-2 py-1 bg-canvas/90 border border-ink/20 text-[10px] font-sans uppercase tracking-[0.08em] text-ink/55 pointer-events-none">
-                  <span className="w-2.5 h-2.5 bg-accent border border-ink/30 rotate-45 inline-block" />
-                  <span>Key Interventions</span>
-                </div>
               )}
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
