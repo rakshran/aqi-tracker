@@ -29,3 +29,15 @@
     @apply border-b border-grid;
   }
 }
+
+/* Mobile tooltip — anchored to bottom of chart container, prevents overflow */
+@media (max-width: 768px) {
+  .recharts-tooltip-wrapper {
+    top: auto !important;
+    bottom: 8px !important;
+    left: 12px !important;
+    right: 12px !important;
+    transform: none !important;
+    width: auto !important;
+  }
+}
