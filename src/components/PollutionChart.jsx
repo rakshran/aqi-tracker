@@ -15,8 +15,12 @@ const editorialColors = {
 };
 
 const MOBILE_CHART_MARGIN = { top: 8, right: 4, left: 4, bottom: 12 };
-const MOBILE_TOOLTIP_PROXIMITY_PX = 14;
-const MOBILE_TOOLTIP_FADE_MS = 300;
+const MOBILE_TOOLTIP_PROXIMITY_BY_POLLUTANT = {
+  default: 16,
+  co: 24,
+};
+const MOBILE_TOOLTIP_IDLE_MS = 1800;
+const MOBILE_TOOLTIP_FADE_MS = 850;
 
 // Diamond marker for intervention points (replacing star)
 const DiamondShape = (props) => {
@@ -244,10 +248,10 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
     clearTooltipTimers();
     tooltipFadeTimeoutRef.current = setTimeout(() => {
       setIsMobileTooltipVisible(false);
-    }, 3000);
+    }, MOBILE_TOOLTIP_IDLE_MS);
     tooltipClearTimeoutRef.current = setTimeout(() => {
       setMobileTooltipData(null);
-    }, 3000 + MOBILE_TOOLTIP_FADE_MS);
+    }, MOBILE_TOOLTIP_IDLE_MS + MOBILE_TOOLTIP_FADE_MS);
   };
 
   const hideMobileTooltipNow = () => {
@@ -274,15 +278,23 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
     }
 
     let minDistance = Infinity;
+    let isNearVisibleLine = false;
     payload.forEach((entry) => {
       if (!visiblePollutants[entry.dataKey]) return;
       const value = Number(entry.value);
       if (!Number.isFinite(value)) return;
       const y = MOBILE_CHART_MARGIN.top + ((maxValue - value) / maxValue) * plotHeight;
-      minDistance = Math.min(minDistance, Math.abs(pointerY - y));
+      const distance = Math.abs(pointerY - y);
+      const proximity =
+        MOBILE_TOOLTIP_PROXIMITY_BY_POLLUTANT[entry.dataKey] ??
+        MOBILE_TOOLTIP_PROXIMITY_BY_POLLUTANT.default;
+      minDistance = Math.min(minDistance, distance);
+      if (distance <= proximity) {
+        isNearVisibleLine = true;
+      }
     });
 
-    if (!Number.isFinite(minDistance) || minDistance > MOBILE_TOOLTIP_PROXIMITY_PX) {
+    if (!Number.isFinite(minDistance) || !isNearVisibleLine) {
       hideMobileTooltipNow();
       return;
     }
@@ -619,7 +631,7 @@ export default function PollutionChart({ city, onInterventionClick, onTabChange 
               {isMobile && mobileTooltipData && (
                 <div
                   className={cn(
-                    "pointer-events-none absolute left-3 right-3 bottom-2 z-20 transition-opacity duration-300",
+                    "pointer-events-none absolute left-3 right-3 bottom-2 z-20 transition-opacity duration-700",
                     isMobileTooltipVisible ? "opacity-100" : "opacity-0"
                   )}
                 >
