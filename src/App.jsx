@@ -79,17 +79,28 @@ function App() {
   return (
     <div className="h-screen flex flex-col bg-canvas overflow-hidden">
       {/* Masthead */}
-      <header className="border-b border-ink px-4 md:px-8 py-4 flex-shrink-0">
+      <header className="border-b border-ink px-4 md:px-8 py-3 flex-shrink-0">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-editorial text-ink">
-              Historical Air Pollution Trends
-            </h1>
-            <p className="font-sans text-xs uppercase tracking-widest text-ink/50 mt-1">
-              A visual investigation into urban air quality
-            </p>
+          <div className="flex items-center gap-4 md:gap-6 flex-1 min-w-0">
+            <div className="flex-shrink-0">
+              <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-editorial text-ink">
+                AQI Improvement Tracker
+              </h1>
+              <p className="font-sans text-xs uppercase tracking-widest text-ink/50 mt-0.5">
+                A visual investigation into urban air quality
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <CitySelector
+                cities={citiesData}
+                selectedCity={selectedCity}
+                onSelectCity={handleCitySelect}
+                ariaLabel="Select city for air quality trend chart"
+                className="w-auto min-w-[200px] md:min-w-[260px] max-w-full px-0 text-lg md:text-xl font-bold tracking-editorial"
+              />
+            </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-shrink-0">
             <button
               onClick={() => setShowAboutModal(true)}
               className="hidden md:flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs uppercase tracking-widest text-ink/60 hover:text-ink border-b border-transparent hover:border-ink transition-colors"
@@ -117,27 +128,11 @@ function App() {
 
       {/* Main Content: Editorial Grid */}
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
-        {/* Left Column: City Selector + Chart */}
+        {/* Left Column: Chart */}
         <div className="flex-1 lg:w-3/4 flex flex-col overflow-hidden lg:border-r border-ink/10">
-          {/* City Selector Row */}
-          <div className="px-4 md:px-8 py-4 overflow-y-auto flex-shrink-0">
-            <div className="flex flex-wrap items-center gap-2 md:gap-3">
-              <h2 className="font-serif text-xl md:text-2xl font-bold tracking-editorial text-ink">
-                Air Quality Trends in
-              </h2>
-              <CitySelector
-                cities={citiesData}
-                selectedCity={selectedCity}
-                onSelectCity={handleCitySelect}
-                ariaLabel="Select city for air quality trend chart"
-                className="w-auto min-w-[220px] md:min-w-[280px] max-w-full px-0 text-xl md:text-2xl font-bold tracking-editorial"
-              />
-            </div>
-          </div>
-
           {/* Chart */}
           {selectedCity && (
-            <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-2 pb-8 md:pb-10">
+            <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-4 pb-8 md:pb-10">
               <PollutionChart
                 city={selectedCity}
                 onInterventionClick={handleInterventionClick}
