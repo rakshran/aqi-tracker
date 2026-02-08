@@ -113,6 +113,25 @@ export default function AboutDataModal({ isOpen, onClose }) {
                 </div>
               </section>
 
+              {/* Why These 8 Cities */}
+              <section>
+                <h3 className="font-serif text-lg font-bold text-ink mb-3">Why These 8 Cities?</h3>
+                <p className="text-sm font-sans text-ink/60 leading-relaxed mb-3">
+                  This dataset is <strong className="text-ink">not representative</strong> of global air quality trends.
+                  The cities shown were selected based on data availability and documented policy interventions, creating
+                  inherent bias toward success stories.
+                </p>
+                <p className="text-sm font-sans text-ink/60 mb-3">
+                  Cities were selected based on the following criteria:
+                </p>
+                <ul className="space-y-2 text-sm font-sans text-ink/60 ml-4">
+                  <li>— <strong className="text-ink/80">Long-term data availability:</strong> 20+ years of reliable monitoring data from government sources</li>
+                  <li>— <strong className="text-ink/80">Documented interventions:</strong> Verifiable policy measures with official records</li>
+                  <li>— <strong className="text-ink/80">Observable trends:</strong> Measurable changes in air quality over time</li>
+                  <li>— <strong className="text-ink/80">English-language documentation:</strong> Accessibility of policy documents and research</li>
+                </ul>
+              </section>
+
               {/* How to Interpret Intervention Notes */}
               <section>
                 <h3 className="font-serif text-lg font-bold text-ink mb-3">How to Interpret Intervention Notes</h3>
