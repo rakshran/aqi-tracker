@@ -140,10 +140,10 @@ export default function PollutionChart({ city, onInterventionClick }) {
   }, []);
 
   useEffect(() => {
-    if (!isMobile || activeTab !== 'graph') {
+    if (!isMobile) {
       setShowMobileNote(false);
     }
-  }, [isMobile, activeTab]);
+  }, [isMobile]);
 
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     const availablePollutants = Object.keys(pollutantInfo).filter(
@@ -233,16 +233,14 @@ export default function PollutionChart({ city, onInterventionClick }) {
           >
             Details
           </button>
-          {activeTab === 'graph' && (
-            <button
-              onClick={() => setShowMobileNote(prev => !prev)}
-              className="md:hidden ml-1 inline-flex items-center justify-center w-6 h-6 border border-ink/35 rounded-full text-[11px] font-semibold text-ink/60 hover:text-ink hover:border-ink transition-colors"
-              aria-label="Show chart note"
-              aria-expanded={showMobileNote}
-            >
-              i
-            </button>
-          )}
+          <button
+            onClick={() => setShowMobileNote(prev => !prev)}
+            className="md:hidden ml-1 inline-flex items-center justify-center w-6 h-6 border border-ink/35 rounded-full text-[11px] font-semibold text-ink/60 hover:text-ink hover:border-ink transition-colors"
+            aria-label="Show chart note"
+            aria-expanded={showMobileNote}
+          >
+            i
+          </button>
         </div>
       </div>
 
@@ -361,9 +359,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     stroke="#1A1A1A"
                     {...(isMobile
                       ? {
-                        width: 36,
+                        width: 42,
                         tick: { fontSize: 9, fontFamily: 'Inter, sans-serif' },
-                        tickMargin: 6,
+                        tickMargin: 8,
                       }
                       : {
                         style: { fontSize: '10px', fontFamily: 'Inter, sans-serif' },
@@ -376,7 +374,8 @@ export default function PollutionChart({ city, onInterventionClick }) {
                       value: 'Conc.',
                       angle: -90,
                       position: 'insideLeft',
-                      dx: -6,
+                      dx: -2,
+                      dy: 6,
                       style: {
                         fontSize: '9px',
                         fontFamily: 'Inter, sans-serif',
