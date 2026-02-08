@@ -130,6 +130,7 @@ const CustomTooltip = ({ active, payload, city, isMobile }) => {
 export default function PollutionChart({ city, onInterventionClick }) {
   const [activeTab, setActiveTab] = useState('graph');
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showMobileNote, setShowMobileNote] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
 
   useEffect(() => {
@@ -137,6 +138,12 @@ export default function PollutionChart({ city, onInterventionClick }) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (!isMobile || activeTab !== 'graph') {
+      setShowMobileNote(false);
+    }
+  }, [isMobile, activeTab]);
 
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
     const availablePollutants = Object.keys(pollutantInfo).filter(
@@ -203,7 +210,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
 
       {/* Tab Navigation — editorial underline style */}
       <div className="mb-2 md:mb-4 border-b border-grid">
-        <div className="flex gap-0">
+        <div className="flex gap-0 items-center">
           <button
             onClick={() => setActiveTab('graph')}
             className={cn(
@@ -226,8 +233,47 @@ export default function PollutionChart({ city, onInterventionClick }) {
           >
             Details
           </button>
+          {activeTab === 'graph' && (
+            <button
+              onClick={() => setShowMobileNote(prev => !prev)}
+              className="md:hidden ml-1 inline-flex items-center justify-center w-6 h-6 border border-ink/35 rounded-full text-[11px] font-semibold text-ink/60 hover:text-ink hover:border-ink transition-colors"
+              aria-label="Show chart note"
+              aria-expanded={showMobileNote}
+            >
+              i
+            </button>
+          )}
         </div>
       </div>
+
+      {showMobileNote && (
+        <>
+          <div
+            className="md:hidden fixed inset-0 z-40 bg-black/25"
+            onClick={() => setShowMobileNote(false)}
+            aria-hidden="true"
+          />
+          <div className="md:hidden fixed left-3 right-3 top-[calc(env(safe-area-inset-top)+78px)] z-50 bg-canvas border border-ink p-3">
+            <p className="text-[11px] font-sans text-ink/70 leading-snug">
+              <span className="font-semibold text-ink/80">Note:</span>{' '}
+              Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.
+              {' · '}
+              <span className="italic">Dashed segments = interpolated values.</span>
+            </p>
+            <div className="mt-2 pt-2 border-t border-grid">
+              <button
+                onClick={() => {
+                  setShowMobileNote(false);
+                  setShowAboutModal(true);
+                }}
+                className="text-[11px] font-sans text-ink/70 underline hover:text-ink transition-colors"
+              >
+                Data limitations
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Graph Tab */}
       {activeTab === 'graph' && (
@@ -267,8 +313,8 @@ export default function PollutionChart({ city, onInterventionClick }) {
           </div>
 
           {/* Disclaimers — editorial style */}
-          <div className="mb-2 md:mb-3 py-1.5 md:py-2 border-b border-grid">
-            <p className="text-[11px] md:text-xs font-sans text-ink/40 leading-snug md:leading-relaxed">
+          <div className="hidden md:block mb-3 py-2 border-b border-grid">
+            <p className="text-xs font-sans text-ink/40 leading-relaxed">
               <span className="font-semibold text-ink/60">Note:</span>{' '}
               Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
               <button
@@ -288,7 +334,7 @@ export default function PollutionChart({ city, onInterventionClick }) {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
-                  margin={isMobile ? { top: 4, right: 4, left: 0, bottom: 0 } : { top: 10, right: 10, left: 20, bottom: 5 }}
+                  margin={isMobile ? { top: 12, right: 4, left: 2, bottom: 0 } : { top: 10, right: 10, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid
                     horizontal={true}
@@ -311,9 +357,9 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     stroke="#1A1A1A"
                     {...(isMobile
                       ? {
-                        width: 30,
+                        width: 34,
                         tick: { fontSize: 9, fontFamily: 'Inter, sans-serif' },
-                        tickMargin: 2,
+                        tickMargin: 3,
                       }
                       : {
                         style: { fontSize: '10px', fontFamily: 'Inter, sans-serif' },
@@ -323,9 +369,11 @@ export default function PollutionChart({ city, onInterventionClick }) {
                     axisLine={false}
                     domain={[0, maxValue]}
                     label={isMobile ? {
-                      value: 'C.',
-                      angle: -90,
-                      position: 'insideLeft',
+                      value: 'Conc.',
+                      position: 'insideTopLeft',
+                      offset: 0,
+                      dx: 12,
+                      dy: 0,
                       style: {
                         fontSize: '9px',
                         fontFamily: 'Inter, sans-serif',
