@@ -138,26 +138,29 @@ Historical air quality data compiled from multiple sources including:
 ```
 aqi-tracker/
 ├── src/
-│   ├── components/          # React components
-│   │   ├── CitySelector.jsx
-│   │   ├── PollutionChart.jsx
-│   │   └── InterventionsPanel.jsx
+│   ├── components/
+│   │   ├── AboutDataModal.jsx        # Data methodology modal
+│   │   ├── AboutSelectionModal.jsx   # Selection bias modal
+│   │   ├── CitySelector.jsx          # Custom city select dropdown
+│   │   ├── InterventionsPanel.jsx    # Sidebar intervention cards
+│   │   ├── PollutionChart.jsx        # Recharts chart, toggles, tooltip
+│   │   └── Sources.jsx               # Data sources display
 │   ├── data/
-│   │   └── citiesData.js    # Historical data and interventions
+│   │   └── citiesData.js             # Historical data and interventions
 │   ├── utils/
-│   │   └── cn.js            # Class name utility
-│   ├── App.jsx              # Main application
-│   ├── main.jsx             # Entry point
-│   └── index.css            # Global styles
-├── public/                  # Static assets
-├── index.html              # HTML template
-└── package.json            # Dependencies
+│   │   └── cn.js                     # Class name utility (clsx + tailwind-merge)
+│   ├── App.jsx                       # Main application layout
+│   ├── main.jsx                      # Entry point
+│   └── index.css                     # Tailwind directives and global styles
+├── public/                            # Static assets
+├── index.html                         # HTML template
+├── tailwind.config.js                 # Tailwind theme customization
+├── vite.config.js                     # Vite build configuration
+└── package.json                       # Dependencies
 ```
 
 ## Known Limitations
 
-Current limitations being addressed:
-- **Desktop-optimized layout**: Best viewed on desktop/laptop screens; mobile responsiveness improvements planned
 - **Screen reader support**: Chart data visualization has limited accessibility for screen readers; text alternatives being developed
 - **Data coverage**: Historical data availability varies by city and time period
 - **Causation complexity**: While interventions are marked at specific years, air quality improvements result from multiple overlapping factors
@@ -167,13 +170,12 @@ Current limitations being addressed:
 Contributions welcome! Priority areas:
 - Adding more cities with documented interventions
 - Improving data accuracy with cited sources
-- Enhancing mobile responsiveness
 - Improving accessibility features (screen reader support, reduced motion preferences)
 - Adding automated tests
 
 ## License
 
-MIT License - feel free to use this project for educational purposes.
+This project is licensed under the [MIT License](./LICENSE).
 
 ## Inspiration
 
