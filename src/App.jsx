@@ -3,7 +3,6 @@ import { citiesData } from './data/citiesData';
 import CitySelector from './components/CitySelector';
 import PollutionChart from './components/PollutionChart';
 import InterventionsPanel from './components/InterventionsPanel';
-import AboutSelectionModal from './components/AboutSelectionModal';
 
 function App() {
   const [selectedCity, setSelectedCity] = useState(citiesData[0]);
@@ -11,7 +10,6 @@ function App() {
   const [selectedInterventionSource, setSelectedInterventionSource] = useState(null);
   const [isSelectionFading, setIsSelectionFading] = useState(false);
   const [showInterventions, setShowInterventions] = useState(false);
-  const [showAboutModal, setShowAboutModal] = useState(false);
   const interventionTimeoutRef = useRef(null);
   const interventionFadeTimeoutRef = useRef(null);
 
@@ -92,48 +90,27 @@ function App() {
     <div className="h-screen flex flex-col bg-canvas overflow-hidden">
       {/* Masthead */}
       <header className="border-b border-ink px-4 md:px-8 py-4 flex-shrink-0">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-editorial text-ink">
-              AQI Improvement Tracker
-            </h1>
-            <p className="font-sans text-xs uppercase tracking-widest text-ink/50 mt-1">
-              A visual investigation into urban air quality
-            </p>
-          </div>
-          <button
-            onClick={() => setShowAboutModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs uppercase tracking-widest text-ink/60 hover:text-ink border-b border-transparent hover:border-ink transition-colors"
-            aria-label="About city selection"
-          >
-            About
-          </button>
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
+          <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-editorial text-ink">
+            Air Quality Trends in
+          </h1>
+          <CitySelector
+            cities={citiesData}
+            selectedCity={selectedCity}
+            onSelectCity={handleCitySelect}
+            ariaLabel="Select city for air quality trend chart"
+            className="w-auto min-w-[180px] md:min-w-[280px] max-w-full px-0 text-2xl md:text-3xl font-bold tracking-editorial"
+          />
         </div>
       </header>
 
       {/* Main Content: Editorial Grid */}
       <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
-        {/* Left Column: City Selector + Chart */}
+        {/* Left Column: Chart */}
         <div className="flex-1 md:w-3/4 flex flex-col overflow-hidden md:border-r border-ink/10">
-          {/* City Selector Row */}
-          <div className="px-4 md:px-8 py-4 overflow-y-auto flex-shrink-0">
-            <div className="flex flex-wrap items-center gap-2 md:gap-3">
-              <h2 className="font-serif text-xl md:text-2xl font-bold tracking-editorial text-ink">
-                Air Quality Trends in
-              </h2>
-              <CitySelector
-                cities={citiesData}
-                selectedCity={selectedCity}
-                onSelectCity={handleCitySelect}
-                ariaLabel="Select city for air quality trend chart"
-                className="w-auto min-w-[220px] md:min-w-[280px] max-w-full px-0 text-xl md:text-2xl font-bold tracking-editorial"
-              />
-            </div>
-          </div>
-
           {/* Chart */}
           {selectedCity && (
-            <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-2 pb-8 md:pb-10">
+            <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-4 pb-8 md:pb-10">
               <PollutionChart
                 city={selectedCity}
                 onInterventionClick={handleInterventionClick}
@@ -200,11 +177,6 @@ function App() {
         )}
       </main>
 
-      {/* About Selection Modal */}
-      <AboutSelectionModal
-        isOpen={showAboutModal}
-        onClose={() => setShowAboutModal(false)}
-      />
     </div>
   );
 }
