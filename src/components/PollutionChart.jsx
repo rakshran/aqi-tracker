@@ -638,47 +638,6 @@ export default function PollutionChart({ city, onInterventionClick }) {
               </div>
             </div>
 
-            {/* Interventions Reference */}
-            {city.interventions.length > 0 && (
-              <div>
-                <h3 className="font-serif text-lg font-bold mb-3 text-ink">Policy Interventions Reference</h3>
-                <div className="divide-y divide-grid">
-                  {city.interventions.map((intervention, idx) => (
-                    <div key={idx} className="py-3">
-                      <div className="flex items-start gap-3">
-                        <span className="font-sans tabular-nums text-xs text-ink/40 pt-0.5 w-10 flex-shrink-0">
-                          {intervention.year}
-                        </span>
-                        <div className="flex-1">
-                          <p className="font-serif font-semibold text-sm text-ink">
-                            {intervention.title}
-                          </p>
-                          <p className="text-xs font-sans text-ink/50 mt-1">{intervention.description}</p>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-1 mt-2 ml-[52px]">
-                        {intervention.affectedPollutants?.map((pollutant) => {
-                          const info = pollutantInfo[pollutant];
-                          const color = editorialColors[pollutant] || info.color;
-                          return (
-                            <span
-                              key={pollutant}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-sans border border-grid"
-                            >
-                              <div
-                                className="w-2 h-0.5"
-                                style={{ backgroundColor: color }}
-                              />
-                              {info.name}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
