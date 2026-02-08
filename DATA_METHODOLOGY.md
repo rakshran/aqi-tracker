@@ -331,19 +331,19 @@ When citing this project:
 
 #### APA Format
 ```
-Historical Air Pollution Trends. (2024). Air Quality Data Visualization [Data visualization project].
+AQI Improvement Tracker. (2024). Air Quality Data Visualization [Data visualization project].
 GitHub. https://github.com/rakshran/aqi-tracker
 ```
 
 #### MLA Format
 ```
-"Historical Air Pollution Trends." Air Quality Data Visualization, 2024,
+"AQI Improvement Tracker." Air Quality Data Visualization, 2024,
 GitHub, github.com/rakshran/aqi-tracker.
 ```
 
 #### Chicago Format
 ```
-Historical Air Pollution Trends. "Air Quality Data Visualization." GitHub, 2024.
+AQI Improvement Tracker. "Air Quality Data Visualization." GitHub, 2024.
 https://github.com/rakshran/aqi-tracker.
 ```
 
@@ -353,7 +353,7 @@ When citing specific data from this project, **always reference the original sou
 
 ```
 Data for [City] sourced from [Original Agency/Database],
-compiled and visualized in Historical Air Pollution Trends (2024).
+compiled and visualized in AQI Improvement Tracker (2024).
 ```
 
 **Example**:

@@ -1,4 +1,4 @@
-# Comprehensive Website Critique: Historical Air Pollution Trends
+# Comprehensive Website Critique: AQI Improvement Tracker
 
 **Document Type**: Critical Analysis
 **Date**: 2026-01-18
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-This document compiles all possible criticisms, concerns, and issues that users, critics, researchers, or competitors might raise about the Historical Air Pollution Trends website. Issues are categorized by severity and type.
+This document compiles all possible criticisms, concerns, and issues that users, critics, researchers, or competitors might raise about the AQI Improvement Tracker website. Issues are categorized by severity and type.
 
 ---
 
@@ -634,6 +634,6 @@ This document compiles all possible criticisms, concerns, and issues that users,
 
 ## CONCLUSION
 
-While the Historical Air Pollution Trends website demonstrates good intentions and basic functionality, it suffers from **fundamental credibility issues** that undermine its educational and policy value. The lack of proper citations, peer review, and scientific rigor makes it unsuitable for academic or policy use. The accessibility gaps create legal exposure. The sustainability model is unclear.
+While the AQI Improvement Tracker website demonstrates good intentions and basic functionality, it suffers from **fundamental credibility issues** that undermine its educational and policy value. The lack of proper citations, peer review, and scientific rigor makes it unsuitable for academic or policy use. The accessibility gaps create legal exposure. The sustainability model is unclear.
 
 **Bottom Line**: This is a well-designed **student project** masquerading as an **authoritative resource**, and critics will easily identify the gap.
