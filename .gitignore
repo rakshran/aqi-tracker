@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Internal working notes (kept local, not published)
+ACTION_PLAN.md
+WEBSITE_CRITIQUE.md
+CLAUDE.md

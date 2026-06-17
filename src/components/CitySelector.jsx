@@ -20,7 +20,7 @@ export default function CitySelector({
           backgroundPosition: 'right 0 center',
           backgroundRepeat: 'no-repeat',
           backgroundSize: '1.25em 1.25em',
-          paddingRight: '2rem'
+          paddingRight: '2rem',
         }}
         aria-hidden="true"
       >
@@ -31,14 +31,16 @@ export default function CitySelector({
       <select
         value={selectedCity?.id || ''}
         onChange={(e) => {
-          const city = cities.find(c => c.id === e.target.value);
+          const city = cities.find((c) => c.id === e.target.value);
           if (city) onSelectCity(city);
         }}
         aria-label={ariaLabel}
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         style={{ fontSize: '16px' }}
       >
-        <option value="" disabled>Select a city...</option>
+        <option value="" disabled>
+          Select a city...
+        </option>
         {cities.map((city) => (
           <option key={city.id} value={city.id}>
             {city.name}
