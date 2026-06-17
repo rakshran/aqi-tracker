@@ -1,6 +1,21 @@
 # AQI Improvement Tracker
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-F2C94C.svg)](./LICENSE)
+[![Built with React](https://img.shields.io/badge/React-18-1A1A1A?logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38BDF8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![CI](https://github.com/rakshran/aqi-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/rakshran/aqi-tracker/actions/workflows/ci.yml)
+
 An interactive data visualization showing how major cities around the world have battled air pollution and the key interventions that led to significant improvements.
+
+**🔗 Live demo: [aqi-tracker-lilac.vercel.app](https://aqi-tracker-lilac.vercel.app)**
+
+## Preview
+
+<!-- Add a screenshot at docs/images/preview.png and it will render below. -->
+<!-- Tip: capture the live site or run `npm run dev`, then drop the image at that path. -->
+
+![AQI Improvement Tracker preview](./docs/images/preview.png)
 
 ## Features
 
@@ -91,6 +106,17 @@ npm run build
 npm run preview
 ```
 
+### Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start the Vite dev server |
+| `npm run build` | Build the production bundle to `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint over the codebase |
+| `npm run format` | Format files with Prettier |
+| `npm run format:check` | Check formatting without writing changes |
+
 ## Deployment
 
 This project is ready to deploy to any static hosting platform:
@@ -131,12 +157,21 @@ Historical air quality data compiled from multiple sources including:
   - "Estimated" badges in tooltips
   - Data transparency notice above charts
 
-📖 **For detailed methodology, data quality indicators, and verification guidance, see [DATA_METHODOLOGY.md](./DATA_METHODOLOGY.md)**
+📖 **For detailed methodology, data quality indicators, and verification guidance, see [docs/DATA_METHODOLOGY.md](./docs/DATA_METHODOLOGY.md) and [docs/DATA_SOURCES_AND_VERIFICATION.md](./docs/DATA_SOURCES_AND_VERIFICATION.md)**
 
 ## Project Structure
 
 ```
 aqi-tracker/
+├── .github/
+│   ├── ISSUE_TEMPLATE/                # Bug report & feature request templates
+│   ├── workflows/ci.yml              # Lint + build CI pipeline
+│   └── PULL_REQUEST_TEMPLATE.md
+├── docs/
+│   ├── DATA_METHODOLOGY.md           # Measurement & interpolation methodology
+│   └── DATA_SOURCES_AND_VERIFICATION.md  # Source attribution & verification
+├── public/
+│   └── favicon.svg                   # App icon
 ├── src/
 │   ├── components/
 │   │   ├── AboutDataModal.jsx        # Data methodology modal
@@ -152,11 +187,12 @@ aqi-tracker/
 │   ├── App.jsx                       # Main application layout
 │   ├── main.jsx                      # Entry point
 │   └── index.css                     # Tailwind directives and global styles
-├── public/                            # Static assets
 ├── index.html                         # HTML template
+├── eslint.config.js                   # ESLint flat config
+├── .prettierrc                        # Prettier config
 ├── tailwind.config.js                 # Tailwind theme customization
 ├── vite.config.js                     # Vite build configuration
-└── package.json                       # Dependencies
+└── package.json                       # Dependencies and scripts
 ```
 
 ## Known Limitations
@@ -167,7 +203,7 @@ aqi-tracker/
 
 ## Contributing
 
-Contributions welcome! Priority areas:
+Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and guidelines. Priority areas:
 - Adding more cities with documented interventions
 - Improving data accuracy with cited sources
 - Improving accessibility features (screen reader support, reduced motion preferences)

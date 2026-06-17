@@ -63,8 +63,8 @@ export default function AboutSelectionModal({ isOpen, onClose }) {
                   {/* Success-Oriented Bias */}
                   <div className="border-t border-grid pt-3">
                     <h4 className="font-serif font-semibold text-ink mb-1">1. Success-Oriented Bias</h4>
-                    <p className="font-sans text-ink/60 mb-2"><strong className="text-ink/80">What's included:</strong> Cities that experienced measurable improvements or implemented major interventions</p>
-                    <p className="font-sans text-ink/60 mb-1"><strong className="text-ink/80">What's missing:</strong></p>
+                    <p className="font-sans text-ink/60 mb-2"><strong className="text-ink/80">What&apos;s included:</strong> Cities that experienced measurable improvements or implemented major interventions</p>
+                    <p className="font-sans text-ink/60 mb-1"><strong className="text-ink/80">What&apos;s missing:</strong></p>
                     <ul className="font-sans text-ink/50 ml-4 text-xs space-y-0.5">
                       <li>— Cities where air quality worsened despite interventions</li>
                       <li>— Cities with deteriorating pollution and no policy response</li>

@@ -204,8 +204,6 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
     setVisiblePollutants(prev => ({ ...prev, [pollutant]: !prev[pollutant] }));
   };
 
-  if (!city) return null;
-
   // Compute thinned x-axis ticks for mobile (every ~20 years)
   const mobileTicks = useMemo(() => {
     if (!isMobile || !city?.data?.length) return undefined;
@@ -229,6 +227,7 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
   }, [isMobile, city?.data]);
 
   const maxValue = useMemo(() => {
+    if (!city?.data) return 0;
     let max = 0;
     city.data.forEach(dataPoint => {
       Object.keys(visiblePollutants).forEach(pollutant => {
@@ -238,7 +237,9 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
       });
     });
     return Math.ceil(max * 1.1);
-  }, [city.data, visiblePollutants]);
+  }, [city?.data, visiblePollutants]);
+
+  if (!city) return null;
 
   const scheduleMobileTooltipFade = () => {
     clearTooltipTimers();

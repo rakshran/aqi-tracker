@@ -190,7 +190,7 @@ export default function Sources() {
           documentation.
         </p>
         <a
-          href="https://github.com/rakshran/aqi-tracker/blob/main/DATA_METHODOLOGY.md"
+          href="https://github.com/rakshran/aqi-tracker/blob/main/docs/DATA_METHODOLOGY.md"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-800 hover:underline"
