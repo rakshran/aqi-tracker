@@ -8,7 +8,7 @@
 
 An interactive data visualization showing how major cities around the world have battled air pollution and the key interventions that led to significant improvements.
 
-**🔗 Live demo: [aqi-tracker-lilac.vercel.app](https://aqi-tracker-lilac.vercel.app)**
+**🔗 Live demo: [aqi.rakshitranjan.com](https://aqi.rakshitranjan.com)**
 
 ## Preview
 
