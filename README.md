@@ -8,23 +8,20 @@
 
 An interactive data visualization showing how major cities around the world have battled air pollution and the key interventions that led to significant improvements.
 
-**🔗 Live demo: [aqi.rakshitranjan.com](https://aqi.rakshitranjan.com)**
+**Live demo: [aqi.rakshitranjan.com](https://aqi.rakshitranjan.com)**
 
 ## Preview
-
-<!-- Add a screenshot at docs/images/preview.png and it will render below. -->
-<!-- Tip: capture the live site or run `npm run dev`, then drop the image at that path. -->
 
 ![AQI Improvement Tracker preview](./docs/images/preview.png)
 
 ## Features
 
-- 📊 **Interactive temporal charts** showing decades of air quality data
-- 🏙️ **8 major cities** with detailed historical data (Los Angeles, Beijing, London, Mexico City, Delhi, Tokyo, Seoul, Pittsburgh)
-- 📍 **Key milestone markers** highlighting major policy interventions with clickable stars
-- 📈 **Progress metrics** showing improvements over time
-- 🎨 **Our World in Data inspired design** - clean, accessible, and data-focused
-- 🔍 **Data transparency** - interpolated data points clearly marked and labeled
+- **Interactive temporal charts** showing decades of air quality data
+- **8 major cities** with detailed historical data (Los Angeles, Beijing, London, Mexico City, Delhi, Tokyo, Seoul, Pittsburgh)
+- **Key milestone markers** highlighting major policy interventions with clickable stars
+- **Progress metrics** showing improvements over time
+- **Our World in Data inspired design** - clean, accessible, and data-focused
+- **Data transparency** - interpolated data points clearly marked and labeled
 
 ## Cities Covered
 
@@ -78,12 +75,12 @@ Built following modern best practices:
 ## Design Principles
 
 Follows modern interface design practices:
-- ✅ Tailwind CSS defaults for spacing, radius, and shadows
-- ✅ Accessible component interactions with ARIA labels
-- ✅ Keyboard navigation support for all interactive elements
-- ✅ Tabular numbers for data display
-- ✅ Color-coded pollutants with consistent visual hierarchy
-- ✅ Transparent data practices with clear interpolation indicators
+- Tailwind CSS defaults for spacing, radius, and shadows
+- Accessible component interactions with ARIA labels
+- Keyboard navigation support for all interactive elements
+- Tabular numbers for data display
+- Color-coded pollutants with consistent visual hierarchy
+- Transparent data practices with clear interpolation indicators
 
 ## Getting Started
 
@@ -157,7 +154,7 @@ Historical air quality data compiled from multiple sources including:
   - "Estimated" badges in tooltips
   - Data transparency notice above charts
 
-📖 **For detailed methodology, data quality indicators, and verification guidance, see [docs/DATA_METHODOLOGY.md](./docs/DATA_METHODOLOGY.md) and [docs/DATA_SOURCES_AND_VERIFICATION.md](./docs/DATA_SOURCES_AND_VERIFICATION.md)**
+**For detailed methodology, data quality indicators, and verification guidance, see [docs/DATA_METHODOLOGY.md](./docs/DATA_METHODOLOGY.md) and [docs/DATA_SOURCES_AND_VERIFICATION.md](./docs/DATA_SOURCES_AND_VERIFICATION.md)**
 
 ## Project Structure
 
