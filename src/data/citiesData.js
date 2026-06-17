@@ -62,7 +62,8 @@ export const dataSources = {
     name: 'Mexico City Atmospheric Monitoring System',
     shortName: 'SIMAT',
     url: 'http://www.aire.cdmx.gob.mx/',
-    description: 'Real-time and historical air quality monitoring for Mexico City metropolitan area',
+    description:
+      'Real-time and historical air quality monitoring for Mexico City metropolitan area',
     datasetUrl: 'http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27',
     reliability: 'high',
     updateFrequency: 'annual',
@@ -102,7 +103,8 @@ export const dataSources = {
     name: 'Historical Environmental Research Publications',
     shortName: 'Research Archives',
     url: 'https://scholar.google.com/',
-    description: 'Peer-reviewed research papers, government archives, and historical environmental reports',
+    description:
+      'Peer-reviewed research papers, government archives, and historical environmental reports',
     datasetUrl: null,
     reliability: 'medium',
     updateFrequency: 'varies',
@@ -153,13 +155,15 @@ export const citiesData = [
     id: 'los-angeles',
     name: 'Los Angeles',
     country: 'United States',
-    description: 'Once known for severe smog, LA transformed through decades of strict regulations and technological innovation.',
+    description:
+      'Once known for severe smog, LA transformed through decades of strict regulations and technological innovation.',
     primarySource: 'epa',
     dataPeriod: '1955-2023',
     monitoringStations: ['Los Angeles-North Main Street', 'Azusa', 'Burbank'],
     dataQuality: 'high',
     lastVerified: '2024-01',
-    notes: 'Historical data (pre-1980) compiled from EPA archives and South Coast Air Quality Management District records. Modern data from EPA Air Quality System.',
+    notes:
+      'Historical data (pre-1980) compiled from EPA archives and South Coast Air Quality Management District records. Modern data from EPA Air Quality System.',
     sourceUrl: 'https://www.epa.gov/outdoor-air-quality-data',
     data: [
       { year: 1955, pm10: 185, so2: 145, no2: 98, o3: 142, co: 12.5 },
@@ -173,7 +177,16 @@ export const citiesData = [
       { year: 1995, pm10: 82, pm25: 38, so2: 35, no2: 42, o3: 98, co: 3.8 },
       { year: 2000, pm10: 72, pm25: 32, so2: 28, no2: 38, o3: 92, co: 3.2 },
       { year: 2005, pm10: 62, pm25: 26, so2: 22, no2: 32, o3: 85, co: 2.5 },
-      { year: 2006, pm10: 60, pm25: 25, so2: 21.2, no2: 31.2, o3: 83.6, co: 2.4, isInterpolated: true }, // Interpolated for Port Clean Air Action Plan
+      {
+        year: 2006,
+        pm10: 60,
+        pm25: 25,
+        so2: 21.2,
+        no2: 31.2,
+        o3: 83.6,
+        co: 2.4,
+        isInterpolated: true,
+      }, // Interpolated for Port Clean Air Action Plan
       { year: 2010, pm10: 52, pm25: 21, so2: 18, no2: 28, o3: 78, co: 2.0 },
       { year: 2015, pm10: 45, pm25: 17, so2: 14, no2: 24, o3: 72, co: 1.5 },
       { year: 2020, pm10: 38, pm25: 13, so2: 10, no2: 20, o3: 68, co: 1.2 },
@@ -203,7 +216,7 @@ export const citiesData = [
         title: 'Reformulated Gasoline Program',
         description: 'Cleaner gasoline reduced smog-forming fuel content.',
         sourcePublication: 'Los Angeles Times',
-        sourceTitle: 'Reformulated Gas to Help Clear Southland\'s Skies',
+        sourceTitle: "Reformulated Gas to Help Clear Southland's Skies",
         sourceUrl: 'https://www.latimes.com/archives/la-xpm-1996-01-14-mn-24615-story.html',
         affectedPollutants: ['o3', 'no2'],
       },
@@ -213,7 +226,8 @@ export const citiesData = [
         description: 'Port diesel controls for ships, trucks, and cargo equipment.',
         sourcePublication: 'Los Angeles Times',
         sourceTitle: 'L.A. and Long Beach mayors sign pact setting zero-emissions goals for ports',
-        sourceUrl: 'https://www.latimes.com/local/california/la-me-ports-clean-air-20170612-story.html',
+        sourceUrl:
+          'https://www.latimes.com/local/california/la-me-ports-clean-air-20170612-story.html',
         affectedPollutants: ['pm25', 'pm10', 'no2', 'so2'],
       },
     ],
@@ -222,13 +236,15 @@ export const citiesData = [
     id: 'beijing',
     name: 'Beijing',
     country: 'China',
-    description: 'Beijing implemented aggressive measures to combat severe air pollution, showing dramatic improvements in recent years.',
+    description:
+      'Beijing implemented aggressive measures to combat severe air pollution, showing dramatic improvements in recent years.',
     primarySource: 'cnemc',
     dataPeriod: '1998-2023',
     monitoringStations: ['Beijing Olympic Sports Center', 'Wanliu', 'Dongsi'],
     dataQuality: 'high',
     lastVerified: '2024-01',
-    notes: 'Data from China National Environmental Monitoring Centre. PM2.5 monitoring began in 2010. Earlier data based on PM10 and research estimates.',
+    notes:
+      'Data from China National Environmental Monitoring Centre. PM2.5 monitoring began in 2010. Earlier data based on PM10 and research estimates.',
     sourceUrl: 'http://www.cnemc.cn/en/',
     data: [
       { year: 1998, pm10: 152, so2: 98, no2: 68, co: 3.2 },
@@ -267,7 +283,8 @@ export const citiesData = [
         description: 'Five-year anti-smog plan targeting coal, traffic, and industry.',
         sourcePublication: 'The Guardian',
         sourceTitle: 'China launches new measures to tackle air pollution',
-        sourceUrl: 'https://www.theguardian.com/environment/chinas-choice/2013/jun/18/pollution-china',
+        sourceUrl:
+          'https://www.theguardian.com/environment/chinas-choice/2013/jun/18/pollution-china',
         affectedPollutants: ['pm25', 'pm10', 'so2', 'no2', 'co'],
       },
       {
@@ -276,7 +293,8 @@ export const citiesData = [
         description: 'Urban coal heating replaced with gas and electricity.',
         sourcePublication: 'The Guardian',
         sourceTitle: 'Poor bear brunt of Beijing coal cleanup with no heating at -6C',
-        sourceUrl: 'https://www.theguardian.com/world/2017/dec/04/poor-bear-brunt-beijing-coal-cleanup-with-no-heating-at--6c',
+        sourceUrl:
+          'https://www.theguardian.com/world/2017/dec/04/poor-bear-brunt-beijing-coal-cleanup-with-no-heating-at--6c',
         affectedPollutants: ['pm25', 'pm10', 'so2', 'co'],
       },
       {
@@ -294,13 +312,15 @@ export const citiesData = [
     id: 'london',
     name: 'London',
     country: 'United Kingdom',
-    description: 'After the deadly Great Smog of 1952, London pioneered clean air legislation that transformed the city.',
+    description:
+      'After the deadly Great Smog of 1952, London pioneered clean air legislation that transformed the city.',
     primarySource: 'defra',
     dataPeriod: '1952-2023',
     monitoringStations: ['London Marylebone Road', 'London Bloomsbury', 'London Westminster'],
     dataQuality: 'high',
     lastVerified: '2024-01',
-    notes: 'Historical data (1952-1990) from DEFRA archives and Great Smog research. Modern data from UK Automatic Urban and Rural Network (AURN).',
+    notes:
+      'Historical data (1952-1990) from DEFRA archives and Great Smog research. Modern data from UK Automatic Urban and Rural Network (AURN).',
     sourceUrl: 'https://uk-air.defra.gov.uk/data/',
     data: [
       { year: 1952, pm10: 285, so2: 325, no2: 85, co: 15.2 },
@@ -316,11 +336,29 @@ export const citiesData = [
       { year: 1990, pm10: 62, so2: 42, no2: 45, co: 2.8 },
       { year: 1995, pm10: 55, pm25: 28, so2: 35, no2: 42, o3: 52, co: 2.2 },
       { year: 2000, pm10: 48, pm25: 24, so2: 28, no2: 38, o3: 48, co: 1.8 },
-      { year: 2003, pm10: 44.4, pm25: 21.6, so2: 24.4, no2: 36.2, o3: 46.2, co: 1.6, isInterpolated: true }, // Interpolated for Congestion Charge
+      {
+        year: 2003,
+        pm10: 44.4,
+        pm25: 21.6,
+        so2: 24.4,
+        no2: 36.2,
+        o3: 46.2,
+        co: 1.6,
+        isInterpolated: true,
+      }, // Interpolated for Congestion Charge
       { year: 2005, pm10: 42, pm25: 20, so2: 22, no2: 35, o3: 45, co: 1.5 },
       { year: 2010, pm10: 38, pm25: 17, so2: 18, no2: 32, o3: 42, co: 1.2 },
       { year: 2015, pm10: 32, pm25: 14, so2: 14, no2: 28, o3: 38, co: 1.0 },
-      { year: 2019, pm10: 28.8, pm25: 11.6, so2: 10.8, no2: 23.2, o3: 35.6, co: 0.8, isInterpolated: true }, // Interpolated for Ultra Low Emission Zone (ULEZ)
+      {
+        year: 2019,
+        pm10: 28.8,
+        pm25: 11.6,
+        so2: 10.8,
+        no2: 23.2,
+        o3: 35.6,
+        co: 0.8,
+        isInterpolated: true,
+      }, // Interpolated for Ultra Low Emission Zone (ULEZ)
       { year: 2020, pm10: 28, pm25: 11, so2: 10, no2: 22, o3: 35, co: 0.8 },
       { year: 2023, pm10: 24, pm25: 9, so2: 8, no2: 18, o3: 32, co: 0.7 },
     ],
@@ -331,7 +369,8 @@ export const citiesData = [
         description: 'Smoke-control zones and smokeless fuel rules.',
         sourcePublication: 'The Guardian',
         sourceTitle: 'Pollutionwatch: Clean Air Act in 1956 cleared London smogs',
-        sourceUrl: 'https://www.theguardian.com/environment/2012/dec/09/pollutionwatch-clean-air-act-smog-london',
+        sourceUrl:
+          'https://www.theguardian.com/environment/2012/dec/09/pollutionwatch-clean-air-act-smog-london',
         affectedPollutants: ['pm10', 'so2', 'co'],
       },
       {
@@ -349,7 +388,8 @@ export const citiesData = [
         description: 'Central London driving fee to curb traffic.',
         sourcePublication: 'The Guardian',
         sourceTitle: 'Thousands of drivers leave it late as congestion charge starts',
-        sourceUrl: 'https://www.theguardian.com/environment/2003/feb/17/londonpolitics.congestioncharging',
+        sourceUrl:
+          'https://www.theguardian.com/environment/2003/feb/17/londonpolitics.congestioncharging',
         affectedPollutants: ['no2', 'pm25', 'co'],
       },
       {
@@ -358,7 +398,8 @@ export const citiesData = [
         description: 'Daily charges for high-emission vehicles in zone.',
         sourcePublication: 'The Guardian',
         sourceTitle: 'London prepares for launch of ultra-low emissions zone',
-        sourceUrl: 'https://www.theguardian.com/uk-news/2019/apr/06/london-prepares-for-launch-of-ultra-low-emissions-zone',
+        sourceUrl:
+          'https://www.theguardian.com/uk-news/2019/apr/06/london-prepares-for-launch-of-ultra-low-emissions-zone',
         affectedPollutants: ['no2', 'pm25', 'pm10'],
       },
     ],
@@ -367,13 +408,15 @@ export const citiesData = [
     id: 'mexico-city',
     name: 'Mexico City',
     country: 'Mexico',
-    description: 'Once declared the most polluted city on Earth, Mexico City has made significant progress through innovative programs.',
+    description:
+      'Once declared the most polluted city on Earth, Mexico City has made significant progress through innovative programs.',
     primarySource: 'simat',
     dataPeriod: '1988-2023',
     monitoringStations: ['Merced', 'Pedregal', 'Xalostoc'],
     dataQuality: 'high',
     lastVerified: '2024-01',
-    notes: 'Data from Sistema de Monitoreo Atmosférico (SIMAT). Comprehensive monitoring began in late 1980s during peak pollution period.',
+    notes:
+      'Data from Sistema de Monitoreo Atmosférico (SIMAT). Comprehensive monitoring began in late 1980s during peak pollution period.',
     sourceUrl: 'http://www.aire.cdmx.gob.mx/',
     data: [
       { year: 1988, pm10: 235, so2: 168, no2: 125, o3: 198, co: 8.5 },
@@ -385,9 +428,27 @@ export const citiesData = [
       { year: 1998, pm10: 175, pm25: 82, so2: 112, no2: 92, o3: 158, co: 5.8 },
       { year: 2000, pm10: 162, pm25: 75, so2: 98, no2: 85, o3: 145, co: 5.2 },
       { year: 2005, pm10: 142, pm25: 65, so2: 78, no2: 72, o3: 125, co: 4.2 },
-      { year: 2007, pm10: 134, pm25: 61, so2: 71.6, no2: 68, o3: 118.2, co: 3.9, isInterpolated: true }, // Interpolated for Metrobús Expansion
+      {
+        year: 2007,
+        pm10: 134,
+        pm25: 61,
+        so2: 71.6,
+        no2: 68,
+        o3: 118.2,
+        co: 3.9,
+        isInterpolated: true,
+      }, // Interpolated for Metrobús Expansion
       { year: 2010, pm10: 122, pm25: 55, so2: 62, no2: 62, o3: 108, co: 3.5 },
-      { year: 2014, pm10: 108.4, pm25: 49.4, so2: 50.8, no2: 54, o3: 95.2, co: 2.9, isInterpolated: true }, // Interpolated for PROAIRE (Clean Air Program)
+      {
+        year: 2014,
+        pm10: 108.4,
+        pm25: 49.4,
+        so2: 50.8,
+        no2: 54,
+        o3: 95.2,
+        co: 2.9,
+        isInterpolated: true,
+      }, // Interpolated for PROAIRE (Clean Air Program)
       { year: 2015, pm10: 105, pm25: 48, so2: 48, no2: 52, o3: 92, co: 2.8 },
       { year: 2020, pm10: 88, pm25: 40, so2: 35, no2: 45, o3: 78, co: 2.2 },
       { year: 2023, pm10: 78, pm25: 36, so2: 28, no2: 40, o3: 68, co: 1.8 },
@@ -435,13 +496,15 @@ export const citiesData = [
     id: 'delhi',
     name: 'Delhi',
     country: 'India',
-    description: 'Delhi represents an ongoing air quality challenge with pollution levels that remain critically high despite multiple interventions. Unlike other cities in this dataset, Delhi has not yet achieved sustained improvement, illustrating the complexity of addressing air pollution in rapidly growing megacities with diverse emission sources.',
+    description:
+      'Delhi represents an ongoing air quality challenge with pollution levels that remain critically high despite multiple interventions. Unlike other cities in this dataset, Delhi has not yet achieved sustained improvement, illustrating the complexity of addressing air pollution in rapidly growing megacities with diverse emission sources.',
     primarySource: 'cpcb',
     dataPeriod: '2010-2023',
     monitoringStations: ['Anand Vihar', 'RK Puram', 'Punjabi Bagh'],
     dataQuality: 'medium',
     lastVerified: '2024-01',
-    notes: 'Data from Central Pollution Control Board. Monitoring network expanded significantly after 2015. Data gaps exist in earlier years.',
+    notes:
+      'Data from Central Pollution Control Board. Monitoring network expanded significantly after 2015. Data gaps exist in earlier years.',
     sourceUrl: 'https://airquality.cpcb.gov.in/',
     data: [
       { year: 2010, pm10: 185, pm25: 92, so2: 18, no2: 62, o3: 55, co: 2.2 },
@@ -463,8 +526,9 @@ export const citiesData = [
         title: 'Odd-Even Vehicle Scheme',
         description: 'Alternating license-plate driving limits during episodes.',
         sourcePublication: 'The Indian Express',
-        sourceTitle: 'Delhi\'s odd-even scheme in 2016: Challenges and lessons',
-        sourceUrl: 'https://indianexpress.com/article/cities/delhi/delhi-odd-even-scheme-in-2016-arvind-kejriwal-pollution-5994067/lite/',
+        sourceTitle: "Delhi's odd-even scheme in 2016: Challenges and lessons",
+        sourceUrl:
+          'https://indianexpress.com/article/cities/delhi/delhi-odd-even-scheme-in-2016-arvind-kejriwal-pollution-5994067/lite/',
         affectedPollutants: ['no2', 'pm25', 'co'],
       },
       {
@@ -473,7 +537,8 @@ export const citiesData = [
         description: 'Leap to BS-VI emission norms for new vehicles.',
         sourcePublication: 'The Indian Express',
         sourceTitle: 'BS-VI norms to be implemented from April 1, 2020 to curb vehicular pollution',
-        sourceUrl: 'https://indianexpress.com/article/india/india-news-india/bs-vi-norms-to-be-implemented-from-april-1-2020-to-curb-vehicular-pollution/',
+        sourceUrl:
+          'https://indianexpress.com/article/india/india-news-india/bs-vi-norms-to-be-implemented-from-april-1-2020-to-curb-vehicular-pollution/',
         affectedPollutants: ['no2', 'pm25'],
       },
       {
@@ -482,7 +547,8 @@ export const citiesData = [
         description: 'Seasonal construction and industry curbs on bad-air days.',
         sourcePublication: 'The Indian Express',
         sourceTitle: 'Delhi-NCR: EPCA shuts industries, bans construction activities',
-        sourceUrl: 'https://indianexpress.com/article/cities/delhi/delhi-ncr-epca-shuts-industries-bans-construction-activities-5507870/',
+        sourceUrl:
+          'https://indianexpress.com/article/cities/delhi/delhi-ncr-epca-shuts-industries-bans-construction-activities-5507870/',
         affectedPollutants: ['pm10', 'pm25'],
       },
       {
@@ -490,8 +556,10 @@ export const citiesData = [
         title: 'Stubble Burning Compensation',
         description: 'Farmer incentives to reduce crop-residue burning.',
         sourcePublication: 'Hindustan Times',
-        sourceTitle: 'Stubble burning: Bio-decomposer spraying from October 11 in Delhi, says CM Kejriwal',
-        sourceUrl: 'https://www.hindustantimes.com/delhi-news/stubble-burning-bio-decomposer-spraying-from-october-11-in-delhi-says-cm-kejriwal/story-TCBeef5EY7tdVRs3UG0qOJ.html',
+        sourceTitle:
+          'Stubble burning: Bio-decomposer spraying from October 11 in Delhi, says CM Kejriwal',
+        sourceUrl:
+          'https://www.hindustantimes.com/delhi-news/stubble-burning-bio-decomposer-spraying-from-october-11-in-delhi-says-cm-kejriwal/story-TCBeef5EY7tdVRs3UG0qOJ.html',
         affectedPollutants: ['pm25', 'pm10'],
       },
     ],
@@ -500,13 +568,15 @@ export const citiesData = [
     id: 'tokyo',
     name: 'Tokyo',
     country: 'Japan',
-    description: 'Post-war industrial boom brought severe pollution, but strict regulations transformed Tokyo into one of the cleanest megacities.',
+    description:
+      'Post-war industrial boom brought severe pollution, but strict regulations transformed Tokyo into one of the cleanest megacities.',
     primarySource: 'moej',
     dataPeriod: '1965-2023',
     monitoringStations: ['Shinjuku', 'Chiyoda', 'Edogawa'],
     dataQuality: 'high',
     lastVerified: '2024-01',
-    notes: 'Data from Japan Ministry of the Environment atmospheric monitoring network. Historical data from Tokyo Metropolitan Government archives.',
+    notes:
+      'Data from Japan Ministry of the Environment atmospheric monitoring network. Historical data from Tokyo Metropolitan Government archives.',
     sourceUrl: 'https://www.env.go.jp/en/air/',
     data: [
       { year: 1965, pm10: 168, so2: 215, no2: 98, co: 8.5 },
@@ -518,7 +588,16 @@ export const citiesData = [
       { year: 1985, pm10: 78, so2: 65, no2: 48, co: 3.2 },
       { year: 1990, pm10: 62, so2: 45, no2: 42, co: 2.5 },
       { year: 1995, pm10: 52, pm25: 28, so2: 32, no2: 38, o3: 55, co: 2.0 },
-      { year: 1999, pm10: 44, pm25: 23.2, so2: 25.6, no2: 33.2, o3: 49.4, co: 1.6, isInterpolated: true }, // Interpolated for Diesel Vehicle Ban
+      {
+        year: 1999,
+        pm10: 44,
+        pm25: 23.2,
+        so2: 25.6,
+        no2: 33.2,
+        o3: 49.4,
+        co: 1.6,
+        isInterpolated: true,
+      }, // Interpolated for Diesel Vehicle Ban
       { year: 2000, pm10: 42, pm25: 22, so2: 24, no2: 32, o3: 48, co: 1.5 },
       { year: 2005, pm10: 35, pm25: 18, so2: 18, no2: 28, o3: 42, co: 1.2 },
       { year: 2010, pm10: 28, pm25: 14, so2: 12, no2: 24, o3: 38, co: 0.9 },
@@ -533,7 +612,8 @@ export const citiesData = [
         description: 'National industrial and vehicle emission limits.',
         sourcePublication: 'The Japan Times',
         sourceTitle: 'Diet enacts expanded diesel pollution law',
-        sourceUrl: 'https://www.japantimes.co.jp/news/2001/06/20/national/diet-enacts-expanded-diesel-pollution-law/',
+        sourceUrl:
+          'https://www.japantimes.co.jp/news/2001/06/20/national/diet-enacts-expanded-diesel-pollution-law/',
         affectedPollutants: ['so2', 'pm10', 'no2'],
       },
       {
@@ -542,7 +622,8 @@ export const citiesData = [
         description: 'Tokyo tightened diesel standards beyond national rules.',
         sourcePublication: 'The Japan Times',
         sourceTitle: 'Tokyo declares war on diesels',
-        sourceUrl: 'https://www.japantimes.co.jp/opinion/1999/09/07/editorials/tokyo-declares-war-on-diesels/',
+        sourceUrl:
+          'https://www.japantimes.co.jp/opinion/1999/09/07/editorials/tokyo-declares-war-on-diesels/',
         affectedPollutants: ['pm10', 'no2'],
       },
       {
@@ -551,7 +632,8 @@ export const citiesData = [
         description: 'Older diesel vehicles barred from city roads.',
         sourcePublication: 'The Japan Times',
         sourceTitle: 'Tokyo bans "dirty" diesel vehicles',
-        sourceUrl: 'https://www.japantimes.co.jp/news/2000/12/16/national/tokyo-bans-dirty-diesel-vehicles/',
+        sourceUrl:
+          'https://www.japantimes.co.jp/news/2000/12/16/national/tokyo-bans-dirty-diesel-vehicles/',
         affectedPollutants: ['pm25', 'pm10', 'no2'],
       },
       {
@@ -560,7 +642,8 @@ export const citiesData = [
         description: 'Mandatory emissions trading for large facilities.',
         sourcePublication: 'The Guardian',
         sourceTitle: 'Tokyo kicks off carbon trading scheme',
-        sourceUrl: 'https://www.theguardian.com/environment/2010/apr/08/tokyo-carbon-trading-scheme',
+        sourceUrl:
+          'https://www.theguardian.com/environment/2010/apr/08/tokyo-carbon-trading-scheme',
         affectedPollutants: ['pm25', 'no2', 'so2'],
       },
     ],
@@ -569,20 +652,31 @@ export const citiesData = [
     id: 'seoul',
     name: 'Seoul',
     country: 'South Korea',
-    description: 'Rapid industrialization brought pollution challenges, but comprehensive policies have significantly improved air quality.',
+    description:
+      'Rapid industrialization brought pollution challenges, but comprehensive policies have significantly improved air quality.',
     primarySource: 'keco',
     dataPeriod: '1995-2023',
     monitoringStations: ['Seoul Jung-gu', 'Jongno-gu', 'Gangnam-gu'],
     dataQuality: 'high',
     lastVerified: '2024-01',
-    notes: 'Data from Korea Environment Corporation (AirKorea). Comprehensive monitoring began in mid-1990s with network expansion in 2000s.',
+    notes:
+      'Data from Korea Environment Corporation (AirKorea). Comprehensive monitoring began in mid-1990s with network expansion in 2000s.',
     sourceUrl: 'https://www.airkorea.or.kr/eng',
     data: [
       { year: 1995, pm10: 148, so2: 68, no2: 72, co: 3.5 },
       { year: 2000, pm10: 132, so2: 58, no2: 68, co: 3.0 },
       { year: 2005, pm10: 115, pm25: 58, so2: 48, no2: 62, o3: 52, co: 2.5 },
       { year: 2010, pm10: 98, pm25: 48, so2: 38, no2: 55, o3: 48, co: 2.0 },
-      { year: 2013, pm10: 88.4, pm25: 44.4, so2: 32, no2: 50.8, o3: 46.2, co: 1.8, isInterpolated: true }, // Interpolated for Eco-Mileage Program
+      {
+        year: 2013,
+        pm10: 88.4,
+        pm25: 44.4,
+        so2: 32,
+        no2: 50.8,
+        o3: 46.2,
+        co: 1.8,
+        isInterpolated: true,
+      }, // Interpolated for Eco-Mileage Program
       { year: 2015, pm10: 82, pm25: 42, so2: 28, no2: 48, o3: 45, co: 1.6 },
       { year: 2018, pm10: 72, pm25: 36, so2: 22, no2: 42, o3: 42, co: 1.3 },
       { year: 2019, pm10: 67, pm25: 33, so2: 20, no2: 40, o3: 40, co: 1.2, isInterpolated: true }, // Interpolated for Fine Dust Emergency Reduction
@@ -598,7 +692,8 @@ export const citiesData = [
         description: 'Diesel buses replaced with compressed natural gas.',
         sourcePublication: 'Korea JoongAng Daily',
         sourceTitle: 'Natural Gas-Powered Buses for Seoul Commuters',
-        sourceUrl: 'https://koreajoongangdaily.joins.com/2003/01/04/features/Natural-GasPowered-Buses-for-Seoul-Commuters/1878495.html',
+        sourceUrl:
+          'https://koreajoongangdaily.joins.com/2003/01/04/features/Natural-GasPowered-Buses-for-Seoul-Commuters/1878495.html',
         affectedPollutants: ['pm10', 'no2', 'co'],
       },
       {
@@ -616,7 +711,8 @@ export const citiesData = [
         description: 'Emergency curbs on traffic and industrial activity.',
         sourcePublication: 'Korea JoongAng Daily',
         sourceTitle: 'Gov’t launches emergency fine dust measures',
-        sourceUrl: 'https://koreajoongangdaily.joins.com/2019/02/22/socialAffairs/Govt-launches-emergency-fine-dust-measures/3059762.html',
+        sourceUrl:
+          'https://koreajoongangdaily.joins.com/2019/02/22/socialAffairs/Govt-launches-emergency-fine-dust-measures/3059762.html',
         affectedPollutants: ['pm25', 'pm10'],
       },
       {
@@ -634,13 +730,15 @@ export const citiesData = [
     id: 'pittsburgh',
     name: 'Pittsburgh',
     country: 'United States',
-    description: 'The "Steel City" transformed from one of America\'s most polluted cities to a clean, livable metropolis.',
+    description:
+      'The "Steel City" transformed from one of America\'s most polluted cities to a clean, livable metropolis.',
     primarySource: 'epa',
     dataPeriod: '1940-2023',
     monitoringStations: ['Liberty', 'Lawrenceville', 'Avalon'],
     dataQuality: 'high',
     lastVerified: '2024-01',
-    notes: 'Historical data (1940-1970) from Allegheny County Health Department archives and EPA historical records. Modern data from EPA Air Quality System.',
+    notes:
+      'Historical data (1940-1970) from Allegheny County Health Department archives and EPA historical records. Modern data from EPA Air Quality System.',
     sourceUrl: 'https://www.epa.gov/outdoor-air-quality-data',
     data: [
       { year: 1940, pm10: 325, so2: 485, no2: 125, co: 18.5 },
@@ -652,7 +750,16 @@ export const citiesData = [
       { year: 1980, pm10: 92, so2: 95, no2: 52, co: 3.8 },
       { year: 1990, pm10: 68, so2: 58, no2: 42, co: 2.5 },
       { year: 2000, pm10: 48, pm25: 22, so2: 35, no2: 32, o3: 62, co: 1.5 },
-      { year: 2003, pm10: 44.1, pm25: 19.6, so2: 31.1, no2: 29.9, o3: 59.9, co: 1.4, isInterpolated: true }, // Interpolated for Allegheny County Clean Air Plan
+      {
+        year: 2003,
+        pm10: 44.1,
+        pm25: 19.6,
+        so2: 31.1,
+        no2: 29.9,
+        o3: 59.9,
+        co: 1.4,
+        isInterpolated: true,
+      }, // Interpolated for Allegheny County Clean Air Plan
       { year: 2010, pm10: 35, pm25: 14, so2: 22, no2: 25, o3: 55, co: 1.0 },
       { year: 2020, pm10: 26, pm25: 10, so2: 14, no2: 20, o3: 48, co: 0.7 },
       { year: 2023, pm10: 22, pm25: 9, so2: 10, no2: 18, o3: 45, co: 0.6 },

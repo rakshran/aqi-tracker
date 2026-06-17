@@ -5,7 +5,7 @@ export default function Sources() {
   // Group cities by their primary source
   const citiesBySource = React.useMemo(() => {
     const grouped = {};
-    citiesData.forEach(city => {
+    citiesData.forEach((city) => {
       const sourceId = city.primarySource;
       if (!grouped[sourceId]) {
         grouped[sourceId] = [];
@@ -44,8 +44,18 @@ export default function Sources() {
       {/* Data Quality Statement */}
       <div className="mb-6 md:mb-8 p-4 md:p-5 bg-blue-50 border border-blue-200 rounded-lg">
         <div className="flex items-start gap-3">
-          <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <div className="flex-1">
             <h3 className="text-sm font-semibold text-blue-900 mb-1">Data Verification</h3>
@@ -65,20 +75,21 @@ export default function Sources() {
           const cities = citiesBySource[sourceId] || [];
 
           return (
-            <div key={sourceId} className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 shadow-sm">
+            <div
+              key={sourceId}
+              className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 shadow-sm"
+            >
               {/* Source Header */}
               <div className="mb-4">
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
-                  <h2 className="text-lg md:text-xl font-bold text-gray-900">
-                    {source.name}
-                  </h2>
-                  <span className={`px-2.5 py-1 rounded text-xs font-medium border ${getReliabilityColor(source.reliability)}`}>
+                  <h2 className="text-lg md:text-xl font-bold text-gray-900">{source.name}</h2>
+                  <span
+                    className={`px-2.5 py-1 rounded text-xs font-medium border ${getReliabilityColor(source.reliability)}`}
+                  >
                     {source.reliability.toUpperCase()} Reliability
                   </span>
                 </div>
-                <p className="text-sm md:text-base text-gray-600 mb-3">
-                  {source.description}
-                </p>
+                <p className="text-sm md:text-base text-gray-600 mb-3">{source.description}</p>
 
                 {/* Links */}
                 <div className="flex flex-wrap gap-3 text-xs md:text-sm">
@@ -89,7 +100,12 @@ export default function Sources() {
                     className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
                     </svg>
                     Official Website
                   </a>
@@ -100,8 +116,18 @@ export default function Sources() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                        />
                       </svg>
                       Access Data
                     </a>
@@ -128,7 +154,7 @@ export default function Sources() {
                     Cities Using This Source ({cities.length}):
                   </h3>
                   <div className="space-y-3">
-                    {cities.map(city => (
+                    {cities.map((city) => (
                       <div key={city.id} className="bg-gray-50 rounded p-3 border border-gray-100">
                         <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                           <h4 className="font-semibold text-sm text-gray-900">
@@ -140,10 +166,15 @@ export default function Sources() {
                         {/* Monitoring Stations */}
                         {city.monitoringStations && city.monitoringStations.length > 0 && (
                           <div className="mb-2">
-                            <span className="text-xs font-medium text-gray-600">Monitoring Stations:</span>
+                            <span className="text-xs font-medium text-gray-600">
+                              Monitoring Stations:
+                            </span>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {city.monitoringStations.map((station, idx) => (
-                                <span key={idx} className="inline-block px-2 py-0.5 bg-white border border-gray-200 rounded text-xs text-gray-700">
+                                <span
+                                  key={idx}
+                                  className="inline-block px-2 py-0.5 bg-white border border-gray-200 rounded text-xs text-gray-700"
+                                >
                                   {station}
                                 </span>
                               ))}
@@ -155,7 +186,9 @@ export default function Sources() {
                         <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600">
                           <span className="flex items-center gap-1">
                             <span className="font-medium">Quality:</span>
-                            <span className={`px-1.5 py-0.5 rounded ${getReliabilityColor(city.dataQuality)}`}>
+                            <span
+                              className={`px-1.5 py-0.5 rounded ${getReliabilityColor(city.dataQuality)}`}
+                            >
                               {city.dataQuality}
                             </span>
                           </span>
@@ -196,7 +229,12 @@ export default function Sources() {
           className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-800 hover:underline"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
           </svg>
           View Data Methodology Documentation
         </a>
@@ -205,22 +243,36 @@ export default function Sources() {
       {/* Citation Information */}
       <div className="mt-6 p-4 md:p-5 bg-amber-50 border border-amber-200 rounded-lg">
         <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-          <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+          <svg
+            className="w-5 h-5 text-amber-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+            />
           </svg>
           How to Cite This Data
         </h3>
         <p className="text-xs md:text-sm text-gray-700 mb-2">
-          When using data from this visualization, please cite both the original data source and this project:
+          When using data from this visualization, please cite both the original data source and
+          this project:
         </p>
         <div className="bg-white border border-amber-300 rounded p-3 font-mono text-xs text-gray-800 overflow-x-auto">
           <p className="mb-2">
-            <strong>Project Citation:</strong><br />
-            AQI Improvement Tracker. (2024). Air Quality Data Visualization.<br />
+            <strong>Project Citation:</strong>
+            <br />
+            AQI Improvement Tracker. (2024). Air Quality Data Visualization.
+            <br />
             Retrieved from https://github.com/rakshran/aqi-tracker
           </p>
           <p>
-            <strong>Data Source Citation:</strong><br />
+            <strong>Data Source Citation:</strong>
+            <br />
             [Specific agency name]. ([Year]). [Dataset name]. Retrieved from [URL]
           </p>
         </div>

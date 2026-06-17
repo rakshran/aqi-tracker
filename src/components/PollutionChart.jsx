@@ -1,5 +1,14 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceDot } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceDot,
+} from 'recharts';
 import { cn } from '../utils/cn';
 import { pollutantInfo, dataSources } from '../data/citiesData';
 import AboutDataModal from './AboutDataModal';
@@ -36,15 +45,7 @@ const DiamondShape = (props) => {
       style={{ cursor: isHidden ? 'help' : 'pointer' }}
     >
       {/* Invisible larger tap target on mobile */}
-      {isMobile && (
-        <circle
-          cx={cx}
-          cy={cy}
-          r={20}
-          fill="transparent"
-          onClick={props.onClick}
-        />
-      )}
+      {isMobile && <circle cx={cx} cy={cy} r={20} fill="transparent" onClick={props.onClick} />}
       <rect
         x={cx - actualSize}
         y={cy - actualSize}
@@ -66,9 +67,7 @@ const DiamondShape = (props) => {
           }
         }}
       />
-      {isHidden && isHovered && (
-        <title>Hidden: Toggle affected pollutants to view</title>
-      )}
+      {isHidden && isHovered && <title>Hidden: Toggle affected pollutants to view</title>}
     </g>
   );
 };
@@ -79,18 +78,13 @@ const TooltipCard = ({ data, city, isMobile }) => {
 
   return (
     <div
-      className={cn(
-        "bg-canvas border border-ink p-3 font-sans",
-        isMobile ? "w-full" : "max-w-xs"
-      )}
+      className={cn('bg-canvas border border-ink p-3 font-sans', isMobile ? 'w-full' : 'max-w-xs')}
       style={{ boxShadow: 'none' }}
     >
       <div className="flex items-center justify-between mb-2 border-b border-grid pb-1.5">
         <p className="font-serif font-bold text-sm text-ink">{data.year}</p>
         {data.isInterpolated && (
-          <span className="text-xs font-sans uppercase tracking-widest text-ink/50 ml-2">
-            Est.
-          </span>
+          <span className="text-xs font-sans uppercase tracking-widest text-ink/50 ml-2">Est.</span>
         )}
       </div>
       <div className="space-y-1">
@@ -101,10 +95,7 @@ const TooltipCard = ({ data, city, isMobile }) => {
             return (
               <div key={pollutant} className="flex justify-between items-center gap-3 text-xs">
                 <span className="flex items-center gap-1.5">
-                  <div
-                    className="w-3 h-0.5 flex-shrink-0"
-                    style={{ backgroundColor: color }}
-                  />
+                  <div className="w-3 h-0.5 flex-shrink-0" style={{ backgroundColor: color }} />
                   <span className="text-ink/70">{info.name}</span>
                 </span>
                 <span className="tabular-nums font-medium text-ink">
@@ -123,9 +114,7 @@ const TooltipCard = ({ data, city, isMobile }) => {
       )}
       {source && (
         <div className="mt-2 pt-2 border-t border-grid">
-          <p className="text-xs text-ink/40 font-sans">
-            Source: {source.shortName}
-          </p>
+          <p className="text-xs text-ink/40 font-sans">Source: {source.shortName}</p>
         </div>
       )}
     </div>
@@ -182,32 +171,35 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
     }
   }, [isMobile, activeTab]);
 
-  useEffect(() => () => {
-    clearTooltipTimers();
-  }, []);
+  useEffect(
+    () => () => {
+      clearTooltipTimers();
+    },
+    []
+  );
 
   const [visiblePollutants, setVisiblePollutants] = useState(() => {
-    const availablePollutants = Object.keys(pollutantInfo).filter(
-      p => city?.data?.some(dataPoint => dataPoint[p] !== undefined)
+    const availablePollutants = Object.keys(pollutantInfo).filter((p) =>
+      city?.data?.some((dataPoint) => dataPoint[p] !== undefined)
     );
-    return Object.fromEntries(availablePollutants.map(p => [p, true]));
+    return Object.fromEntries(availablePollutants.map((p) => [p, true]));
   });
 
   const availablePollutants = useMemo(() => {
     if (!city) return [];
-    return Object.keys(pollutantInfo).filter(
-      pollutant => city.data.some(d => d[pollutant] !== undefined)
+    return Object.keys(pollutantInfo).filter((pollutant) =>
+      city.data.some((d) => d[pollutant] !== undefined)
     );
   }, [city]);
 
   const togglePollutant = (pollutant) => {
-    setVisiblePollutants(prev => ({ ...prev, [pollutant]: !prev[pollutant] }));
+    setVisiblePollutants((prev) => ({ ...prev, [pollutant]: !prev[pollutant] }));
   };
 
   // Compute thinned x-axis ticks for mobile (every ~20 years)
   const mobileTicks = useMemo(() => {
     if (!isMobile || !city?.data?.length) return undefined;
-    const years = city.data.map(d => d.year);
+    const years = city.data.map((d) => d.year);
     const minYear = Math.min(...years);
     const maxYear = Math.max(...years);
     const ticks = [];
@@ -229,8 +221,8 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
   const maxValue = useMemo(() => {
     if (!city?.data) return 0;
     let max = 0;
-    city.data.forEach(dataPoint => {
-      Object.keys(visiblePollutants).forEach(pollutant => {
+    city.data.forEach((dataPoint) => {
+      Object.keys(visiblePollutants).forEach((pollutant) => {
         if (visiblePollutants[pollutant] && Number.isFinite(dataPoint[pollutant])) {
           max = Math.max(max, dataPoint[pollutant]);
         }
@@ -322,10 +314,10 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
           <button
             onClick={() => setActiveTab('graph')}
             className={cn(
-              "px-3 md:px-4 py-1.5 md:py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[36px] md:min-h-0",
+              'px-3 md:px-4 py-1.5 md:py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[36px] md:min-h-0',
               activeTab === 'graph'
-                ? "border-ink text-ink"
-                : "border-transparent text-ink/40 hover:text-ink/70"
+                ? 'border-ink text-ink'
+                : 'border-transparent text-ink/40 hover:text-ink/70'
             )}
           >
             Graph
@@ -333,16 +325,16 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
           <button
             onClick={() => setActiveTab('details')}
             className={cn(
-              "px-3 md:px-4 py-1.5 md:py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[36px] md:min-h-0",
+              'px-3 md:px-4 py-1.5 md:py-2 font-sans text-xs uppercase tracking-widest border-b-2 transition-colors min-h-[36px] md:min-h-0',
               activeTab === 'details'
-                ? "border-ink text-ink"
-                : "border-transparent text-ink/40 hover:text-ink/70"
+                ? 'border-ink text-ink'
+                : 'border-transparent text-ink/40 hover:text-ink/70'
             )}
           >
             Details
           </button>
           <button
-            onClick={() => setShowMobileNote(prev => !prev)}
+            onClick={() => setShowMobileNote((prev) => !prev)}
             className="md:hidden ml-1 inline-flex items-center justify-center w-6 h-6 border border-ink/35 rounded-full text-[11px] font-semibold text-ink/60 hover:text-ink hover:border-ink transition-colors"
             aria-label="Show chart note"
             aria-expanded={showMobileNote}
@@ -361,8 +353,8 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
           />
           <div className="md:hidden fixed left-3 right-3 top-[calc(env(safe-area-inset-top)+78px)] z-50 bg-canvas border border-ink p-3">
             <p className="text-[11px] font-sans text-ink/70 leading-snug">
-              <span className="font-semibold text-ink/80">Note:</span>{' '}
-              Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.
+              <span className="font-semibold text-ink/80">Note:</span> Air quality changes result
+              from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.
               {' · '}
               <span className="italic">Dashed segments = interpolated values.</span>
             </p>
@@ -386,7 +378,9 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
         <>
           {/* Pollutant Toggles */}
           <div className="mb-2 md:mb-3 py-2 md:py-3 border-b border-grid">
-            <h3 className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-1.5 md:mb-2">Pollutants</h3>
+            <h3 className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-1.5 md:mb-2">
+              Pollutants
+            </h3>
             <div className="flex flex-wrap gap-1.5 md:gap-2">
               {availablePollutants.map((pollutant) => {
                 const info = pollutantInfo[pollutant];
@@ -398,10 +392,10 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                     key={pollutant}
                     onClick={() => togglePollutant(pollutant)}
                     className={cn(
-                      "px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-sans transition-all border rounded-full min-h-[34px] md:min-h-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink/40",
+                      'px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs font-sans transition-all border rounded-full min-h-[34px] md:min-h-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink/40',
                       isVisible
-                        ? "text-canvas shadow-sm"
-                        : "bg-transparent opacity-70 hover:opacity-100"
+                        ? 'text-canvas shadow-sm'
+                        : 'bg-transparent opacity-70 hover:opacity-100'
                     )}
                     style={
                       isVisible
@@ -421,8 +415,8 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
           {/* Disclaimers — editorial style */}
           <div className="hidden md:block mb-3 py-2 border-b border-grid">
             <p className="text-xs font-sans text-ink/40 leading-relaxed">
-              <span className="font-semibold text-ink/60">Note:</span>{' '}
-              Air quality changes result from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
+              <span className="font-semibold text-ink/60">Note:</span> Air quality changes result
+              from multiple factors. Stars indicate policy timing, not definitive cause-and-effect.{' '}
               <button
                 onClick={() => setShowAboutModal(true)}
                 className="text-ink/60 underline hover:text-ink transition-colors"
@@ -450,7 +444,9 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={city.data}
-                  margin={isMobile ? MOBILE_CHART_MARGIN : { top: 10, right: 10, left: 20, bottom: 5 }}
+                  margin={
+                    isMobile ? MOBILE_CHART_MARGIN : { top: 10, right: 10, left: 20, bottom: 5 }
+                  }
                   onMouseMove={isMobile ? handleMobileChartInteraction : undefined}
                   onTouchStart={isMobile ? handleMobileChartInteraction : undefined}
                   onTouchMove={isMobile ? handleMobileChartInteraction : undefined}
@@ -470,55 +466,57 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                     axisLine={{ stroke: '#1A1A1A', strokeWidth: 1 }}
                     {...(isMobile
                       ? {
-                        ticks: mobileTicks,
-                        tickMargin: 8,
-                        height: 22,
-                      }
-                      : { interval: 'preserveStartEnd' }
-                    )}
+                          ticks: mobileTicks,
+                          tickMargin: 8,
+                          height: 22,
+                        }
+                      : { interval: 'preserveStartEnd' })}
                   />
                   <YAxis
                     stroke="#1A1A1A"
                     {...(isMobile
                       ? {
-                        width: 42,
-                        tick: { fontSize: 9, fontFamily: 'Inter, sans-serif' },
-                        tickMargin: 8,
-                      }
+                          width: 42,
+                          tick: { fontSize: 9, fontFamily: 'Inter, sans-serif' },
+                          tickMargin: 8,
+                        }
                       : {
-                        style: { fontSize: '10px', fontFamily: 'Inter, sans-serif' },
-                      }
-                    )}
+                          style: { fontSize: '10px', fontFamily: 'Inter, sans-serif' },
+                        })}
                     tickLine={false}
                     axisLine={false}
                     domain={[0, maxValue]}
-                    label={isMobile ? {
-                      value: 'Conc.',
-                      angle: -90,
-                      position: 'insideLeft',
-                      dx: -2,
-                      dy: 6,
-                      style: {
-                        fontSize: '9px',
-                        fontFamily: 'Inter, sans-serif',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.04em',
-                        fill: '#1A1A1A',
-                        opacity: 0.32,
-                      }
-                    } : {
-                      value: 'Concentration',
-                      angle: -90,
-                      position: 'insideLeft',
-                      style: {
-                        fontSize: '9px',
-                        fontFamily: 'Inter, sans-serif',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        fill: '#1A1A1A',
-                        opacity: 0.4,
-                      }
-                    }}
+                    label={
+                      isMobile
+                        ? {
+                            value: 'Conc.',
+                            angle: -90,
+                            position: 'insideLeft',
+                            dx: -2,
+                            dy: 6,
+                            style: {
+                              fontSize: '9px',
+                              fontFamily: 'Inter, sans-serif',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
+                              fill: '#1A1A1A',
+                              opacity: 0.32,
+                            },
+                          }
+                        : {
+                            value: 'Concentration',
+                            angle: -90,
+                            position: 'insideLeft',
+                            style: {
+                              fontSize: '9px',
+                              fontFamily: 'Inter, sans-serif',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.1em',
+                              fill: '#1A1A1A',
+                              opacity: 0.4,
+                            },
+                          }
+                    }
                   />
                   {!isMobile && (
                     <Tooltip
@@ -545,7 +543,10 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                         connectNulls={false}
                         dot={(props) => {
                           const { cx, cy, payload, value } = props;
-                          const hasPollutantValue = Object.prototype.hasOwnProperty.call(payload ?? {}, pollutant);
+                          const hasPollutantValue = Object.prototype.hasOwnProperty.call(
+                            payload ?? {},
+                            pollutant
+                          );
                           if (
                             !payload?.isInterpolated ||
                             !hasPollutantValue ||
@@ -574,18 +575,19 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
 
                   {/* Intervention markers */}
                   {city.interventions.map((intervention, idx) => {
-                    const dataPoint = city.data.find(d => d.year === intervention.year);
+                    const dataPoint = city.data.find((d) => d.year === intervention.year);
 
                     let effectiveDataPoint = dataPoint;
                     let effectiveYear = intervention.year;
 
                     if (!dataPoint) {
-                      const nearby = city.data.filter(d =>
-                        Math.abs(d.year - intervention.year) <= 2
+                      const nearby = city.data.filter(
+                        (d) => Math.abs(d.year - intervention.year) <= 2
                       );
                       if (nearby.length > 0) {
                         effectiveDataPoint = nearby.reduce((prev, curr) =>
-                          Math.abs(curr.year - intervention.year) < Math.abs(prev.year - intervention.year)
+                          Math.abs(curr.year - intervention.year) <
+                          Math.abs(prev.year - intervention.year)
                             ? curr
                             : prev
                         );
@@ -596,24 +598,26 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                     if (!effectiveDataPoint) return null;
 
                     const visibleAffectedPollutant = intervention.affectedPollutants?.find(
-                      p => visiblePollutants[p] && effectiveDataPoint[p] !== undefined
+                      (p) => visiblePollutants[p] && effectiveDataPoint[p] !== undefined
                     );
 
                     const anyAffectedPollutant = intervention.affectedPollutants?.find(
-                      p => effectiveDataPoint[p] !== undefined
+                      (p) => effectiveDataPoint[p] !== undefined
                     );
 
                     const fallbackPollutant = availablePollutants.find(
-                      p => effectiveDataPoint[p] !== undefined
+                      (p) => effectiveDataPoint[p] !== undefined
                     );
 
-                    const targetPollutant = visibleAffectedPollutant || anyAffectedPollutant || fallbackPollutant;
+                    const targetPollutant =
+                      visibleAffectedPollutant || anyAffectedPollutant || fallbackPollutant;
 
                     if (!targetPollutant || !effectiveDataPoint[targetPollutant]) return null;
 
-                    const isHidden = intervention.affectedPollutants &&
+                    const isHidden =
+                      intervention.affectedPollutants &&
                       intervention.affectedPollutants.length > 0 &&
-                      !intervention.affectedPollutants.some(p => visiblePollutants[p]);
+                      !intervention.affectedPollutants.some((p) => visiblePollutants[p]);
 
                     return (
                       <ReferenceDot
@@ -638,8 +642,8 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
               {isMobile && mobileTooltipData && (
                 <div
                   className={cn(
-                    "pointer-events-none absolute left-3 right-3 bottom-2 z-20 transition-opacity duration-700",
-                    isMobileTooltipVisible ? "opacity-100" : "opacity-0"
+                    'pointer-events-none absolute left-3 right-3 bottom-2 z-20 transition-opacity duration-700',
+                    isMobileTooltipVisible ? 'opacity-100' : 'opacity-0'
                   )}
                 >
                   <TooltipCard data={mobileTooltipData} city={city} isMobile />
@@ -663,7 +667,9 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
               {/* Primary Source */}
               {city.primarySource && dataSources[city.primarySource] && (
                 <div className="mb-4 py-3 border-t border-b border-grid">
-                  <p className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-1">Primary Data Source</p>
+                  <p className="text-xs font-sans uppercase tracking-widest text-ink/40 mb-1">
+                    Primary Data Source
+                  </p>
                   <p className="text-sm font-serif text-ink">
                     {dataSources[city.primarySource].name}
                   </p>
@@ -694,18 +700,26 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
               <div className="space-y-3 text-xs font-sans">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="uppercase tracking-widest text-ink/40 text-xs">Data Period</span>
+                    <span className="uppercase tracking-widest text-ink/40 text-xs">
+                      Data Period
+                    </span>
                     <p className="text-ink mt-0.5">{city.dataPeriod}</p>
                   </div>
                   <div>
-                    <span className="uppercase tracking-widest text-ink/40 text-xs">Data Quality</span>
+                    <span className="uppercase tracking-widest text-ink/40 text-xs">
+                      Data Quality
+                    </span>
                     <p className="text-ink mt-0.5 capitalize">
-                      <span className={cn(
-                        "inline-block px-2 py-0.5 text-xs border",
-                        city.dataQuality === 'high' ? 'border-severity-good text-severity-good' :
-                        city.dataQuality === 'medium' ? 'border-severity-moderate text-severity-moderate' :
-                        'border-severity-hazardous text-severity-hazardous'
-                      )}>
+                      <span
+                        className={cn(
+                          'inline-block px-2 py-0.5 text-xs border',
+                          city.dataQuality === 'high'
+                            ? 'border-severity-good text-severity-good'
+                            : city.dataQuality === 'medium'
+                              ? 'border-severity-moderate text-severity-moderate'
+                              : 'border-severity-hazardous text-severity-hazardous'
+                        )}
+                      >
                         {city.dataQuality}
                       </span>
                     </p>
@@ -714,10 +728,15 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
 
                 {city.monitoringStations && city.monitoringStations.length > 0 && (
                   <div>
-                    <span className="uppercase tracking-widest text-ink/40 text-xs">Monitoring Stations</span>
+                    <span className="uppercase tracking-widest text-ink/40 text-xs">
+                      Monitoring Stations
+                    </span>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {city.monitoringStations.map((station, idx) => (
-                        <span key={idx} className="inline-block px-2 py-0.5 border border-grid text-xs text-ink/70">
+                        <span
+                          key={idx}
+                          className="inline-block px-2 py-0.5 border border-grid text-xs text-ink/70"
+                        >
                           {station}
                         </span>
                       ))}
@@ -733,13 +752,16 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                 )}
 
                 <div className="pt-3 border-t border-grid">
-                  <span className="uppercase tracking-widest text-ink/40 text-xs">Last Verified</span>
+                  <span className="uppercase tracking-widest text-ink/40 text-xs">
+                    Last Verified
+                  </span>
                   <p className="text-ink mt-0.5">{city.lastVerified}</p>
                 </div>
 
                 <p className="text-ink/50 pt-3 border-t border-grid">
-                  All measurements are annual averages expressed in µg/m³ (micrograms per cubic meter) for
-                  particulate matter and gaseous pollutants, or mg/m³ (milligrams per cubic meter) for carbon monoxide.
+                  All measurements are annual averages expressed in µg/m³ (micrograms per cubic
+                  meter) for particulate matter and gaseous pollutants, or mg/m³ (milligrams per
+                  cubic meter) for carbon monoxide.
                 </p>
               </div>
             </div>
@@ -751,17 +773,30 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
               </h3>
               <div className="space-y-2 text-xs font-sans">
                 <p className="text-ink/60">
-                  Some data points are interpolated to provide estimated values for intervention years where
-                  exact measurements were unavailable. These interpolated values are marked with the{' '}
+                  Some data points are interpolated to provide estimated values for intervention
+                  years where exact measurements were unavailable. These interpolated values are
+                  marked with the{' '}
                   <span className="font-semibold text-ink/70 uppercase tracking-widest">Est.</span>{' '}
                   indicator and displayed with dashed line segments on the graph.
                 </p>
                 <p className="text-ink/70 font-semibold pt-2">Interpolation Method:</p>
                 <ul className="list-disc list-inside space-y-1 text-ink/50 ml-2">
                   <li>Linear interpolation between nearest available data points</li>
-                  <li>Used only for intervention years to align policy implementations with data visualization</li>
-                  <li>Clearly marked with <code className="px-1 border border-grid text-ink/70">isInterpolated: true</code> flag in the data</li>
-                  <li>Total interpolated points: {city.data.filter(d => d.isInterpolated).length} out of {city.data.length} data points</li>
+                  <li>
+                    Used only for intervention years to align policy implementations with data
+                    visualization
+                  </li>
+                  <li>
+                    Clearly marked with{' '}
+                    <code className="px-1 border border-grid text-ink/70">
+                      isInterpolated: true
+                    </code>{' '}
+                    flag in the data
+                  </li>
+                  <li>
+                    Total interpolated points: {city.data.filter((d) => d.isInterpolated).length}{' '}
+                    out of {city.data.length} data points
+                  </li>
                 </ul>
               </div>
             </div>
@@ -773,12 +808,17 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                 <table className="w-full table-fixed text-[10px] md:text-xs font-sans border-collapse">
                   <thead>
                     <tr className="border-b-2 border-ink">
-                      <th className="px-1 md:px-3 py-1.5 md:py-2 text-left font-sans uppercase tracking-[0.08em] md:tracking-widest text-ink/50 text-[9px] md:text-xs">Year</th>
+                      <th className="px-1 md:px-3 py-1.5 md:py-2 text-left font-sans uppercase tracking-[0.08em] md:tracking-widest text-ink/50 text-[9px] md:text-xs">
+                        Year
+                      </th>
                       {availablePollutants.map((pollutant) => {
                         const info = pollutantInfo[pollutant];
                         const color = editorialColors[pollutant] || info.color;
                         return (
-                          <th key={pollutant} className="px-1 md:px-3 py-1.5 md:py-2 text-right font-sans uppercase tracking-[0.08em] md:tracking-widest text-ink/50 text-[9px] md:text-xs">
+                          <th
+                            key={pollutant}
+                            className="px-1 md:px-3 py-1.5 md:py-2 text-right font-sans uppercase tracking-[0.08em] md:tracking-widest text-ink/50 text-[9px] md:text-xs"
+                          >
                             <div className="flex items-center justify-end gap-0 md:gap-1.5">
                               <div
                                 className="hidden md:block w-3 h-0.5 flex-shrink-0"
@@ -789,26 +829,32 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                           </th>
                         );
                       })}
-                      <th className="hidden md:table-cell px-3 py-2 text-center font-sans uppercase tracking-widest text-ink/50 text-xs">Status</th>
+                      <th className="hidden md:table-cell px-3 py-2 text-center font-sans uppercase tracking-widest text-ink/50 text-xs">
+                        Status
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {city.data.map((dataPoint, idx) => {
-                      const hasIntervention = city.interventions.some(i => i.year === dataPoint.year);
+                      const hasIntervention = city.interventions.some(
+                        (i) => i.year === dataPoint.year
+                      );
                       return (
                         <tr
                           key={idx}
                           className={cn(
-                            "border-b border-grid transition-colors",
-                            dataPoint.isInterpolated ? "bg-accent/5" : "hover:bg-accent/10",
-                            hasIntervention && "font-semibold"
+                            'border-b border-grid transition-colors',
+                            dataPoint.isInterpolated ? 'bg-accent/5' : 'hover:bg-accent/10',
+                            hasIntervention && 'font-semibold'
                           )}
                         >
                           <td className="px-1 md:px-3 py-1.5 md:py-2 text-left tabular-nums">
                             <div className="flex items-center gap-2">
                               {dataPoint.year}
                               {dataPoint.isInterpolated && (
-                                <span className="md:hidden text-[9px] text-ink/40 uppercase">E</span>
+                                <span className="md:hidden text-[9px] text-ink/40 uppercase">
+                                  E
+                                </span>
                               )}
                               {hasIntervention && (
                                 <span className="hidden md:inline-block w-2 h-2 bg-accent border border-ink/20 rotate-45" />
@@ -816,7 +862,10 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                             </div>
                           </td>
                           {availablePollutants.map((pollutant) => (
-                            <td key={pollutant} className="px-1 md:px-3 py-1.5 md:py-2 text-right tabular-nums">
+                            <td
+                              key={pollutant}
+                              className="px-1 md:px-3 py-1.5 md:py-2 text-right tabular-nums"
+                            >
                               {dataPoint[pollutant] !== undefined ? dataPoint[pollutant] : '—'}
                             </td>
                           ))}
@@ -840,22 +889,18 @@ export default function PollutionChart({ city, onInterventionClick, onOpenInterv
                   <span className="w-2 h-2 bg-accent border border-ink/20 rotate-45 inline-block" />
                   <span>Diamond indicates intervention year</span>
                 </p>
-                <p className="md:hidden text-[10px]">E indicates interpolated values in Year column</p>
-                <p>
-                  Highlighted rows indicate interpolated values
+                <p className="md:hidden text-[10px]">
+                  E indicates interpolated values in Year column
                 </p>
+                <p>Highlighted rows indicate interpolated values</p>
               </div>
             </div>
-
           </div>
         </div>
       )}
 
       {/* About Data Modal */}
-      <AboutDataModal
-        isOpen={showAboutModal}
-        onClose={() => setShowAboutModal(false)}
-      />
+      <AboutDataModal isOpen={showAboutModal} onClose={() => setShowAboutModal(false)} />
     </div>
   );
 }

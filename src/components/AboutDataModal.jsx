@@ -4,10 +4,7 @@ export default function AboutDataModal({ isOpen, onClose }) {
   return (
     <>
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-ink/40 z-50"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-ink/40 z-50" onClick={onClose} />
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 overflow-hidden">
@@ -18,14 +15,21 @@ export default function AboutDataModal({ isOpen, onClose }) {
           >
             {/* Header */}
             <div className="bg-canvas border-b border-ink px-6 py-4 flex items-center justify-between flex-shrink-0">
-              <h2 className="font-serif text-xl font-bold tracking-editorial text-ink">About This Data</h2>
+              <h2 className="font-serif text-xl font-bold tracking-editorial text-ink">
+                About This Data
+              </h2>
               <button
                 onClick={onClose}
                 className="text-ink/30 hover:text-ink transition-colors"
                 aria-label="Close modal"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -39,12 +43,20 @@ export default function AboutDataModal({ isOpen, onClose }) {
                   {[
                     ['Historical trends', 'in air quality measurements over time'],
                     ['Temporal correlation', 'between policy implementation and pollution changes'],
-                    ['Documented interventions', 'that were implemented during periods of air quality change'],
-                    ['Case studies', 'of cities that experienced significant air quality improvements'],
+                    [
+                      'Documented interventions',
+                      'that were implemented during periods of air quality change',
+                    ],
+                    [
+                      'Case studies',
+                      'of cities that experienced significant air quality improvements',
+                    ],
                   ].map(([bold, rest], i) => (
                     <p key={i} className="text-sm font-sans text-ink/60 flex items-start gap-2">
                       <span className="text-severity-good mt-0.5">+</span>
-                      <span><strong className="text-ink/80">{bold}</strong> {rest}</span>
+                      <span>
+                        <strong className="text-ink/80">{bold}</strong> {rest}
+                      </span>
                     </p>
                   ))}
                 </div>
@@ -52,18 +64,25 @@ export default function AboutDataModal({ isOpen, onClose }) {
 
               {/* What This Data Does NOT Show */}
               <section>
-                <h3 className="font-serif text-lg font-bold text-ink mb-3">What This Data Does NOT Show</h3>
+                <h3 className="font-serif text-lg font-bold text-ink mb-3">
+                  What This Data Does NOT Show
+                </h3>
                 <div className="space-y-2">
                   {[
                     ['Definitive causation', 'between specific policies and pollution reductions'],
                     ['Controlled experiments', 'isolating single policy effects'],
                     ['Statistical significance testing', 'or confidence intervals'],
                     ['Failed interventions', 'or cities where pollution worsened (selection bias)'],
-                    ['Within-city inequality', '(pollution varies by neighborhood, not shown in city averages)'],
+                    [
+                      'Within-city inequality',
+                      '(pollution varies by neighborhood, not shown in city averages)',
+                    ],
                   ].map(([bold, rest], i) => (
                     <p key={i} className="text-sm font-sans text-ink/60 flex items-start gap-2">
                       <span className="text-severity-hazardous mt-0.5">×</span>
-                      <span><strong className="text-ink/80">{bold}</strong> {rest}</span>
+                      <span>
+                        <strong className="text-ink/80">{bold}</strong> {rest}
+                      </span>
                     </p>
                   ))}
                 </div>
@@ -73,18 +92,30 @@ export default function AboutDataModal({ isOpen, onClose }) {
               <section>
                 <h3 className="font-serif text-lg font-bold text-ink mb-3">Why These 8 Cities?</h3>
                 <p className="text-sm font-sans text-ink/60 leading-relaxed mb-3">
-                  This dataset is <strong className="text-ink">not representative</strong> of global air quality trends.
-                  The cities shown were selected based on data availability and documented policy interventions, creating
-                  inherent bias toward success stories.
+                  This dataset is <strong className="text-ink">not representative</strong> of global
+                  air quality trends. The cities shown were selected based on data availability and
+                  documented policy interventions, creating inherent bias toward success stories.
                 </p>
                 <p className="text-sm font-sans text-ink/60 mb-3">
                   Cities were selected based on the following criteria:
                 </p>
                 <ul className="space-y-2 text-sm font-sans text-ink/60 ml-4">
-                  <li>— <strong className="text-ink/80">Long-term data availability:</strong> 20+ years of reliable monitoring data from government sources</li>
-                  <li>— <strong className="text-ink/80">Documented interventions:</strong> Verifiable policy measures with official records</li>
-                  <li>— <strong className="text-ink/80">Observable trends:</strong> Measurable changes in air quality over time</li>
-                  <li>— <strong className="text-ink/80">English-language documentation:</strong> Accessibility of policy documents and research</li>
+                  <li>
+                    — <strong className="text-ink/80">Long-term data availability:</strong> 20+
+                    years of reliable monitoring data from government sources
+                  </li>
+                  <li>
+                    — <strong className="text-ink/80">Documented interventions:</strong> Verifiable
+                    policy measures with official records
+                  </li>
+                  <li>
+                    — <strong className="text-ink/80">Observable trends:</strong> Measurable changes
+                    in air quality over time
+                  </li>
+                  <li>
+                    — <strong className="text-ink/80">English-language documentation:</strong>{' '}
+                    Accessibility of policy documents and research
+                  </li>
                 </ul>
               </section>
 
@@ -94,39 +125,67 @@ export default function AboutDataModal({ isOpen, onClose }) {
                   Important: Causation vs. Correlation
                 </h3>
                 <p className="text-sm font-sans text-ink/60 leading-relaxed mb-4">
-                  The interventions marked on the charts are <strong className="text-ink">temporally associated</strong> with
-                  changes in air quality, but this visualization <strong className="text-ink">does not prove causation</strong>.
-                  Air quality improvements are the result of complex, multi-factorial processes.
+                  The interventions marked on the charts are{' '}
+                  <strong className="text-ink">temporally associated</strong> with changes in air
+                  quality, but this visualization{' '}
+                  <strong className="text-ink">does not prove causation</strong>. Air quality
+                  improvements are the result of complex, multi-factorial processes.
                 </p>
               </section>
 
               <section>
                 <div className="border-t border-b border-grid py-4 space-y-3">
-                  <h4 className="font-sans text-xs uppercase tracking-widest text-ink/40">Why We Cannot Claim Causation</h4>
+                  <h4 className="font-sans text-xs uppercase tracking-widest text-ink/40">
+                    Why We Cannot Claim Causation
+                  </h4>
                   <ul className="space-y-2 text-sm font-sans text-ink/60">
                     <li className="flex items-start gap-2">
                       <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Multiple Simultaneous Factors:</strong> Numerous policies, economic changes, technological advances, and weather patterns influence air quality simultaneously.</span>
+                      <span>
+                        <strong className="text-ink/80">Multiple Simultaneous Factors:</strong>{' '}
+                        Numerous policies, economic changes, technological advances, and weather
+                        patterns influence air quality simultaneously.
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Temporal Lag:</strong> Policy impacts often take years to materialize. A policy enacted in year X may not show measurable effects until year X+5.</span>
+                      <span>
+                        <strong className="text-ink/80">Temporal Lag:</strong> Policy impacts often
+                        take years to materialize. A policy enacted in year X may not show
+                        measurable effects until year X+5.
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Economic Confounders:</strong> Economic recessions, industrial shifts, and deindustrialization can reduce emissions independent of environmental policy.</span>
+                      <span>
+                        <strong className="text-ink/80">Economic Confounders:</strong> Economic
+                        recessions, industrial shifts, and deindustrialization can reduce emissions
+                        independent of environmental policy.
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Weather Variability:</strong> Annual weather patterns (wind, precipitation, temperature inversions) significantly affect measured pollution levels.</span>
+                      <span>
+                        <strong className="text-ink/80">Weather Variability:</strong> Annual weather
+                        patterns (wind, precipitation, temperature inversions) significantly affect
+                        measured pollution levels.
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Technological Progress:</strong> Ongoing technological improvements in engines, fuels, and industrial processes occur independently of specific regulations.</span>
+                      <span>
+                        <strong className="text-ink/80">Technological Progress:</strong> Ongoing
+                        technological improvements in engines, fuels, and industrial processes occur
+                        independently of specific regulations.
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-ink/30 mt-0.5">—</span>
-                      <span><strong className="text-ink/80">Regional/Transboundary Effects:</strong> Pollution transport from neighboring regions affects local measurements, especially for Delhi and Beijing.</span>
+                      <span>
+                        <strong className="text-ink/80">Regional/Transboundary Effects:</strong>{' '}
+                        Pollution transport from neighboring regions affects local measurements,
+                        especially for Delhi and Beijing.
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -134,25 +193,40 @@ export default function AboutDataModal({ isOpen, onClose }) {
 
               {/* How to Interpret Intervention Notes */}
               <section>
-                <h3 className="font-serif text-lg font-bold text-ink mb-3">How to Interpret Intervention Notes</h3>
+                <h3 className="font-serif text-lg font-bold text-ink mb-3">
+                  How to Interpret Intervention Notes
+                </h3>
                 <div className="space-y-3 text-sm font-sans">
                   <p className="text-ink/60">
-                    Intervention notes provide brief policy context on the timeline and should be read as:
+                    Intervention notes provide brief policy context on the timeline and should be
+                    read as:
                   </p>
                   <ul className="space-y-2 ml-4 text-ink/60">
-                    <li><strong className="text-ink/80">Policy summaries</strong> describing what changed</li>
-                    <li><strong className="text-ink/80">Timeline context</strong> for nearby data shifts</li>
-                    <li><strong className="text-ink/80">Non-causal notes</strong> rather than proof of direct effects</li>
+                    <li>
+                      <strong className="text-ink/80">Policy summaries</strong> describing what
+                      changed
+                    </li>
+                    <li>
+                      <strong className="text-ink/80">Timeline context</strong> for nearby data
+                      shifts
+                    </li>
+                    <li>
+                      <strong className="text-ink/80">Non-causal notes</strong> rather than proof of
+                      direct effects
+                    </li>
                   </ul>
                   <blockquote className="border-l-2 border-ink pl-4 py-2 text-ink/50 italic font-serif">
-                    Use these notes to understand policy sequence, not to infer single-policy causation.
+                    Use these notes to understand policy sequence, not to infer single-policy
+                    causation.
                   </blockquote>
                 </div>
               </section>
 
               {/* Recommended Use */}
               <section>
-                <h3 className="font-serif text-lg font-bold text-ink mb-3">Recommended Use of This Data</h3>
+                <h3 className="font-serif text-lg font-bold text-ink mb-3">
+                  Recommended Use of This Data
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="border border-grid p-4">
                     <h4 className="font-sans text-xs uppercase tracking-widest text-severity-good mb-2">
@@ -190,22 +264,39 @@ export default function AboutDataModal({ isOpen, onClose }) {
                 </p>
                 <ul className="space-y-1.5 ml-4 font-sans text-sm">
                   <li>
-                    <a href="https://www.epa.gov/air-research" target="_blank" rel="noopener noreferrer" className="text-ink/60 underline hover:text-ink transition-colors">
+                    <a
+                      href="https://www.epa.gov/air-research"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-ink/60 underline hover:text-ink transition-colors"
+                    >
                       EPA Air Quality Research
                     </a>
                   </li>
                   <li>
-                    <a href="https://ourworldindata.org/air-pollution" target="_blank" rel="noopener noreferrer" className="text-ink/60 underline hover:text-ink transition-colors">
+                    <a
+                      href="https://ourworldindata.org/air-pollution"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-ink/60 underline hover:text-ink transition-colors"
+                    >
                       Our World in Data: Air Pollution
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.who.int/health-topics/air-pollution" target="_blank" rel="noopener noreferrer" className="text-ink/60 underline hover:text-ink transition-colors">
+                    <a
+                      href="https://www.who.int/health-topics/air-pollution"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-ink/60 underline hover:text-ink transition-colors"
+                    >
                       WHO Air Pollution Resources
                     </a>
                   </li>
                   <li>
-                    <span className="text-ink/40 font-sans">Peer-reviewed journals on environmental economics and policy evaluation</span>
+                    <span className="text-ink/40 font-sans">
+                      Peer-reviewed journals on environmental economics and policy evaluation
+                    </span>
                   </li>
                 </ul>
               </section>

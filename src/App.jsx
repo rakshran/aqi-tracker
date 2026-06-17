@@ -106,7 +106,9 @@ function App() {
   };
 
   return (
-    <div className={`md:h-screen flex flex-col bg-canvas ${isMobileLandscape ? 'min-h-[100dvh] h-auto overflow-y-auto' : 'h-[100dvh] overflow-hidden'}`}>
+    <div
+      className={`md:h-screen flex flex-col bg-canvas ${isMobileLandscape ? 'min-h-[100dvh] h-auto overflow-y-auto' : 'h-[100dvh] overflow-hidden'}`}
+    >
       {/* Masthead */}
       <header className="border-b border-ink px-4 md:px-8 py-3 md:py-4 flex-shrink-0">
         <div className="flex flex-wrap items-center gap-1.5 md:gap-3">
@@ -124,12 +126,18 @@ function App() {
       </header>
 
       {/* Main Content: Editorial Grid */}
-      <main className={`flex flex-col md:flex-row relative ${isMobileLandscape ? 'flex-none overflow-visible' : 'flex-1 overflow-hidden'}`}>
+      <main
+        className={`flex flex-col md:flex-row relative ${isMobileLandscape ? 'flex-none overflow-visible' : 'flex-1 overflow-hidden'}`}
+      >
         {/* Left Column: Chart */}
-        <div className={`flex-1 md:w-3/4 flex flex-col md:border-r border-ink/10 ${isMobileLandscape ? 'overflow-visible' : 'overflow-hidden'}`}>
+        <div
+          className={`flex-1 md:w-3/4 flex flex-col md:border-r border-ink/10 ${isMobileLandscape ? 'overflow-visible' : 'overflow-hidden'}`}
+        >
           {/* Chart */}
           {selectedCity && (
-            <div className={`flex flex-col px-3 md:px-8 pt-2 md:pt-4 md:pb-10 ${isMobileLandscape ? 'overflow-visible pb-4' : 'flex-1 overflow-y-hidden md:overflow-y-auto pb-2'}`}>
+            <div
+              className={`flex flex-col px-3 md:px-8 pt-2 md:pt-4 md:pb-10 ${isMobileLandscape ? 'overflow-visible pb-4' : 'flex-1 overflow-y-hidden md:overflow-y-auto pb-2'}`}
+            >
               <div className={isMobileLandscape ? 'min-h-[300px]' : 'flex-1 min-h-0'}>
                 <PollutionChart
                   city={selectedCity}
@@ -175,7 +183,12 @@ function App() {
                 aria-label="Close interventions panel"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
               <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4">
@@ -191,7 +204,6 @@ function App() {
           </>
         )}
       </main>
-
     </div>
   );
 }

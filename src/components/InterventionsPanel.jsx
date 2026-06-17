@@ -16,7 +16,7 @@ export default function InterventionsPanel({
   selectedIntervention,
   shouldHighlightSelection = false,
   isSelectionFading = false,
-  onSelectIntervention
+  onSelectIntervention,
 }) {
   if (!interventions || interventions.length === 0) return null;
 
@@ -30,8 +30,8 @@ export default function InterventionsPanel({
       {/* Correlation Disclaimer */}
       <div className="mb-4 py-2 border-b border-grid">
         <p className="text-xs font-sans text-ink/40 leading-relaxed">
-          <span className="font-semibold text-ink/60">Note on Causation:</span>{' '}
-          These interventions are timeline context for observed changes, not proof of direct causation.
+          <span className="font-semibold text-ink/60">Note on Causation:</span> These interventions
+          are timeline context for observed changes, not proof of direct causation.
         </p>
       </div>
 
@@ -40,9 +40,9 @@ export default function InterventionsPanel({
         {interventions.map((intervention, index) => {
           const isSelected = selectedIntervention?.year === intervention.year;
           const cardClassName = cn(
-            "w-full text-left px-2 py-3 transition-colors duration-700 ease-out min-h-[60px] block",
-            isSelected && shouldHighlightSelection && !isSelectionFading && "bg-accent",
-            isSelected && shouldHighlightSelection && isSelectionFading && "bg-accent/0"
+            'w-full text-left px-2 py-3 transition-colors duration-700 ease-out min-h-[60px] block',
+            isSelected && shouldHighlightSelection && !isSelectionFading && 'bg-accent',
+            isSelected && shouldHighlightSelection && isSelectionFading && 'bg-accent/0'
           );
 
           const cardContent = (
@@ -75,10 +75,7 @@ export default function InterventionsPanel({
                           className="inline-flex items-center gap-1 text-xs font-sans text-ink/40"
                           title={info.description}
                         >
-                          <div
-                            className="w-2 h-0.5"
-                            style={{ backgroundColor: color }}
-                          />
+                          <div className="w-2 h-0.5" style={{ backgroundColor: color }} />
                           {info.name}
                         </span>
                       );
@@ -86,7 +83,6 @@ export default function InterventionsPanel({
                   </div>
                 )}
               </div>
-
             </div>
           );
 
